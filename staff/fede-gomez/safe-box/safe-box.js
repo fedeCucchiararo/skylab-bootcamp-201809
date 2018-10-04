@@ -4,7 +4,11 @@ var safeBox = {
 
     saveSecret: function(secret, password) {
 
-        if(password === undefined){throw Error ('invalid password');}
+        if(password === undefined || password === ''){throw Error ('invalid password');}
+
+        var trimmedPass = password.trim();
+
+        if(password !== trimmedPass){throw Error ('invalid password');}
 
         this.secret = secret;
         this.password = password;
