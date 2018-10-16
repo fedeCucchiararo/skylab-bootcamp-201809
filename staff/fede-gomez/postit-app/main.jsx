@@ -3,7 +3,7 @@ class InputForm extends React.Component {
 
     handleInput = event => {
         console.log('InputForm', 'handleInput (setState)')
-        
+
         const text = event.target.value
 
         this.setState({ text })
@@ -29,10 +29,15 @@ class InputForm extends React.Component {
     }
 }
 
-function Post(props) {
+const Post = (props) => {
     console.log('Post', '"render"')
 
-    return <article className="post">{props.text}</article>
+    return (
+        <div>
+            <article className="post">{props.text}</article>
+            <button onClick={props.deletePost}className="postit-button">X</button>
+        </div>
+    )
 }
 
 class App extends React.Component {
@@ -56,7 +61,7 @@ class App extends React.Component {
 
             <section>
                 {/* {this.state.posts.map((post, index) => <article key={index} className="post">{post}</article>)} */}
-                {this.state.posts.map((post, index) => <Post key={index} text={post} />)}
+                {this.state.posts.map((post, index) => <Post index={index} key={index} text={post} deletePost={()=>{console.log(index)}}/>)}
             </section>
         </div>
     }
