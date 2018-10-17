@@ -27,6 +27,11 @@ class App extends Component {
     })
   }
 
+  handleDelete = () => {
+
+  }
+
+
   render() {
     return (
       <div className="App">
@@ -38,7 +43,7 @@ class App extends Component {
         </form>
         <div className='postItContainer'>
           {this.state.postIt.map(
-            (text, index) => <PostIt key={index} index={index} text={text}></PostIt>
+            (text, index) => <PostIt key={index} text={text}></PostIt>
           )}
         </div>
       </div>
