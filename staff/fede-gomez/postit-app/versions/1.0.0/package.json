@@ -25,6 +25,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "chai": "^4.2.0"
+    "chai": "^4.2.0",
+    "sessionstorage": "^0.1.0"
   }
 }
