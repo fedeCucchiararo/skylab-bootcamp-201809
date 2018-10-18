@@ -12,16 +12,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-.postItContainer{
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.postItItem {
-  background-color: yellow;
-  border: 1px solid orange;
-  height: 150px;
-  width: 150px;
-  margin: 10px;
-}

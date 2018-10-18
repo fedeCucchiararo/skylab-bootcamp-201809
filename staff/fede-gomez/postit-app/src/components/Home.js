@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import logic from './logic'
-import InputForm from './components/InputForm'
-import Post from './components/Post'
+import logic from '../logic'
+import InputForm from './InputForm'
+import Post from './Post'
 
-class App extends Component {
-  state = { postits: logic.listPostits() }
+class Home extends Component {
+  state = { postits: logic.listPostits(this.props.UserId) }
 
-  handleSubmit = text => {
+  handleSubmit = (text, userId) => {
       console.log('App', 'handleSubmit (setState)')
 
-      logic.createPostit(text)
+      logic.createPostit(text, userId)
 
       this.setState({ postits: logic.listPostits() })
   }
@@ -27,7 +27,7 @@ class App extends Component {
   }
 
   render() {
-      console.log('App', 'render')
+      console.log('User passed to Home component: ' + this.props.UserId)
 
       return <div>
           <h1>Post-It App <i className="fas fa-sticky-note"></i></h1>
@@ -35,10 +35,10 @@ class App extends Component {
           <InputForm onSubmit={this.handleSubmit} />
 
           <section>
-              {this.state.postits.map(postit => <Post key={postit.id} text={postit.text} id={postit.id} onDeletePost={this.handleDeletePost} onUpdatePost={this.handleUpdatePost} />)}
+              {this.state.postits.map(postit => <Post key={postit.id} userId={postit.userId} text={postit.text} id={postit.id} onDeletePost={this.handleDeletePost} onUpdatePost={this.handleUpdatePost} />)}
           </section>
       </div>
   }
 }
 
-export default App
+export default Home

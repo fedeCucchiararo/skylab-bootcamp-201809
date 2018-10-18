@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 class Post extends Component {
-    state = { text: this.props.text }
+    state = { text: this.props.text, userId: this.props.userId  }
 
 
     handleChange = event => {
