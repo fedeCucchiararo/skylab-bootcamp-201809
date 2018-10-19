@@ -6,7 +6,13 @@ import logic from './logic'
 
 
 class App extends Component {
-    state = { register: false, login: false, userId: null }
+    state = { register: false, login: false, userId: this.getUserId() }
+
+    getUserId() {
+        const userId = sessionStorage.getItem('userId')
+
+        return userId ? parseInt(userId) : null
+    }
 
     handleRegisterClick = () => {
         this.setState({ register: true })
@@ -30,7 +36,8 @@ class App extends Component {
         try {
             const userId = logic.authenticate(username, password)
 
-            this.setState({ userId, login: false, register: false })
+            this.setState({ userId, login: false, register: false})
+            sessionStorage.setItem('userId', userId)
         } catch (err) {
             console.error(err.message)
         }

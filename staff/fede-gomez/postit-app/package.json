@@ -25,6 +25,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "chai": "^4.2.0"
+    "chai": "^4.2.0",
+    "isomorphic-fetch": "^2.2.1"
   }
 }

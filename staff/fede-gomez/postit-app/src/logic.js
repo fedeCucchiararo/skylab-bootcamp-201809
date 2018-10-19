@@ -1,4 +1,5 @@
-import data from './data'
+// import data from './data'
+const data = require('./data')
 
 const { storage, Postit, User } = data
 
@@ -81,4 +82,6 @@ const logic = {
     }
 }
 
-export default logic
+// export default logic
+
+module.exports = logic
