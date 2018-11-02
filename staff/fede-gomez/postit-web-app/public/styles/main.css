@@ -1,0 +1,20 @@
+.title {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+.postit {
+    width: 150px;
+    height: 160px;
+    background-color: goldenrod;
+    margin: 5px;
+}
+
+.trash {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+}
