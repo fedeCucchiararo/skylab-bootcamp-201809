@@ -20,7 +20,7 @@ const formBodyParser = bodyParser.urlencoded({ extended: false })
 
 const mySession = session({ 
     secret: 'my super secret', 
-    cookie: { maxAge: 60 * 60 * 24 },
+    cookie: { maxAge: 60 * 60 * 24 * 1000 },
     resave: true,
     saveUninitialized: true,
     store: new FileStore({

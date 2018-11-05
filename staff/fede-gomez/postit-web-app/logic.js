@@ -57,7 +57,20 @@ const logic = {
         return _user
     },
 
+
+/**
+ * Creates a postit
+ * 
+ * @param {string} text 
+ * @param {number} id 
+ * 
+ * @throws {TypeError} On non-numeric id, or non-string text
+ */
     createPostit(text, id) {
+
+        if(typeof text !== 'string') throw TypeError (`${text} is not a string`)
+        if(typeof id !== 'number') throw TypeError (`${id} is not a number`)
+
         const user = User.findById(id)
 
         const userPostits = user.postits
@@ -65,6 +78,29 @@ const logic = {
         let _postit = new Postit(text)
 
         userPostits.push(_postit)
+
+        user.save()
+
+    },
+
+    /**
+     * 
+     * @param {number} userId 
+     * @param {number} postitId 
+     * 
+     * @throws {TypeError} On non-numeric ids
+     */
+    deletePostit(userId, postitId) {
+        if(typeof userId !== 'number') throw TypeError (`${userId} is not a number`)
+        if(typeof postitId !== 'number') throw TypeError (`${postitId} is not a number`)
+
+        const user = User.findById(id)
+
+        const userPostits = user.postits
+
+        userPostits = userPostits.filter(postit => postit.id !== postitId)
+
+        user.postits = userPostits
 
         user.save()
 

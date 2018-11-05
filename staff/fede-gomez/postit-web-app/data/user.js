@@ -53,6 +53,7 @@ class User {
 
         const users = JSON.parse(json)
 
+        // //v. 1.1
         const user = users.find(user => user.id === id)
 
         const _user = new User (user.name, user.surname, user.username, user.password)
@@ -61,6 +62,7 @@ class User {
         _user.postits = user.postits
 
         return _user
+
     }
 }
 
