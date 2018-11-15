@@ -242,8 +242,8 @@ describe('logic', () => {
             })
         })
 
-        describe('addCollaboratorById', () => {
-            let user, postit, postit2
+        describe('addBuddyById', () => {
+            let user, user2
 
             beforeEach(() => {
                 user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
@@ -252,35 +252,42 @@ describe('logic', () => {
                 return Promise.all([user.save(), user2.save()])
             })
 
-            it('should succeed on correct data', () => 
-                logic.addCollaboratorById(user.id, user2.id)
+            it('should succeed on correct data', () =>
+                logic.addBuddyById(user.id, user2.id)
                     .then(() => User.findById(user.id))
                     .then(user => {
                         debugger
-                        user.collaborators.should.be.an('array')
-                        user.collaborators.should.be.of.length(1)
-                        const [collaborator] = user.collaborators
-                        // collaborator.id.should.equal('this postit will not be deleted')
-                        // postits.userId.toString().should.equal(user.id)
-                        // expect(removedPostit.id).to.equal(postit2.id)
-                        // expect(removedPostit.text).to.equal('hello text')
-                        // expect(removedPostit.userId).to.equal(user.id)
+                        user.buddies.should.be.an('array')
+                        user.buddies.should.be.of.length(1)
+                        user.buddies[0]._id.toString().should.equal(user2.id)
                     })
+            )
+        })
 
-                // expect(_users.length).to.equal(1)
+        describe('addBuddyByUsername', () => {
+            let user, user2
 
-                // const [_user] = _users
+            beforeEach(() => {
+                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
+                user2 = new User({ name: 'John2', surname: 'Doe2', username: 'jd2', password: '123' })
 
-                // expect(_user.id).to.equal(user.id)
+                return Promise.all([user.save(), user2.save()])
+            })
 
-                // const { postits } = _user
-
-                // expect(postits.length).to.equal(0)
+            it('should succeed on correct data', () =>
+                logic.addBuddyByUsername(user.id, user2.username)
+                    .then(() => User.findById(user.id))
+                    .then(user => {
+                        debugger
+                        user.buddies.should.be.an('array')
+                        user.buddies.should.be.of.length(1)
+                        user.buddies[0]._id.toString().should.equal(user2.id)
+                    })
             )
         })
     })
 
-    describe('postits', () => {
+    false && describe('postits', () => {
         describe('add', () => {
             let user, text
 

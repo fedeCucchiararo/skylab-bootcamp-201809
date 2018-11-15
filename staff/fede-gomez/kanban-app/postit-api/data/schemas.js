@@ -46,7 +46,7 @@ const User = new Schema({
         type: String,
         required: true
     },
-    collaborators: [
+    buddies: [
         {
             type: ObjectId,
             ref: 'User',

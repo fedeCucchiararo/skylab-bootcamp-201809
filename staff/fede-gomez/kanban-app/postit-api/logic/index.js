@@ -264,7 +264,7 @@ const logic = {
                 return postit.save()
             })
             .then(() => undefined)
-    }
+    },
 
     /**
      *  
@@ -293,21 +293,33 @@ const logic = {
     //         }))
     // },
 
-    // addCollaboratorById(id, collaboratorId) {
+    async addBuddyById(id, BuddyId) {
 
-    //     if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-    //     if (!id.trim().length) throw new ValueError('id id is empty or blank')
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw new ValueError('id id is empty or blank')
 
-    //     if (typeof collaboratorId !== 'string') throw TypeError(`${collaboratorId} is not a string`)
-    //     if (!collaboratorId.trim().length) throw new ValueError('collaboratorId id is empty or blank')
+        if (typeof BuddyId !== 'string') throw TypeError(`${BuddyId} is not a string`)
+        if (!BuddyId.trim().length) throw new ValueError('BuddyId id is empty or blank')
 
-    //     return User.find({ _id: id })
-    //         .then(user => {
-    //             debugger
-    //             return User.update({ _id: user.id }, { name: 'James Bond' })
-    //         })
-    // }
 
+        const buddy = await User.findOne({ _id: BuddyId })
+        const user = await User.findOne({ _id: id })
+        return User.updateOne({ _id: user.id }, { buddies: [buddy.id] }, { new: true })
+    },
+
+    async addBuddyByUsername(id, username) {
+
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw new ValueError('id id is empty or blank')
+
+        if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
+        if (!username.trim().length) throw new ValueError('username id is empty or blank')
+
+
+        const buddy = await User.findOne({ username: username })
+        const user = await User.findOne({ _id: id })
+        return User.updateOne({ _id: user.id }, { buddies: [buddy.id] }, { new: true })
+    }
 }
 
 

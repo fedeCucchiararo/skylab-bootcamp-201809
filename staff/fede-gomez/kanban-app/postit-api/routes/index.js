@@ -162,15 +162,15 @@ router.delete('/users/:id/postits/:postitId', [bearerTokenParser, jwtVerifier, j
 // })
 
 /** adds a single collaborator by username*/
-// router.post('/users/:id/collaborators/:collaboratorId', [bearerTokenParser, jwtVerifier], (req, res) => {
-//     routeHandler(() => {
-//         const { sub, params: { id, username } } = req
+router.post('/users/:id/collaborators/:collaboratorId', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { sub, params: { id, username } } = req
 
-//         if (id !== sub) throw Error('token sub does not match user id')
+        if (id !== sub) throw Error('token sub does not match user id')
 
-//         return logic.addCollaboratorById(id, collaboratorId)
-//             .then((collaborator) => res.json({ collaborator }))
-//     }, res)
-// })
+        return logic.addBuddyById(id, BuddyId)
+            .then((buddy) => res.json({ buddy }))
+    }, res)
+})
 
 module.exports = router

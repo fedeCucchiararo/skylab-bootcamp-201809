@@ -33,6 +33,9 @@ class Post extends Component {
                 <button onClick={() => this.props.onDeletePost(this.props.id)}>
                     <i className="far fa-trash-alt"></i>
                 </button>
+                <button onClick={() => this.props.onDeletePost(this.props.id)}>
+                    <i className="far fa-trash-alt"></i>
+                </button>
             </article>
         )
     }
