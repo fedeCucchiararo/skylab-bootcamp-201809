@@ -14,7 +14,7 @@ class Post extends Component {
 
     handleChangeText = (event) => {
         let text = event.target.value
-        this.setState({text: text})
+        this.setState({ text: text })
         this.props.onChangeText(this.state.id, text)
     }
     // handleOnBlur = () => {
@@ -30,10 +30,10 @@ class Post extends Component {
                         ['todo', 'doing', 'review', 'done'].map(item => <option value={item}>{item}</option>)
                     }
                 </select>
-                <button onClick={() => this.props.onDeletePost(this.props.id)}>
-                    <i className="far fa-trash-alt"></i>
+                <button className="addBuddy" >
+                    <i className="fas fa-users"></i>
                 </button>
-                <button onClick={() => this.props.onDeletePost(this.props.id)}>
+                <button className="eliminatePostit" onClick={() => this.props.onDeletePost(this.props.id)}>
                     <i className="far fa-trash-alt"></i>
                 </button>
             </article>

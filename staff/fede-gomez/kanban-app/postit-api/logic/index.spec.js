@@ -256,7 +256,7 @@ describe('logic', () => {
                 logic.addBuddyById(user.id, user2.id)
                     .then(() => User.findById(user.id))
                     .then(user => {
-                        debugger
+                        
                         user.buddies.should.be.an('array')
                         user.buddies.should.be.of.length(1)
                         user.buddies[0]._id.toString().should.equal(user2.id)
@@ -278,7 +278,7 @@ describe('logic', () => {
                 logic.addBuddyByUsername(user.id, user2.username)
                     .then(() => User.findById(user.id))
                     .then(user => {
-                        debugger
+                        
                         user.buddies.should.be.an('array')
                         user.buddies.should.be.of.length(1)
                         user.buddies[0]._id.toString().should.equal(user2.id)
