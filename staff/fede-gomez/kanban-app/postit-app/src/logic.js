@@ -56,6 +56,34 @@ const logic = {
             })
     },
 
+    retrieveUserInfo() {
+        return fetch (`${this.url}/users/${this._userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            return res.data
+        })
+    },
+
+    listBuddies() {
+        return fetch (`${this.url}/users/${this._userId}/buddies`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            return res.data
+        })
+    },
+
     get loggedIn() {
         return !!this._userId
     },
@@ -164,10 +192,6 @@ const logic = {
             .then(res => {
                 if (res.error) throw Error(res.error)
             })
-    },
-
-    viewProfile() {
-        
     }
 }
 

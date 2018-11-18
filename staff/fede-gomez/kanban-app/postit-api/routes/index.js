@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const bearerTokenParser = require('../utils/bearer-token-parser')
 const jwtVerifier = require('./jwt-verifier')
 const routeHandler = require('./route-handler')
+const Busboy = require('busboy');
 
 const jsonBodyParser = bodyParser.json()
 
@@ -143,11 +144,16 @@ router.delete('/users/:id/postits/:postitId', [bearerTokenParser, jwtVerifier, j
 
 
 /** Gets the list of collaborators for a given user */
-// router.get('/users/:id/collaborators/', [bearerTokenParser, jwtVerifier], (req, res) => {
-//     routeHandler(()=>{
+router.get('/users/:id/buddies/', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { sub, params: { id } } = req
+        if (id !== sub) throw Error('token sub does not match user id')
 
-//     }, res)
-// })
+        return logic.listBuddies(id)
+            .then(() => res.json())
+            .then(res => res)
+    }, res)
+})
 
 /** gets a single collaborator by username*/
 // router.get('/users/:id/collaborators/:username', [bearerTokenParser, jwtVerifier], (req, res) => {
@@ -162,15 +168,19 @@ router.delete('/users/:id/postits/:postitId', [bearerTokenParser, jwtVerifier, j
 // })
 
 /** adds a single collaborator by username*/
-router.post('/users/:id/collaborators/:collaboratorId', [bearerTokenParser, jwtVerifier], (req, res) => {
+router.post('/users/:id/buddies/:buddyId', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
-        const { sub, params: { id, username } } = req
+        const { sub, params: { id, buddyId } } = req
 
         if (id !== sub) throw Error('token sub does not match user id')
 
-        return logic.addBuddyById(id, BuddyId)
+        return logic.addBuddyById(id, buddyId)
             .then((buddy) => res.json({ buddy }))
     }, res)
 })
+
+/**
+ * 
+ */
 
 module.exports = router

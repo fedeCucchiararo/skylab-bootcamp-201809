@@ -293,6 +293,16 @@ const logic = {
     //         }))
     // },
 
+    async listBuddies(id) {
+
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw new ValueError('id id is empty or blank')
+
+        const user = await User.find({ id })
+        return user.buddies
+
+    },
+
     async addBuddyById(id, BuddyId) {
 
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
