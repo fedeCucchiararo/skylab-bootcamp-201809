@@ -1,0 +1,38 @@
+.landing {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.header__nav {
+    display: flex;
+    flex-direction: row;
+}
+
+.header__main {
+    display: flex;
+    width: auto;
+    background-color: rgba(99, 93, 92, 0.767);
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    background-image: linear-gradient(to right,rgba(170, 34, 34, 0.932), rgba(175, 13, 13, 0.884));
+    background-size: cover;
+    clip-path: polygon(0 0, 100% 50%, 100% 100%, 0% 50%)
+}
+
+.header__form {
+
+}
+
+
+
+.main__cards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
