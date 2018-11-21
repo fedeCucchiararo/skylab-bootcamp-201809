@@ -12,11 +12,4 @@ const router = express.Router()
 
 const { env: { JWT_SECRET } } = process
 
-router.get('/games/:id', jsonBodyParser, (req, res) => {
-    routeHandler(() => {
-        const { id } = req.params
-        logic.registerGame(id)
-    }, res)
-})
-
 module.exports = router

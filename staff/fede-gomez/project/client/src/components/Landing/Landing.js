@@ -7,13 +7,84 @@ import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "reac
 class Landing extends Component {
 
     state = {
-        games: []
+        games: [
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            },
+            {
+                name: 'Agricola',
+                yearPublished: 2018,
+                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
+            }
+        ]
     }
 
-    componentWillMount() {
-        logic.hotness()
-            .then(games => this.setState({ games }))
-    }
+    // componentWillMount() {
+    //     logic.hotness()
+    //         .then(games => this.setState({ games }))
+    // }
 
     changeHandler = (event) => {
         console.log(event.target.value)

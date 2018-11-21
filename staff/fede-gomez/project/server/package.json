@@ -1,6 +1,6 @@
 {
-  "name": "postit-api",
-  "version": "2.0.0",
+  "name": "project-server",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "chai": "*",
+    "chai": "^4.2.0",
     "errorhandler": "^1.5.0"
   }
 }
