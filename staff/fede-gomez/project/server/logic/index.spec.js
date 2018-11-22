@@ -5,7 +5,7 @@ const expect = chai.expect;    // Using Expect style
 const should = chai.should();  // Using Should style
 
 const mongoose = require('mongoose')
-const { User, Game } = require('../data')
+const { User, Game, gameSession } = require('../data')
 const logic = require('.')
 const { AlreadyExistsError } = require('../errors')
 
@@ -306,6 +306,94 @@ describe('logic', () => {
                         expect(foundGame.designers).to.be.an('array')
                         expect(foundGame.designers).to.contain('Uwe Rosenberg')
                     })
+            })
+        })
+
+        describe('addGameToFavorites', () => {
+
+            let user, game
+
+            beforeEach(() => {
+
+                // create a new game that will be saved to the database
+                game = new Game({
+                    "bggId": 31260,
+                    "name": "Agricola",
+                    "description": "In Agricola, you're a farmer in a wooden shack with your spouse and little else. On a turn, you get to take only two actions, one for you and one for the spouse, from all the possibilities you'll find on a farm: collecting clay, wood, or stone; building fences; and so on. You might think about having kids in order to get more work accomplished, but first you need to expand your house. And what are you going to feed all the little rugrats?",
+                    "image": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "thumbnail": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "minPlayers": 1,
+                    "maxPlayers": 5,
+                    "playingTime": 150,
+                    "mechanics": [
+                        "Area Enclosure",
+                        "Card Drafting",
+                        "Hand Management",
+                        "Variable Player Powers",
+                        "Worker Placement"
+                    ],
+                    "yearPublished": 2007,
+                    "bggRating": 8,
+                    "designers": [
+                        "Uwe Rosenberg"
+                    ]
+                })
+
+                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', email: 'fede@maill.com' })
+
+                return Promise.all([game.save(), user.save()])
+            })
+
+            it('should successfully add a game to user favorites', async () => {
+                let userId = user.id
+                let gameId = game.id
+                await logic.addGameToFavorites(userId, gameId)
+                let modifiedUser = await User.findById(userId)
+                expect(modifiedUser.favorites).to.be.an('array').that.includes(game.id)
+            })
+        })
+
+        describe('removeGameFromFavorites', () => {
+
+            let user, game
+
+            beforeEach(() => {
+
+                // create a new game that will be saved to the database
+                game = new Game({
+                    "bggId": 31260,
+                    "name": "Agricola",
+                    "description": "In Agricola, you're a farmer in a wooden shack with your spouse and little else. On a turn, you get to take only two actions, one for you and one for the spouse, from all the possibilities you'll find on a farm: collecting clay, wood, or stone; building fences; and so on. You might think about having kids in order to get more work accomplished, but first you need to expand your house. And what are you going to feed all the little rugrats?",
+                    "image": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "thumbnail": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "minPlayers": 1,
+                    "maxPlayers": 5,
+                    "playingTime": 150,
+                    "mechanics": [
+                        "Area Enclosure",
+                        "Card Drafting",
+                        "Hand Management",
+                        "Variable Player Powers",
+                        "Worker Placement"
+                    ],
+                    "yearPublished": 2007,
+                    "bggRating": 8,
+                    "designers": [
+                        "Uwe Rosenberg"
+                    ]
+                })
+
+                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', email: 'fede@maill.com', favorites: [game.id] })
+
+                return Promise.all([game.save(), user.save()])
+            })
+
+            it('should successfully remove a game from user favorites', async () => {
+                let userId = user.id
+                let gameId = game.id
+                await logic.removeGameFromFavorites(userId, gameId)
+                let modifiedUser = await User.findById(userId)
+                expect(modifiedUser.favorites).to.be.an('array').that.does.not.include(game.id)
             })
         })
     })

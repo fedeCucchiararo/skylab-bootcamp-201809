@@ -1,4 +1,4 @@
-const { User, Game } = require('../data')
+const { User, Game, gameSession } = require('../data')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
 const fetch = require('node-fetch');
 
@@ -118,11 +118,56 @@ const logic = {
         return Game.findById(id, { '_id': 0, '__v': 0 })
             .lean()
             .then(game => {
-                if (!game) throw new NotFoundError(`game with id ${id} not found`)
+                
                 // We have eliminated _id, therefore we add a new id (the one passed to the retrieveUser function)
                 game.id = id
                 return game
             })
+            .catch(res => {
+                if (res) throw new NotFoundError(`game with id ${id} not found`)
+            })
+    },
+
+    addGameToFavorites(userId, gameId) {
+
+        if (typeof userId !== 'string') throw TypeError(`${userId} is not a string`)
+        if (!userId.trim().length) throw new ValueError('userId is empty or blank')
+        if (typeof gameId !== 'string') throw TypeError(`${gameId} is not a string`)
+        if (!gameId.trim().length) throw new ValueError('gameId is empty or blank')
+
+        return (async () => {
+            let user = await User.findById(userId)
+            if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+            let game = await Game.findById(gameId)
+            if (!game) throw new NotFoundError(`game with id ${gameId} not found`)
+            let _user = await User.findOne({ favorites: { $in: [game._id] } }).lean()
+            debugger
+            if (_user) throw new AlreadyExistsError(`game with id ${gameId} already in favorites`)
+            await User.updateOne({ _id: userId }, { $push: { favorites: game._id } })
+            return undefined
+        })() 
+        
+    },
+
+    removeGameFromFavorites(userId, gameId) {
+
+        if (typeof userId !== 'string') throw TypeError(`${userId} is not a string`)
+        if (!userId.trim().length) throw new ValueError('userId is empty or blank')
+        if (typeof gameId !== 'string') throw TypeError(`${gameId} is not a string`)
+        if (!gameId.trim().length) throw new ValueError('gameId is empty or blank')
+
+        return (async () => {
+            let user = await User.findById(userId)
+            if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+            let game = await Game.findById(gameId)
+            if (!game) throw new NotFoundError(`game with id ${gameId} not found`)
+            let _user = await User.findOne({ favorites: { $in: [game._id] } }).lean()
+            debugger
+            if (!(_user)) throw new NotFoundError(`game with id ${gameId} not in favorites of user with id ${userId}`)
+            await User.updateOne({ _id: userId }, { $pull: { favorites: game._id } })
+            return undefined
+        })() 
+        
     }
 }
 

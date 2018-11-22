@@ -12,4 +12,78 @@ const router = express.Router()
 
 const { env: { JWT_SECRET } } = process
 
+router.post('/users', jsonBodyParser, (req, res) => {
+    routeHandler(() => {
+        const { name, surname, username, password, email } = req.body
+
+        return logic.registerUser(name, surname, username, password, email)
+            .then(() => {
+                res.status(201)
+
+                res.json({
+                    message: `${username} successfully registered`
+                })
+            })
+    }, res)
+})
+
+router.post('/auth', jsonBodyParser, (req, res) => {
+    routeHandler(() => {
+        const { username, password } = req.body
+
+        return logic.authenticateUser(username, password)
+            .then(id => {
+                const token = jwt.sign({ sub: id }, JWT_SECRET)
+
+                res.json({
+                    data: {
+                        id,
+                        token
+                    }
+                })
+            })
+    }, res)
+})
+
+router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveUser(id)
+            .then(user =>
+                res.json({
+                    data: user
+                })
+            )
+    }, res)
+})
+
+router.patch('/users/:id', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub, body: { newName, newSurname, newPassword, password, newEmail } } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.updateUser(id, newName ? newName : null, newSurname ? newSurname : null, newEmail ? newEmail : null, newPassword ? newPassword : null, password)
+            .then(() =>
+                res.json({
+                    message: 'user updated'
+                })
+            )
+    }, res)
+})
+
+router.get('/games/:id', (req, res) => {
+    routeHandler(() => {
+        const { id } = req.params
+
+        return logic.getGameById(id)
+            .then(game => res.json({
+                data: game
+            }))
+    }, res)
+})
+
 module.exports = router
