@@ -19,7 +19,7 @@
 .card {
     cursor: pointer;
     border: none;
-	transition: 0.9s;
+	transition: 0.5s;
 	transform-style: preserve-3d;
 	position: relative;
 }
@@ -30,14 +30,12 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	box-shadow: 2px 2px 3px black;
+	box-shadow: 5px 5px 10px rgb(70, 50, 100);
 }
 
 /* front pane, placed above back */
 .front {
 	z-index: 2;
-	/* for firefox 31 */
-	transform: rotateY(0deg);
 }
 
 /* back, initially hidden pane */

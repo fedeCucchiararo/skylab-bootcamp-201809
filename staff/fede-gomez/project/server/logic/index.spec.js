@@ -73,7 +73,7 @@ describe('logic', () => {
             let user
 
             beforeEach(() => {
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', email: 'fede@mail.com', favorites: [] })
+                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', email: 'fede@mail.com', ownedGames: [] })
 
                 return User.create(user)
             })
@@ -137,7 +137,7 @@ describe('logic', () => {
                     username: 'jd',
                     password: '123',
                     email: 'fede@mail.com',
-                    favorites: [game.id.toString()]
+                    ownedGames: [game.id.toString()]
                 })
 
                 return Promise.all([user.save(), game.save()])
@@ -151,7 +151,7 @@ describe('logic', () => {
 
                         expect(_user).not.to.be.instanceof(User)
 
-                        const { id, name, surname, username, password, email, favorites } = _user
+                        const { id, name, surname, username, password, email, ownedGames } = _user
 
                         expect(id).to.exist
                         expect(id).to.equal(user.id)
@@ -159,7 +159,7 @@ describe('logic', () => {
                         expect(surname).to.equal(user.surname)
                         expect(username).to.equal(user.username)
                         expect(email).to.equal(user.email)
-                        expect(favorites[0]).to.equal(user.favorites[0].toString())
+                        expect(ownedGames[0]).to.equal(user.ownedGames[0].toString())
                         expect(password).to.be.undefined
                     })
             })
@@ -309,7 +309,7 @@ describe('logic', () => {
             })
         })
 
-        describe('addGameToFavorites', () => {
+        describe('addGameToOwnedGames', () => {
 
             let user, game
 
@@ -344,23 +344,23 @@ describe('logic', () => {
                 return Promise.all([game.save(), user.save()])
             })
 
-            it('should successfully add a game to user favorites', async () => {
+            it('should successfully add a game to user ownedGames', async () => {
                 let userId = user.id
                 let gameId = game.id
-                await logic.addGameToFavorites(userId, gameId)
+                await logic.addGameToOwnedGames(userId, gameId)
                 let modifiedUser = await User.findById(userId)
-                expect(modifiedUser.favorites).to.be.an('array').that.includes(game.id)
+                expect(modifiedUser.ownedGames).to.be.an('array').that.includes(game.id)
             })
         })
 
-        describe('removeGameFromFavorites', () => {
+        describe('removeGameFromOwnedGames', () => {
 
-            let user, game
+            let user, game1, game2
 
             beforeEach(() => {
 
                 // create a new game that will be saved to the database
-                game = new Game({
+                game1 = new Game({
                     "bggId": 31260,
                     "name": "Agricola",
                     "description": "In Agricola, you're a farmer in a wooden shack with your spouse and little else. On a turn, you get to take only two actions, one for you and one for the spouse, from all the possibilities you'll find on a farm: collecting clay, wood, or stone; building fences; and so on. You might think about having kids in order to get more work accomplished, but first you need to expand your house. And what are you going to feed all the little rugrats?",
@@ -383,17 +383,113 @@ describe('logic', () => {
                     ]
                 })
 
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', email: 'fede@maill.com', favorites: [game.id] })
+                game2 = new Game({
+                    "bggId": 123,
+                    "name": "Agrasicola",
+                    "description": "In Agricola, you're a farmer in a wooden shack with your spouse and little else. On a turn, you get to take only two actions, one for you and one for the spouse, from all the possibilities you'll find on a farm: collecting clay, wood, or stone; building fences; and so on. You might think about having kids in order to get more work accomplished, but first you need to expand your house. And what are you going to feed all the little rugrats?",
+                    "image": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "thumbnail": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "minPlayers": 1,
+                    "maxPlayers": 5,
+                    "playingTime": 150,
+                    "mechanics": [
+                        "Area Enclosure",
+                        "Card Drafting",
+                        "Hand Management",
+                        "Variable Player Powers",
+                        "Worker Placement"
+                    ],
+                    "yearPublished": 2007,
+                    "bggRating": 8,
+                    "designers": [
+                        "Uwe Rosenberg"
+                    ]
+                })
 
-                return Promise.all([game.save(), user.save()])
+                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', email: 'fede@maill.com', ownedGames: [game1.id, game2.id] })
+
+                return Promise.all([game1.save(), game2.save(), user.save()])
             })
 
-            it('should successfully remove a game from user favorites', async () => {
+            it('should successfully remove a game from user ownedGames', async () => {
                 let userId = user.id
-                let gameId = game.id
-                await logic.removeGameFromFavorites(userId, gameId)
+                let gameId = game1.id
+                await logic.removeGameFromOwnedGames(userId, gameId)
                 let modifiedUser = await User.findById(userId)
-                expect(modifiedUser.favorites).to.be.an('array').that.does.not.include(game.id)
+                expect(modifiedUser.ownedGames).to.be.an('array').that.does.not.include(game1.id)
+                expect(modifiedUser.ownedGames).to.be.an('array').that.includes(game2.id)
+            })
+        })
+
+        describe('getAllGames', () => {
+
+            let game1, game2
+
+            beforeEach(async () => {
+
+                // create 2 new games that will be saved to the database
+
+                game1 = await new Game({
+                    "bggId": 2,
+                    "name": "Agricola",
+                    "description": "In Agricola, you're a farmer in a wooden shack with your spouse and little else. On a turn, you get to take only two actions, one for you and one for the spouse, from all the possibilities you'll find on a farm: collecting clay, wood, or stone; building fences; and so on. You might think about having kids in order to get more work accomplished, but first you need to expand your house. And what are you going to feed all the little rugrats?",
+                    "image": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "thumbnail": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "minPlayers": 1,
+                    "maxPlayers": 5,
+                    "playingTime": 150,
+                    "mechanics": [
+                        "Area Enclosure",
+                        "Card Drafting",
+                        "Hand Management",
+                        "Variable Player Powers",
+                        "Worker Placement"
+                    ],
+                    "yearPublished": 2007,
+                    "bggRating": 8,
+                    "designers": [
+                        "Uwe Rosenberg"
+                    ]
+                })
+
+                await game1.save()
+
+                game2 = await new Game({
+                    "bggId": 12212134,
+                    "name": "Agricola1",
+                    "description": "In Agricola, you're a farmer in a wooden shack with your spouse and little else. On a turn, you get to take only two actions, one for you and one for the spouse, from all the possibilities you'll find on a farm: collecting clay, wood, or stone; building fences; and so on. You might think about having kids in order to get more work accomplished, but first you need to expand your house. And what are you going to feed all the little rugrats?",
+                    "image": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "thumbnail": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                    "minPlayers": 1,
+                    "maxPlayers": 5,
+                    "playingTime": 150,
+                    "mechanics": [
+                        "Area Enclosure",
+                        "Card Drafting",
+                        "Hand Management",
+                        "Variable Player Powers",
+                        "Worker Placement"
+                    ],
+                    "yearPublished": 2007,
+                    "bggRating": 8,
+                    "designers": [
+                        "Uwe Rosenberg"
+                    ]
+                })
+
+                await game2.save()
+
+                // return Promise.all([game1.save(), game2.save()])
+            })
+
+            it('should list all games in the database', async () => {
+                debugger
+                let games = await logic.getAllGames()
+                debugger
+                games.should.be.an('array')
+                games.should.have.lengthOf(2)
+                expect(games[0].bggId).to.equal(game1.bggId)
+                expect(games[1].bggId).to.equal(game2.bggId)
             })
         })
     })

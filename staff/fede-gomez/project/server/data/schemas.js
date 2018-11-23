@@ -1,6 +1,4 @@
 const { Schema, SchemaTypes: { ObjectId } } = require('mongoose')
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
 
 
 /**
@@ -10,8 +8,8 @@ const jwt = require('jsonwebtoken');
 const Game = new Schema({
     bggId: {
         type: Number,
-        required: true,
-        unique: true
+        unique: true,
+        required: true
     },
     name: {
         type: String,
@@ -96,7 +94,7 @@ const User = new Schema({
         required: true,
         unique: true
     },
-    favorites: [
+    ownedGames: [
         {
             type: ObjectId,
             ref: 'Game',

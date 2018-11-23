@@ -62,6 +62,7 @@ router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
 
 router.patch('/users/:id', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
+
         const { params: { id }, sub, body: { newName, newSurname, newPassword, password, newEmail } } = req
 
         if (id !== sub) throw Error('token sub does not match user id')
@@ -83,6 +84,64 @@ router.get('/games/:id', (req, res) => {
             .then(game => res.json({
                 data: game
             }))
+    }, res)
+})
+
+router.post('/users/:userId/games/:gameId', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+
+        const { params: { userId, gameId }, sub } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+        return logic.addGameToOwnedGames(userId, gameId)
+            .then(() =>
+
+                res.json({
+                    message: `game with id ${gameId} successfully added to collection`
+                })
+            )
+    }, res)
+})
+
+router.delete('/users/:userId/games/:gameId', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+
+        const { params: { userId, gameId }, sub } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+        return logic.removeGameFromOwnedGames(userId, gameId)
+            .then(() =>
+
+                res.json({
+                    message: `game with id ${gameId} successfully removed from collection`
+                })
+            )
+    }, res)
+})
+
+router.get('/users/:userId/games', (req, res) => {
+    routeHandler(() => {
+
+        
+        const { userId } = req.params
+
+        return logic.getUserOwnedGames(userId)
+            .then((user) =>
+                res.json({
+                    data: user.ownedGames
+                })
+            )
+    }, res)
+})
+
+router.get('/games', (req, res) => {
+    routeHandler(() => {
+        return logic.getAllGames()
+            .then((games) =>
+                res.json({
+                    data: games
+                })
+            )
     }, res)
 })
 

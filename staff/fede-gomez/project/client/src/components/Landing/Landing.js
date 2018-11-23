@@ -3,91 +3,31 @@ import './Landing.css'
 import Card from '../Card/Card'
 import logic from '../../logic'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
+import GameInfo from '../GameInfo/GameInfo';
 
 class Landing extends Component {
 
     state = {
-        games: [
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            },
-            {
-                name: 'Agricola',
-                yearPublished: 2018,
-                thumbnail: 'https://www.ludonauta.es/files/ludico/juegos-mesas/juego-mesa-agricola-edicion-revisada-2016-2125212158.jpg'
-            }
-        ]
+        games: []
     }
 
-    // componentWillMount() {
-    //     logic.hotness()
-    //         .then(games => this.setState({ games }))
-    // }
+    async componentWillMount() {
+        
+        let res = await logic.getAllGames()
+        
+        this.setState((prevState, props) => {
+            return ({
+                games: [...res.data]
+            })
+        })
+    }
 
     changeHandler = (event) => {
         console.log(event.target.value)
+    }
+
+    gameClickHandler = (id) => {
+        
     }
 
     goBackHandler = () => this.props.history.push('/')
@@ -130,12 +70,10 @@ class Landing extends Component {
                     </div>
                 </header>
                 <section className='main'>
-                    <h1 className='main__title'>
-                        Hotness
-                </h1>
+
                     <div className='main__cards'>
                         {
-                            this.state.games.map(game => <Card thumbnail={game.thumbnail} name={game.name} year={game.yearPublished} />)
+                            this.state.games.map(game => <Card onGameClick={this.gameClickHandler} key={game._id} id={game._id} thumbnail={game.thumbnail} name={game.name} year={game.yearPublished} />)
                         }
                     </div>
                 </section>
