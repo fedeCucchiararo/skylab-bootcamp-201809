@@ -3,7 +3,7 @@ import './Home.css'
 import Card from '../Card/Card'
 import logic from '../../logic'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
-import GameInfo from '../GameInfo/GameInfo';
+import GameInfo from '../GameInfo/GameInfoModal';
 
 
 class Home extends Component {

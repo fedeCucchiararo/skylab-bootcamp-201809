@@ -54,3 +54,24 @@
 .back__text {
 	font-size: 10px;
 }
+
+.moreInfo {
+    background-color: #ddd;
+    padding: 3px 10px;
+    margin: 0 5px 10px;
+    border-radius: 10px;
+    color: #000;
+    font-weight: 400;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+    display: inline-block;
+    transition: all ease 0.3s;
+	font-size: 13px;
+	margin: auto;
+  }
+
+  .moreInfo:hover {
+    color: #fff;
+    background-color: #30C820;
+    box-shadow: 0 0 0px 1px #30C820;
+    cursor: pointer;
+  }

@@ -12,10 +12,10 @@ const Card = (props) => {
                     <img className="front" src={props.thumbnail} alt="Card image" />
                 </div>
                 <div className="back">
-                    <h5 className="back__title">{props.name}</h5>
-                    <p className="back__text">{props.year}</p>
+                    <h5 className="back__title">{props.game.name}</h5>
+                    <p className="back__text">{props.game.yearPublished}</p>
                     <p className="back__text">{props.id}</p>
-                    <button onClick={() => props.onGameClick(props.id)}>
+                    <button className='button moreInfo' onClick={() => props.onMoreInfoClick(props.game)}>
                         More Info
                     </button>
                 </div>
