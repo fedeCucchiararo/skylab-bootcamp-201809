@@ -20,18 +20,25 @@
     transform: translate(-50%,-50%);
     border-radius: 15px;
     padding: 20px;
+    height: 90vh;
+    overflow: scroll;
   }
 
-  .gameInfoModal-title {
+  .gameInfoModal-main__description {
+    text-align: justify;
+  }
+
+  .gameInfoModal-main__title {
     font-weight: 400;
   }
 
   .gameInfoModal-subtitle {
     font-weight: 400;
   }
-  
-  .gameInfoModal-main > img {
-    height: 60vh;
+
+  .gameInfoModal-main__image {
+    max-width:80%;
+    max-height:80%;
     width: auto;
     float: left;
     margin: 10px 20px 11px 10px;

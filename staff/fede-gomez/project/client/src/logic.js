@@ -111,8 +111,8 @@ const logic = {
             })
     },
 
-    addGameToOwnedGames(userId, gameId) {
-        return fetch(`${this.url}/users/${userId}/games/${gameId}`, {
+    addGameToOwnedGames(gameId) {
+        return fetch(`${this.url}/users/${this._userId}/games/${gameId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',

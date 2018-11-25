@@ -46,6 +46,14 @@ class Landing extends Component {
         })
     }
 
+    mechanicsClickHandler = (mechanic) => {
+        console.log(mechanic)
+    }
+
+    addHandler = (gameId) => {
+        logic.addGameToOwnedGames(gameId)
+    }
+
 
     goBackHandler = () => this.props.history.push('/')
 
@@ -57,7 +65,7 @@ class Landing extends Component {
     render() {
         return (
             <div>
-                <GameInfoModal game={this.state.game} onClick={this.closeModalHandler} show={this.state.showGameInfo} />
+                <GameInfoModal onMechanicsClick={this.mechanicsClickHandler} game={this.state.game} onClose={this.closeModalHandler} onAdd={this.addHandler} show={this.state.showGameInfo} />
                 <div className='landing' >
                     <header className='header-container'>
                         <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -89,15 +97,20 @@ class Landing extends Component {
                             <SearchPage />
                         </div>
                     </header>
-                    <section className='main'>
 
+                    {/** If logged in, then show "my Games" */}
+                    {logic.loggedIn ? <h1> My Games</h1> : null}
+
+
+                    {/** Show all games */}
+                    <section className='main'>
+                        <h1> All Games </h1>
                         <div className='main__cards'>
                             {
                                 this.state.games.map(game => <Card onMoreInfoClick={this.moreInfoHandler} key={game._id} id={game._id} thumbnail={game.thumbnail} name={game.name} year={game.yearPublished} game={game} />)
                             }
                         </div>
                     </section>
-
                     <footer className='footer'>
 
                     </footer>

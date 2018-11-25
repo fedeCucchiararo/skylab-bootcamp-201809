@@ -12,15 +12,17 @@ const GameInfoModal = (props) => {
         return (
             <div className='gameInfoModal-container'>
                 <section className="gameInfoModal-main">
-                    <img src={props.game.image}></img>
-                    <h1 className='gameInfoModal-title'>{props.game.name}</h1>
-                    <p className='gameInfoModal-description'>{props.game.description}</p>
+                    <img className="gameInfoModal-main__image" src={props.game.image}></img>
+                    <div>
+                        <h1 className='gameInfoModal-main__title'>{props.game.name}</h1>
+                        <p className='gameInfoModal-main__description'>{props.game.description}</p>
+                    </div>
                     <div>
                         <p className='gameInfoModal-subtitle'>Mechanics:</p>
-                        {props.game.mechanics.map(mechanic => <div className='gameInfoModal-mechanics'>{mechanic}</div>)}
+                        {props.game.mechanics.map(mechanic => <div onClick={()=> {props.onMechanicsClick(mechanic)}} className='gameInfoModal-mechanics'>{mechanic}</div>)}
                     </div>
-                    <button className="gameInfoModal-close" onClick={props.onClick}>X</button>
-                    <button className="gameInfoModal-add" onClick={props.onClick}>Add to Collection</button>
+                    <button className="gameInfoModal-close" onClick={props.onClose}>X</button>
+                    <button className="gameInfoModal-add" onClick={()=> props.onAdd(props.game._id)}>Add to Collection</button>
                 </section>
             </div>
         )

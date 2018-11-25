@@ -63,7 +63,7 @@ return <div>
     return (
       <div className='App'>
         <Route exact path="/" render={() => <Landing onRegisterClick={this.registerClickHandler} onLoginClick={this.loginClickHandler} />} />
-        <Route exact path="/home" render={() => logic.loggedIn ? <Home /> : <Redirect to="/" />} />
+        {/* <Route exact path="/home" render={() => logic.loggedIn ? <Home /> : <Redirect to="/" />} /> */}
         <Route exact path="/register" render={() => !logic.loggedIn ? <Register onRegister={this.registerHandler} onGoBack={this.goBackHandler} /> : <Redirect to="/home" />} />
         <Route exact path="/login" render={() => !logic.loggedIn ? <Login onLogin={this.loginHandler} onGoBack={this.goBackHandler} /> : <Redirect to="/home" />} />
       </div>
