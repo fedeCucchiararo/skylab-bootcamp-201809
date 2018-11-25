@@ -3,8 +3,7 @@ import './Home.css'
 import Card from '../Card/Card'
 import logic from '../../logic'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
-import GameInfo from '../GameInfo/GameInfoModal';
-
+import GameInfoModal from '../GameInfoModal/GameInfoModal'
 
 class Home extends Component {
 
@@ -77,7 +76,7 @@ class Home extends Component {
 
                     <div className='main__cards'>
                         {
-                            this.state.ownedGames.map(game => <Card onGameClick={this.gameClickHandler} key={game._id} id={game._id} thumbnail={game.thumbnail} name={game.name} year={game.yearPublished} />)
+                            this.state.ownedGames.map(game => <Card onGameClick={this.gameClickHandler} key={game._id} id={game._id} game={game} />)
                         }
                     </div>
                 </section>

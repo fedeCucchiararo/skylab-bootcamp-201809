@@ -51,17 +51,17 @@ class Register extends Component {
 
     render() {
         return (
-                <div>
-                    <h1>Register</h1>
-                    <form onSubmit={this.handleSubmit}>
-                        <input type="text" placeholder="Name" onChange={this.handleNameChange} />
-                        <input type="text" placeholder="Surname" onChange={this.handleSurnameChange} />
-                        <input type="text" placeholder="Username" onChange={this.handleUsernameChange} />
-                        <input type="password" placeholder="Password" onChange={this.handlePasswordChange} />
-                        <input type="text" placeholder="eMail" onChange={this.handleEmailChange} />
-                        <button type="submit">Register</button> <a href="#" onClick={this.props.onGoBack}>back</a>
-                    </form>
-                </div>
+            <div>
+                <h1>Register</h1>
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" placeholder="Name" onChange={this.handleNameChange} />
+                    <input type="text" placeholder="Surname" onChange={this.handleSurnameChange} />
+                    <input type="text" placeholder="Username" onChange={this.handleUsernameChange} />
+                    <input type="password" placeholder="Password" onChange={this.handlePasswordChange} />
+                    <input type="text" placeholder="eMail" onChange={this.handleEmailChange} />
+                    <button type="submit">Register</button> <a href="#" onClick={this.props.onGoBack}>back</a>
+                </form>
+            </div>
         )
     }
 }

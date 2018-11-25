@@ -10,9 +10,9 @@ const GameInfoModal = (props) => {
 
     if (props.show) {
         return (
-            <div className='gameInfoModal'>
-
+            <div className='gameInfoModal-container'>
                 <section className="gameInfoModal-main">
+                    <img src={props.game.image}></img>
                     <h1 className='gameInfoModal-title'>{props.game.name}</h1>
                     <p className='gameInfoModal-description'>{props.game.description}</p>
                     <div>
@@ -20,6 +20,7 @@ const GameInfoModal = (props) => {
                         {props.game.mechanics.map(mechanic => <div className='gameInfoModal-mechanics'>{mechanic}</div>)}
                     </div>
                     <button className="gameInfoModal-close" onClick={props.onClick}>X</button>
+                    <button className="gameInfoModal-add" onClick={props.onClick}>Add to Collection</button>
                 </section>
             </div>
         )

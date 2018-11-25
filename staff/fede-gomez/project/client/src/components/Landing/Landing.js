@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './Landing.css'
 import Card from '../Card/Card'
 import logic from '../../logic'
+import SearchPage from '../Search/Search'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal';
 
@@ -79,12 +80,13 @@ class Landing extends Component {
                             </div>
                         </nav>
                         <div className='header__main'>
-                            <form className='header__form'>
+                            {/* <form className='header__form'>
                                 <input type='text' onChange={this.changeHandler} placeholder='Search a game'>
                                 </input>
                                 <input type='submit'>
                                 </input>
-                            </form>
+                            </form> */}
+                            <SearchPage />
                         </div>
                     </header>
                     <section className='main'>

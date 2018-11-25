@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Landing from './components/Landing/Landing'
 import Home from './components/Home/Home'
 import Register from './components/Register/Register'
+import RegisterModal from './components/RegisterModal/RegisterModal'
 import Login from './components/Login/Login'
 import logic from './logic'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom";

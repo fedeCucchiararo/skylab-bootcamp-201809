@@ -41,18 +41,21 @@
 /* back, initially hidden pane */
 .back {
     overflow: scroll;
-    background-color: black;
+    /* background-color: rgb(111, 117, 199); */
     color: white;
     padding: 20px;
-	transform: rotateY(180deg);
+    transform: rotateY(180deg);
+    background-image: linear-gradient(to top, #3b4346 0%, #454950 100%);
 }
 
 .back__title {
-	font-size: 15px;
+    font-size: 15px;
+    margin: auto;
 }
 
 .back__text {
-	font-size: 10px;
+    font-size: 10px;
+    margin: auto;
 }
 
 .moreInfo {
@@ -65,8 +68,7 @@
     box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
     display: inline-block;
     transition: all ease 0.3s;
-	font-size: 13px;
-	margin: auto;
+    font-size: 13px;
   }
 
   .moreInfo:hover {

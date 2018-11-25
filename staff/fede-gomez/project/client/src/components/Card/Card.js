@@ -9,7 +9,7 @@ const Card = (props) => {
         <div className='card-container'>
             <div className="card bg-dark text-white">
                 <div >
-                    <img className="front" src={props.thumbnail} alt="Card image" />
+                    <img className="front" src={props.game.thumbnail} alt="Card image" />
                 </div>
                 <div className="back">
                     <h5 className="back__title">{props.game.name}</h5>
