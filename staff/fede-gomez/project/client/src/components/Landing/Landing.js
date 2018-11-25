@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './Landing.css'
 import Card from '../Card/Card'
+import GameList from '../GameList/GameList'
 import logic from '../../logic'
 import SearchPage from '../Search/Search'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
@@ -9,20 +10,32 @@ import GameInfoModal from '../GameInfoModal/GameInfoModal';
 class Landing extends Component {
 
     state = {
-        games: [],
+        error: null,
+        allGames: [],
+        ownedGames: [],
         showGameInfo: false,
         game: {}
     }
 
     async componentWillMount() {
 
-        let res = await logic.getAllGames()
+        let allGames = await logic.getAllGames()
 
         this.setState((prevState, props) => {
             return ({
-                games: [...res.data]
+                allGames: [...allGames.data]
             })
         })
+
+        if (logic.loggedIn) {
+            let ownedGames = await logic.getUserOwnedGames(logic._userId)
+
+            this.setState((prevState, props) => {
+                return ({
+                    ownedGames: [...ownedGames.data]
+                })
+            })
+        }
     }
 
     changeHandler = (event) => {
@@ -30,12 +43,12 @@ class Landing extends Component {
     }
 
     moreInfoHandler = (game) => {
-            this.setState((prevState, props) => {
-                return ({
-                    game: {...game},
-                    showGameInfo: !this.state.showGameInfo
-                })
+        this.setState((prevState, props) => {
+            return ({
+                game: { ...game },
+                showGameInfo: !this.state.showGameInfo
             })
+        })
     }
 
     closeModalHandler = () => {
@@ -50,9 +63,59 @@ class Landing extends Component {
         console.log(mechanic)
     }
 
-    addHandler = (gameId) => {
-        logic.addGameToOwnedGames(gameId)
+    addOrRemoveHandler = (fromOwned, gameId) => {
+
+        if (fromOwned) {
+
+            logic.removeGameFromOwnedGames(gameId)
+                .then(async () => {
+                    let ownedGames = await logic.getUserOwnedGames(logic._userId)
+                    this.setState((prevState, props) => {
+                        return ({
+                            ownedGames: [...ownedGames.data]
+                        })
+                    })
+                })
+                .catch(err => {
+                    this.setState((prevState, props) => {
+                        return ({
+                            error: err.message
+                        })
+                    })
+                })
+
+        } else {
+            logic.addGameToOwnedGames(gameId)
+                .then(async () => {
+                    let ownedGames = await logic.getUserOwnedGames(logic._userId)
+                    this.setState((prevState, props) => {
+                        return ({
+                            ownedGames: [...ownedGames.data]
+                        })
+                    })
+                })
+                .catch(err => {
+                    this.setState((prevState, props) => {
+                        return ({
+                            error: err.message
+                        })
+                    })
+                })
+
+
+        }
     }
+
+
+    // addHandler = async (gameId) => {
+    //     await logic.addGameToOwnedGames(gameId)
+    //     let ownedGames = await logic.getUserOwnedGames(logic._userId)
+    //     this.setState((prevState, props) => {
+    //         return ({
+    //             ownedGames: [...ownedGames.data]
+    //         })
+    //     })
+    // }
 
 
     goBackHandler = () => this.props.history.push('/')
@@ -65,6 +128,7 @@ class Landing extends Component {
     render() {
         return (
             <div>
+                {this.state.error ? <div><h1>{this.state.error}</h1><button className='button button-error' onClick={()=>{this.setState({error: null})}}>Close</button></div> : null}
                 <GameInfoModal onMechanicsClick={this.mechanicsClickHandler} game={this.state.game} onClose={this.closeModalHandler} onAdd={this.addHandler} show={this.state.showGameInfo} />
                 <div className='landing' >
                     <header className='header-container'>
@@ -99,18 +163,11 @@ class Landing extends Component {
                     </header>
 
                     {/** If logged in, then show "my Games" */}
-                    {logic.loggedIn ? <h1> My Games</h1> : null}
+                    {logic.loggedIn ? <GameList onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} /> : null}
 
 
                     {/** Show all games */}
-                    <section className='main'>
-                        <h1> All Games </h1>
-                        <div className='main__cards'>
-                            {
-                                this.state.games.map(game => <Card onMoreInfoClick={this.moreInfoHandler} key={game._id} id={game._id} thumbnail={game.thumbnail} name={game.name} year={game.yearPublished} game={game} />)
-                            }
-                        </div>
-                    </section>
+                    <GameList onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'All Games'} games={this.state.allGames} />
                     <footer className='footer'>
 
                     </footer>

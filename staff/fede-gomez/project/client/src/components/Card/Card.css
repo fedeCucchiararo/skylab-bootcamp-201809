@@ -58,7 +58,7 @@
     margin: auto;
 }
 
-.moreInfo {
+.card-button {
     background-color: #ddd;
     padding: 3px 10px;
     margin: 0 5px 10px;
@@ -71,7 +71,7 @@
     font-size: 13px;
   }
 
-  .moreInfo:hover {
+  .card-button:hover {
     color: #fff;
     background-color: #30C820;
     box-shadow: 0 0 0px 1px #30C820;

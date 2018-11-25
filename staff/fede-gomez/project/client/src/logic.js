@@ -126,8 +126,8 @@ const logic = {
             })
     },
 
-    removeGameFromOwnedGames(userId, gameId) {
-        return fetch(`${this.url}/users/${userId}/games/${gameId}`, {
+    removeGameFromOwnedGames(gameId) {
+        return fetch(`${this.url}/users/${this._userId}/games/${gameId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -142,7 +142,6 @@ const logic = {
     },
 
     getUserOwnedGames(userId) {
-        debugger
         return fetch(`${this.url}/users/${userId}/games`, {
             method: 'GET',
             headers: {

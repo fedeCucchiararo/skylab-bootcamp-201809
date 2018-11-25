@@ -6,8 +6,6 @@ import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "reac
 
 const GameInfoModal = (props) => {
 
-    // const showHideClassName = props.show ? "modal display-block" : "modal display-none"
-
     if (props.show) {
         return (
             <div className='gameInfoModal-container'>
@@ -19,19 +17,16 @@ const GameInfoModal = (props) => {
                     </div>
                     <div>
                         <p className='gameInfoModal-subtitle'>Mechanics:</p>
-                        {props.game.mechanics.map(mechanic => <div onClick={()=> {props.onMechanicsClick(mechanic)}} className='gameInfoModal-mechanics'>{mechanic}</div>)}
+                        {props.game.mechanics.map(mechanic => <div onClick={() => { props.onMechanicsClick(mechanic) }} className='gameInfoModal-mechanics'>{mechanic}</div>)}
                     </div>
                     <button className="gameInfoModal-close" onClick={props.onClose}>X</button>
-                    <button className="gameInfoModal-add" onClick={()=> props.onAdd(props.game._id)}>Add to Collection</button>
+                    <button className="gameInfoModal-add" onClick={() => props.onAdd(props.game._id)}>Add to Collection</button>
                 </section>
             </div>
         )
     } else {
         return null
     }
-
-
-
 }
 
 export default withRouter(GameInfoModal)
