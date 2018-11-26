@@ -8,6 +8,7 @@
     z-index: 3;
     -webkit-transition: display 1s linear;
     transition: display 1s linear;
+    
   }
   
   .gameInfoModal-main {

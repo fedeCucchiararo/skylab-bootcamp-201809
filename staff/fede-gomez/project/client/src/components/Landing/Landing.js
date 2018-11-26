@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Landing.css'
-import Card from '../Card/Card'
+import Snackbar from '../Snackbar/Snackbar'
 import GameList from '../GameList/GameList'
 import logic from '../../logic'
 import SearchPage from '../Search/Search'
@@ -106,7 +106,15 @@ class Landing extends Component {
         }
     }
 
+    closeErrorSnackbarHandler = () => {
+        this.setState((prevState, props) => {
+            return ({
+                error: ''
+            })
+        })
+    }
 
+    
     // addHandler = async (gameId) => {
     //     await logic.addGameToOwnedGames(gameId)
     //     let ownedGames = await logic.getUserOwnedGames(logic._userId)
@@ -128,7 +136,7 @@ class Landing extends Component {
     render() {
         return (
             <div>
-                {this.state.error ? <div><h1>{this.state.error}</h1><button className='button button-error' onClick={()=>{this.setState({error: null})}}>Close</button></div> : null}
+                {this.state.error ? <Snackbar className={'snackbar'} message={this.state.error} onCloseSnackbar={this.closeErrorSnackbarHandler}/> : null}
                 <GameInfoModal onMechanicsClick={this.mechanicsClickHandler} game={this.state.game} onClose={this.closeModalHandler} onAdd={this.addHandler} show={this.state.showGameInfo} />
                 <div className='landing' >
                     <header className='header-container'>

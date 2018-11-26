@@ -21,7 +21,7 @@
     border: none;
 	transition: 0.5s;
 	transform-style: preserve-3d;
-	position: relative;
+    position: relative;
 }
 
 /* hide back of pane during swap */
@@ -35,7 +35,7 @@
 
 /* front pane, placed above back */
 .front {
-	z-index: 2;
+    z-index: 2;
 }
 
 /* back, initially hidden pane */
