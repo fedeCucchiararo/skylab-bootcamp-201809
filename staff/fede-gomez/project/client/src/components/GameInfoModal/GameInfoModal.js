@@ -10,7 +10,9 @@ const GameInfoModal = (props) => {
         return (
             <div className='gameInfoModal-container'>
                 <section className="gameInfoModal-main">
-                    <img className="gameInfoModal-main__image" src={props.game.image}></img>
+                    <div className="gameInfoModal-main__image-container">
+                        <img className="gameInfoModal-main__image" src={props.game.image}></img>
+                    </div>
                     <div>
                         <h1 className='gameInfoModal-main__title'>{props.game.name}</h1>
                         <p className='gameInfoModal-main__description'>{props.game.description}</p>
@@ -20,7 +22,6 @@ const GameInfoModal = (props) => {
                         {props.game.mechanics.map(mechanic => <div onClick={() => { props.onMechanicsClick(mechanic) }} className='gameInfoModal-mechanics'>{mechanic}</div>)}
                     </div>
                     <button className="gameInfoModal-close" onClick={props.onClose}>X</button>
-                    <button className="gameInfoModal-add" onClick={() => props.onAdd(props.game._id)}>Add to Collection</button>
                 </section>
             </div>
         )

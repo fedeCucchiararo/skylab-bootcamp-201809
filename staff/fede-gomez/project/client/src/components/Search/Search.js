@@ -1,14 +1,21 @@
-import React from "react";
-import { Input, Col } from "mdbreact";
+import React, { Component } from "react";
 
-class SearchPage extends React.Component {
+class Search extends Component {
+
+  state = {
+    search: ''
+  }
   render() {
     return (
-      <Col md="6">
-        <Input hint="Search" type="text" containerClass="mt-0" />
-      </Col>
-    );
+      <div>
+        <ul>
+
+        </ul>
+        <input type='text' value={this.state.search} />
+      </div >
+    )
+
   }
 }
 
-export default SearchPage;
+export default Search;

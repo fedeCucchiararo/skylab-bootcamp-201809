@@ -17,6 +17,7 @@ router.post('/users', jsonBodyParser, (req, res) => {
         const { name, surname, username, password, email } = req.body
 
         return logic.registerUser(name, surname, username, password, email)
+            .then(() => logic.sendRegisterEmail(name, email))
             .then(() => {
                 res.status(201)
 
@@ -24,6 +25,11 @@ router.post('/users', jsonBodyParser, (req, res) => {
                     message: `${username} successfully registered`
                 })
             })
+            .catch(err =>
+                res.json({
+                    error: err.message
+                })
+            )
     }, res)
 })
 
@@ -122,7 +128,7 @@ router.delete('/users/:userId/games/:gameId', [bearerTokenParser, jwtVerifier], 
 router.get('/users/:userId/games', (req, res) => {
     routeHandler(() => {
 
-        
+
         const { userId } = req.params
 
         return logic.getUserOwnedGames(userId)

@@ -3,9 +3,10 @@ import './Landing.css'
 import Snackbar from '../Snackbar/Snackbar'
 import GameList from '../GameList/GameList'
 import logic from '../../logic'
-import SearchPage from '../Search/Search'
+import SearchList from '../SearchList/SearchList'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
-import GameInfoModal from '../GameInfoModal/GameInfoModal';
+import GameInfoModal from '../GameInfoModal/GameInfoModal'
+import { CSSTransition } from 'react-transition-group'
 
 class Landing extends Component {
 
@@ -14,7 +15,12 @@ class Landing extends Component {
         allGames: [],
         ownedGames: [],
         showGameInfo: false,
-        game: {}
+        game: {},
+        search: '',
+    }
+
+    updateSearch = (event) => {
+        this.setState({ search: event.target.value.toLowerCase() })
     }
 
     async componentWillMount() {
@@ -70,14 +76,14 @@ class Landing extends Component {
             logic.removeGameFromOwnedGames(gameId)
                 .then(async () => {
                     let ownedGames = await logic.getUserOwnedGames(logic._userId)
-                    this.setState((prevState, props) => {
+                    this.setState(() => {
                         return ({
                             ownedGames: [...ownedGames.data]
                         })
                     })
                 })
                 .catch(err => {
-                    this.setState((prevState, props) => {
+                    this.setState(() => {
                         return ({
                             error: err.message
                         })
@@ -88,14 +94,14 @@ class Landing extends Component {
             logic.addGameToOwnedGames(gameId)
                 .then(async () => {
                     let ownedGames = await logic.getUserOwnedGames(logic._userId)
-                    this.setState((prevState, props) => {
+                    this.setState(() => {
                         return ({
                             ownedGames: [...ownedGames.data]
                         })
                     })
                 })
                 .catch(err => {
-                    this.setState((prevState, props) => {
+                    this.setState(() => {
                         return ({
                             error: err.message
                         })
@@ -107,24 +113,12 @@ class Landing extends Component {
     }
 
     closeErrorSnackbarHandler = () => {
-        this.setState((prevState, props) => {
+        this.setState(() => {
             return ({
                 error: ''
             })
         })
     }
-
-    
-    // addHandler = async (gameId) => {
-    //     await logic.addGameToOwnedGames(gameId)
-    //     let ownedGames = await logic.getUserOwnedGames(logic._userId)
-    //     this.setState((prevState, props) => {
-    //         return ({
-    //             ownedGames: [...ownedGames.data]
-    //         })
-    //     })
-    // }
-
 
     goBackHandler = () => this.props.history.push('/')
 
@@ -134,9 +128,12 @@ class Landing extends Component {
 
 
     render() {
+
+        const { showGame } = this.state
+
         return (
             <div>
-                {this.state.error ? <Snackbar className={'snackbar'} message={this.state.error} onCloseSnackbar={this.closeErrorSnackbarHandler}/> : null}
+                {this.state.error ? <Snackbar className={'snackbar'} message={this.state.error} onCloseSnackbar={this.closeErrorSnackbarHandler} /> : null}
                 <GameInfoModal onMechanicsClick={this.mechanicsClickHandler} game={this.state.game} onClose={this.closeModalHandler} onAdd={this.addHandler} show={this.state.showGameInfo} />
                 <div className='landing' >
                     <header className='header-container'>
@@ -160,24 +157,34 @@ class Landing extends Component {
                             </div>
                         </nav>
                         <div className='header__main'>
-                            {/* <form className='header__form'>
-                                <input type='text' onChange={this.changeHandler} placeholder='Search a game'>
-                                </input>
-                                <input type='submit'>
-                                </input>
-                            </form> */}
-                            <SearchPage />
+
+
+                            {/********        ********/}
+                            {/******** Search ********/}
+                            {/********        ********/}
+                            <form className='header__form'>
+                                <input value={this.state.search} type='text' onChange={this.updateSearch} placeholder='Search a game' />
+                                <input type='submit' />
+                            </form>
+                            {/* <Search allGames={this.state.allGames} onChange={this.updateSearch}/> */}
                         </div>
                     </header>
 
+                    {/** If search is not empty, show filtered games, */}
+                    {this.state.search ? <SearchList searchQuery={this.state.search} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null}
+
                     {/** If logged in, then show "my Games" */}
-                    {logic.loggedIn ? <GameList onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} /> : null}
+                    {logic.loggedIn ?
+
+                        <GameList onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} />
+                        : null}
 
 
                     {/** Show all games */}
                     <GameList onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'All Games'} games={this.state.allGames} />
-                    <footer className='footer'>
 
+                    <footer className='footer'>
+                        <h1> This is the footer </h1>
                     </footer>
                 </div>
             </div>

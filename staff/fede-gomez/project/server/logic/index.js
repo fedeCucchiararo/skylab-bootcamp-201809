@@ -1,6 +1,16 @@
 const { User, Game, gameSession } = require('../data')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
 
+const nodemailer = require('nodemailer')
+const sendgridTransport = require('nodemailer-sendgrid-transport')
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth: {
+        api_key: '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'
+    }
+}))
+
+
 const logic = {
 
     /**
@@ -29,6 +39,15 @@ const logic = {
 
                 return user.save()
             })
+    },
+
+    sendRegisterEmail(name, email) {
+        return transporter.sendMail({
+            to: email,
+            from: 'project@mail.com',
+            subject: 'Sign in completed',
+            html: `<h1>Hey ${name}! you have succesfully registered!</h1>`
+        })
     },
 
     authenticateUser(username, password) {
@@ -139,8 +158,8 @@ const logic = {
         if (!user) throw new NotFoundError(`user with id ${userId} not found`)
         let game = await Game.findById(gameId)
         if (!game) throw new NotFoundError(`game with id ${gameId} not found`)
-        let _user = await User.findOne({ _id: userId ,ownedGames: { $in: [game._id] } }).lean()
-        if (_user) throw new AlreadyExistsError(`game with id ${gameId} already in ownedGames`)
+        let _user = await User.findOne({ _id: userId, ownedGames: { $in: [game._id] } }).lean()
+        if (_user) throw new AlreadyExistsError(`${game.name} is already in your collection`)
         return User.updateOne({ _id: userId }, { $push: { ownedGames: game._id } })
     },
 
