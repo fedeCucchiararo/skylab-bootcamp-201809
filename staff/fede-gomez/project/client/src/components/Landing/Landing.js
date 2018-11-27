@@ -4,6 +4,7 @@ import Snackbar from '../Snackbar/Snackbar'
 import GameList from '../GameList/GameList'
 import logic from '../../logic'
 import SearchList from '../SearchList/SearchList'
+import SearchPreview from '../SearchPreview/SearchPreview'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
 import { CSSTransition } from 'react-transition-group'
@@ -166,6 +167,8 @@ class Landing extends Component {
                                 <input value={this.state.search} type='text' onChange={this.updateSearch} placeholder='Search a game' />
                                 <input type='submit' />
                             </form>
+                            {/* {this.state.search ? <SearchPreview searchQuery={this.state.search} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null} */}
+
                             {/* <Search allGames={this.state.allGames} onChange={this.updateSearch}/> */}
                         </div>
                     </header>

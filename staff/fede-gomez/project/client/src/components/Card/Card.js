@@ -27,7 +27,7 @@ const Card = (props) => {
                             More Info
                     </button>
                         <button className='button card-button card-button-addRemove' onClick={fromOwned ? () => props.onAddOrRemoveClick(fromOwned, props.game._id) : () => props.onAddOrRemoveClick(fromOwned, props.game._id)}>
-                            {props.buttonText}
+                            <i className="fas fa-plus-circle"></i>{props.buttonText}
                         </button>
                     </div>
                 </div>
