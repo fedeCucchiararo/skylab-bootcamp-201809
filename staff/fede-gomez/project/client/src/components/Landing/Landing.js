@@ -4,7 +4,7 @@ import Snackbar from '../Snackbar/Snackbar'
 import GameList from '../GameList/GameList'
 import logic from '../../logic'
 import SearchList from '../SearchList/SearchList'
-import SearchPreview from '../SearchPreview/SearchPreview'
+import PlayList from '../PlayList/PlayList'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
 import { CSSTransition } from 'react-transition-group'
@@ -18,6 +18,26 @@ class Landing extends Component {
         showGameInfo: false,
         game: {},
         search: '',
+        plays: [{
+            "players": [
+                "5bfeae6e09da63359f39aaae",
+                "5bfeae7609da63359f39aab0"
+            ],
+            "_id": "5bfeb6f0aaa16a3679f68443",
+            "game": "5bf6cdd86f870b28d6b5f5d7",
+            "notes": "These are the notes",
+            "__v": 0
+        },
+        {
+            "players": [
+                "5bfeae6e09da63359f39aaae",
+                "5bfeae7609da63359f39aab0"
+            ],
+            "_id": "5bfeb6fdaaa16a3679f68444",
+            "game": "5bf6cdd86f870b28d6b5f5d7",
+            "notes": "These are the notes",
+            "__v": 0
+        }]
     }
 
     updateSearch = (event) => {
@@ -92,7 +112,7 @@ class Landing extends Component {
                 })
 
         } else {
-            
+
             logic.addGameToOwnedGames(gameId)
                 .then(async () => {
                     let ownedGames = await logic.getUserOwnedGames(logic._userId)
@@ -136,6 +156,7 @@ class Landing extends Component {
 
         return (
             <div>
+
                 {this.state.error ? <Snackbar className={'snackbar'} message={this.state.error} onCloseSnackbar={this.closeErrorSnackbarHandler} /> : null}
                 <GameInfoModal onMechanicsClick={this.mechanicsClickHandler} game={this.state.game} onClose={this.closeModalHandler} onAdd={this.addHandler} show={this.state.showGameInfo} />
                 <div className='landing' >
@@ -150,12 +171,22 @@ class Landing extends Component {
                                     <li className="nav-item">
                                         <p className="nav-link" >BGG</p>
                                     </li>
-                                    <li className="nav-item">
-                                        <p className="nav-link" onClick={this.props.onLoginClick}>Sing In</p>
-                                    </li>
-                                    <li className="nav-item">
-                                        <p className="nav-link" onClick={this.props.onRegisterClick}>Sign Up</p>
-                                    </li>
+                                    {logic.loggedIn ?
+                                        <li className="nav-item">
+                                            <p className="nav-link" onClick={this.props.onLogoutClick}>Sign out</p>
+                                        </li> :
+                                        <li className="nav-item">
+                                            <p className="nav-link" onClick={this.props.onLoginClick}>Sing In</p>
+                                        </li>
+                                    }
+
+                                    {logic.loggedIn ?
+                                        null :
+                                        <li className="nav-item">
+                                            <p className="nav-link" onClick={this.props.onRegisterClick}>Sign Up</p>
+                                        </li>
+                                    }
+
                                 </ul>
                             </div>
                         </nav>
@@ -175,18 +206,20 @@ class Landing extends Component {
                         </div>
                     </header>
 
+                    <PlayList plays={this.state.plays}/>
+
                     {/** If search is not empty, show filtered games, */}
-                    {this.state.search ? <SearchList searchQuery={searchQuery} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null}
+                    {this.state.search ? <SearchList loggedIn={logic.loggedIn} searchQuery={searchQuery} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null}
 
                     {/** If logged in, then show "my Games" */}
                     {logic.loggedIn ?
 
-                        <GameList onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} />
+                        <GameList loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} />
                         : null}
 
 
                     {/** Show all games */}
-                    <GameList onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'All Games'} games={this.state.allGames} />
+                    <GameList loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'All Games'} games={this.state.allGames} />
 
                     <footer className='footer'>
                         <h1> This is the footer </h1>

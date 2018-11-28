@@ -15,7 +15,7 @@ const GameList = (props) => {
             <h1>{props.title}</h1>
             <div className='main__cards'>
                 {
-                    filteredGames.map(game => <Card onAddOrRemoveClick={props.onAddOrRemoveClick} fromOwned={fromOwned} buttonText={fromOwned ? 'Remove' : 'Add'} onMoreInfoClick={props.onMoreInfoClick} key={game._id} id={game._id} game={game} />)
+                    filteredGames.map(game => <Card loggedIn={props.loggedIn} onAddOrRemoveClick={props.onAddOrRemoveClick} fromOwned={fromOwned} buttonText={fromOwned ? 'Remove' : 'Add'} onMoreInfoClick={props.onMoreInfoClick} key={game._id} id={game._id} game={game} />)
                 }
             </div>
         </section>

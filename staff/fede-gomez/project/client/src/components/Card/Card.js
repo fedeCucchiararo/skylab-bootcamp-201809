@@ -22,14 +22,16 @@ const Card = (props) => {
                     </div>
                     <div className="back">
                         <i className="fas fa-info"></i>
-                       <h5 className="back__title">{props.game.name}</h5>
+                        <h5 className="back__title">{props.game.name}</h5>
                         <p className="back__text">({props.game.yearPublished})</p>
                         <button className='button card-button card-button-moreInfo' onClick={() => props.onMoreInfoClick(props.game)}>
                             <i className="fas fa-plus-circle"></i>More Info
                         </button>
-                        <button className='button card-button card-button-addRemove' onClick={() => props.onAddOrRemoveClick(fromOwned, props.game.id)}>
-                            <i className="fas fa-plus-circle"></i>{props.buttonText}
-                        </button>
+                        {props.loggedIn ?
+                            <button className='button card-button card-button-addRemove' onClick={() => props.onAddOrRemoveClick(fromOwned, props.game.id)}>
+                                <i className="fas fa-plus-circle"></i>{props.buttonText}
+                            </button>
+                            : null}
                     </div>
                 </div>
             </div>

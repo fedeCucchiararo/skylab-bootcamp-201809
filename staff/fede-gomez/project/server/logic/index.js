@@ -210,11 +210,11 @@ const logic = {
         if (!user) throw new NotFoundError(`user with id ${userId} not found`)
 
         let _user = await User.findById(userId).populate('ownedGames').lean().exec()
-        
+
         // make sure we change the _id to just normal string ids for each game
-        _user.ownedGames.forEach((game)=>{
+        _user.ownedGames.forEach((game) => {
             game.id = game._id.toString()
-            delete game['_id'] 
+            delete game['_id']
         })
         return _user
     },
@@ -307,13 +307,13 @@ const logic = {
         if (!playId.trim().length) throw new ValueError('playId is empty or blank')
 
 
-        
-        let play = await Play.findById(playId, {'__v': 0}).lean()
+
+        let play = await Play.findById(playId, { '__v': 0 }).lean()
         play.id = play._id.toString()
-        play.game= play.game.toString()
+        play.game = play.game.toString()
 
         play.players = play.players.map(player => player.toString())
-        
+
         await delete play._id
 
         await Play.deleteOne({ _id: playId })
@@ -379,12 +379,28 @@ const logic = {
             In the following lines we pass an object as second argument to the User.findById function
             in order to eliminate some properties that we don't want to show
         */
-        return User.findById(userId).populate('plays').exec()
+
+       User.find(query)
+       .populate({ 
+          path: 'pages',
+          populate: {
+            path: 'components',
+            model: 'Component'
+          } 
+       })
+       .exec(function(err, docs) {});
+
+        return User.findById(userId).populate('plays').lean().exec()
             .then(user => {
                 if (user.plays.length === 0) throw new NotFoundError(`no plays for user with id ${userId}`)
-                 debugger
+
                 // Make sure that the ownedGames array contains strings and not bsontype values
-                return user
+                user.plays.forEach((play) => {
+                    debugger
+                    play.id = play._id.toString()
+                    delete play['_id']
+                })
+                return user.plays
             })
     }
 
