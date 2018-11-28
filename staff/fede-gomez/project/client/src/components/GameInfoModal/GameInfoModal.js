@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Card from '../Card/Card'
 import logic from '../../logic'
 import './GameInfoModal.css'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"

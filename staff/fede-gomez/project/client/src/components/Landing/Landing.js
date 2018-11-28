@@ -92,6 +92,7 @@ class Landing extends Component {
                 })
 
         } else {
+            
             logic.addGameToOwnedGames(gameId)
                 .then(async () => {
                     let ownedGames = await logic.getUserOwnedGames(logic._userId)

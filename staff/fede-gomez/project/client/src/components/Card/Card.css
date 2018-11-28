@@ -35,7 +35,7 @@
 
 /* front pane, placed above back */
 .front {
-    z-index: 2;
+    z-index: 3;
 }
 
 /* back, initially hidden pane */
@@ -73,6 +73,7 @@
     display: inline-block;
     transition: all ease 0.3s;
     font-size: 13px;
+    z-index: 2;
   }
 
   .card-button:hover {
@@ -85,7 +86,7 @@
   .card-button-moreInfo {
     text-align: center;
     position: absolute;
-    bottom: 2px;
+    top: 3px;
     left: 21%;
   }
 

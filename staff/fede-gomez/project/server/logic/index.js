@@ -209,7 +209,14 @@ const logic = {
         let user = await User.findById(userId)
         if (!user) throw new NotFoundError(`user with id ${userId} not found`)
 
-        return User.findById(userId).populate('ownedGames').exec()
+        let _user = await User.findById(userId).populate('ownedGames').lean().exec()
+        
+        // make sure we change the _id to just normal string ids for each game
+        _user.ownedGames.forEach((game)=>{
+            game.id = game._id.toString()
+            delete game['_id'] 
+        })
+        return _user
     },
 
     async getAllGames() {

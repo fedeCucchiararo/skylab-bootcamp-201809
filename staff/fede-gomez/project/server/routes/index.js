@@ -130,7 +130,6 @@ router.get('/users/:userId/games', (req, res) => {
 
 
         const { userId } = req.params
-
         return logic.getUserOwnedGames(userId)
             .then((user) =>
                 res.json({
