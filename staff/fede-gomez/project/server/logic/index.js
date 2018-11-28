@@ -1,4 +1,4 @@
-const { User, Game, Session } = require('../data')
+const { User, Game, Play } = require('../data')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
 
 const nodemailer = require('nodemailer')
@@ -14,10 +14,21 @@ const transporter = nodemailer.createTransport(sendgridTransport({
 const logic = {
 
     /**
-     *  User Logic
-     * @param {*} id 
+     * 
+     *  ----------------------------------------------------------------------------------------
+     *                                   User-related logic
+     *  ----------------------------------------------------------------------------------------
+     * 
      */
 
+    /**
+     * 
+     * @param {*} name 
+     * @param {*} surname 
+     * @param {*} username 
+     * @param {*} password 
+     * @param {*} email 
+     */
     registerUser(name, surname, username, password, email) {
         if (typeof name !== 'string') throw TypeError(`${name} is not a string`)
         if (typeof surname !== 'string') throw TypeError(`${surname} is not a string`)
@@ -64,7 +75,7 @@ const logic = {
             })
     },
 
-    retrieveUser(id) {
+    getUser(id) {
         if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
 
@@ -76,7 +87,7 @@ const logic = {
             .lean()
             .then(user => {
                 if (!user) throw new NotFoundError(`user with id ${id} not found`)
-                // We have eliminated _id, therefore we add a new id (the one passed to the retrieveUser function)
+                // We have eliminated _id, therefore we add a new id (the one passed to the getUser function)
                 user.id = id
                 // Make sure that the ownedGames array contains strings and not bsontype values
                 user.ownedGames = user.ownedGames.map(item => item.toString())
@@ -118,8 +129,13 @@ const logic = {
             })
             .then(() => undefined)
     },
+
+
     /**
-     *  Game Logic
+     * 
+     *  ----------------------------------------------------------------------------------------
+     *                                   Game-related logic
+     *  ----------------------------------------------------------------------------------------
      * 
      */
 
@@ -137,7 +153,7 @@ const logic = {
             .lean()
             .then(game => {
 
-                // We have eliminated _id, therefore we add a new id (the one passed to the retrieveUser function)
+                // We have eliminated _id, therefore we add a new id (the one passed to the getUser function)
                 game.id = id
                 return game
             })
@@ -197,7 +213,9 @@ const logic = {
     },
 
     async getAllGames() {
-        return Game.find().lean()
+        let games = await Game.find({}, { '__v': 0 }).lean()
+        games.forEach(game => { game.id = game._id.toString(); delete game._id })
+        return games
     },
 
     async addNewGame({ bggId, name, description, image, thumbnail, minPlayers, maxPlayers, playingTime, mechanics, yearPublished, bggRating, designers }) {
@@ -250,23 +268,100 @@ const logic = {
 
     },
 
-    registerGameSession({ players, gameId, date, notes }) {
+    /**
+     * 
+     *  ----------------------------------------------------------------------------------------
+     *                                   Play-related logic
+     *  ----------------------------------------------------------------------------------------
+     * 
+     */
+
+
+
+    async registerPlay({ players, gameId, date, notes }) {
 
         /** TO DO: Data validation for type errors */
-        
+
+        // TODO check if players array contains valid and existing user ObjectIds
+
         // TO DO: if bggId already on DDBB, then error
-        const gameSession = new Session({
+
+        const play = await new Play({
             "players": players,
             "game": gameId,
             "date": date,
             "notes": notes
         })
+        return play.save()
+    },
 
-        return gameSession.save()
+    async deletePlay(playId) {
+        if (typeof playId !== 'string') throw new TypeError(`${playId} is not a string`)
+        if (!playId.trim().length) throw new ValueError('playId is empty or blank')
+
+
+        
+        let play = await Play.findById(playId, {'__v': 0}).lean()
+        play.id = play._id.toString()
+        play.game= play.game.toString()
+
+        play.players = play.players.map(player => player.toString())
+        
+        await delete play._id
+
+        await Play.deleteOne({ _id: playId })
+        debugger
+
+        return play
+    },
+
+    async getAllPlays() {
+        let plays = await Play.find({}, { '__v': 0 }).lean()
+        plays.forEach(play => { play.id = play._id.toString(); delete play._id })
+        return plays
+    },
+
+
+    /**
+     * 
+     * @param {*} usersId
+     * @param {*} playId 
+     */
+    async addPlayToUser(userId, playId) {
+
+
+        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        if (typeof playId !== 'string') throw new TypeError(`${playId} is not a string`)
+        if (!userId.trim().length) throw new ValueError('userId is empty or blank')
+        if (!playId.trim().length) throw new ValueError('playId is empty or blank')
+
+        let user = await User.findById(userId)
+        if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+
+        let play = await Play.findById(playId)
+        if (!play) throw new NotFoundError(`play with id ${playId} not found`)
+
+        let _user = await User.findOne({ _id: userId, plays: { $in: [play._id] } }).lean()
+        if (_user) throw new AlreadyExistsError(`this play is already associated to the user`)
+
+        return User.updateOne({ _id: userId }, { $push: { plays: play._id } })
+    },
+
+    async removePlayFromUser(userId, playId) {
+
+        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        if (!userId.trim().length) throw new ValueError('userId is empty or blank')
+        if (typeof playId !== 'string') throw new TypeError(`${playId} is not a string`)
+        if (!playId.trim().length) throw new ValueError('playId is empty or blank')
+
+        let user = await User.findById(userId)
+        if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+
+        return User.updateOne({ _id: userId }, { $pull: { plays: playId } })
 
     },
 
-    async retrieveUserSessions(userId) {
+    async getUserPlays(userId) {
         if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
         if (!userId.trim().length) throw new ValueError('userId is empty or blank')
 
@@ -277,14 +372,15 @@ const logic = {
             In the following lines we pass an object as second argument to the User.findById function
             in order to eliminate some properties that we don't want to show
         */
-        return Session.find({players: user.name}, { '__v': 0 }).lean()
-            .then(sessions => {
-                if (!sessions) throw new NotFoundError(`no sessions for user with id ${userId}`)
-
+        return User.findById(userId).populate('plays').exec()
+            .then(user => {
+                if (user.plays.length === 0) throw new NotFoundError(`no plays for user with id ${userId}`)
+                 debugger
                 // Make sure that the ownedGames array contains strings and not bsontype values
-                return sessions
+                return user
             })
     }
+
 }
 
 

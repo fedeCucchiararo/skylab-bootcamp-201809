@@ -57,7 +57,7 @@ router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
 
         if (id !== sub) throw Error('token sub does not match user id')
 
-        return logic.retrieveUser(id)
+        return logic.getUser(id)
             .then(user =>
                 res.json({
                     data: user
@@ -167,7 +167,29 @@ router.post('/games', [jsonBodyParser], (req, res) => {
     }, res)
 })
 
-router.post('/users/:userId/sessions', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+
+router.get('/users/:userId/plays', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+
+        const { params: { userId }, sub } = req
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.getUserPlays(userId)
+            .then((plays) => res.json({
+                data: plays
+            }))
+            .catch((err) =>
+                res.json({
+                    err: err.message
+                })
+            )
+    }, res)
+})
+
+/**
+ *  Register a game session (play) . It will also add the newly created play to every involved player (User)
+ */
+router.post('/users/:userId/plays', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
 
@@ -175,10 +197,66 @@ router.post('/users/:userId/sessions', [bearerTokenParser, jwtVerifier, jsonBody
 
         if (userId !== sub) throw Error('token sub does not match user id')
 
-        return logic.registerGameSession({ players, gameId, date, notes })
-            .then(() =>
+        return logic.registerPlay({ players, gameId, date, notes })
+            .then(async (play) => {
+                debugger
+                for (player of players) {
+                    await logic.addPlayToUser(player, play.id)
+                }
+            })
+            .then(() => res.json({
+                message: 'play registered'
+            }))
+            .catch((err) =>
                 res.json({
-                    message: 'session registered'
+                    err: err.message
+                })
+            )
+    }, res)
+})
+
+/**
+ *  Delete a game session (play) . It will also remove the play from every involved player (User)
+ */
+router.delete('/users/:userId/plays/:playId', [bearerTokenParser, jwtVerifier], (req, res) => {
+
+    routeHandler(() => {
+
+        const { params: { userId, playId }, sub } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.deletePlay(playId)
+            .then(async (play) => {
+                debugger
+                for (player of play.players) {
+                    await logic.removePlayFromUser(player, playId)
+                }
+            })
+            .then(() => res.json({
+                message: 'play deleted'
+            }))
+            .catch((err) =>
+                res.json({
+                    err: err.message
+                })
+            )
+    }, res)
+})
+
+/** get all the user plays */
+router.get('/users/:userId/plays', [bearerTokenParser, jwtVerifier], (req, res) => {
+
+    routeHandler(() => {
+
+        const { params: { userId }, sub } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.getUserPlays(userId)
+            .then((plays) =>
+                res.json({
+                    data: plays
                 })
             )
             .catch((err) =>
@@ -189,24 +267,12 @@ router.post('/users/:userId/sessions', [bearerTokenParser, jwtVerifier, jsonBody
     }, res)
 })
 
-/** get all the user game sessions */
-router.get('/users/:userId/sessions', [bearerTokenParser, jwtVerifier], (req, res) => {
-
+router.get('/plays', (req, res) => {
     routeHandler(() => {
-
-        const { params: { userId }, sub } = req
-
-        if (userId !== sub) throw Error('token sub does not match user id')
-
-        return logic.retrieveUserSessions(userId)
-            .then((sessions) =>
+        return logic.getAllPlays()
+            .then((plays) =>
                 res.json({
-                    data: sessions
-                })
-            )
-            .catch((err) =>
-                res.json({
-                    err: err.message
+                    data: plays
                 })
             )
     }, res)

@@ -15,9 +15,9 @@ function routeHandler(callback, res) {
                 } else if (err instanceof NotFoundError) {
                     res.status(404)
                 } else {
+                    
                     res.status(500)
                 }
-
                 res.json({
                     error: message
                 })

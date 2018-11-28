@@ -5,10 +5,7 @@ const express = require('express')
 const package = require('./package.json')
 const router = require('./routes')
 const cors = require('./utils/cors')
-const path = require('path');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const errorHandler = require('errorhandler');
+
 
 const { env: { PORT, MONGO_URL } } = process
 

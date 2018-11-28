@@ -4,14 +4,14 @@
 
 const mongoose = require('mongoose')
 
-const { Game, User, Session } = require('./schemas')
+const { Game, User, Play } = require('./schemas')
 
 const GameModel = mongoose.model('Game', Game)
 const UserModel = mongoose.model('User', User)
-const SessionModel = mongoose.model('Session', Session)
+const PlayModel = mongoose.model('Play', Play)
 
 module.exports = {
     Game: GameModel,
     User: UserModel,
-    Session: SessionModel
+    Play: PlayModel
 }
