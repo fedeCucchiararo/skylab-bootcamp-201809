@@ -21,7 +21,7 @@ class Landing extends Component {
     }
 
     updateSearch = (event) => {
-        this.setState({ search: event.target.value.toLowerCase() })
+        this.setState({ search: event.target.value })
     }
 
     async componentWillMount() {
@@ -131,6 +131,7 @@ class Landing extends Component {
     render() {
 
         const { showGame } = this.state
+        let searchQuery = this.state.search.replace(/\s+/g, '').toLowerCase()
 
         return (
             <div>
@@ -174,7 +175,7 @@ class Landing extends Component {
                     </header>
 
                     {/** If search is not empty, show filtered games, */}
-                    {this.state.search ? <SearchList searchQuery={this.state.search} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null}
+                    {this.state.search ? <SearchList searchQuery={searchQuery} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null}
 
                     {/** If logged in, then show "my Games" */}
                     {logic.loggedIn ?

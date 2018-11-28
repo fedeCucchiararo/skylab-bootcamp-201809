@@ -1,4 +1,4 @@
-const { User, Game, gameSession } = require('../data')
+const { User, Game, Session } = require('../data')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
 
 const nodemailer = require('nodemailer')
@@ -65,7 +65,7 @@ const logic = {
     },
 
     retrieveUser(id) {
-        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
 
         /*
@@ -79,7 +79,6 @@ const logic = {
                 // We have eliminated _id, therefore we add a new id (the one passed to the retrieveUser function)
                 user.id = id
                 // Make sure that the ownedGames array contains strings and not bsontype values
-
                 user.ownedGames = user.ownedGames.map(item => item.toString())
                 return user
             })
@@ -126,7 +125,7 @@ const logic = {
 
     getGameById(id) {
 
-        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
 
         // return Game.findById(id, (err, game) => {
@@ -149,34 +148,39 @@ const logic = {
 
     async addGameToOwnedGames(userId, gameId) {
 
-        if (typeof userId !== 'string') throw TypeError(`${userId} is not a string`)
+        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        if (typeof gameId !== 'string') throw new TypeError(`${gameId} is not a string`)
         if (!userId.trim().length) throw new ValueError('userId is empty or blank')
-        if (typeof gameId !== 'string') throw TypeError(`${gameId} is not a string`)
         if (!gameId.trim().length) throw new ValueError('gameId is empty or blank')
 
         let user = await User.findById(userId)
         if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+
         let game = await Game.findById(gameId)
         if (!game) throw new NotFoundError(`game with id ${gameId} not found`)
+
         let _user = await User.findOne({ _id: userId, ownedGames: { $in: [game._id] } }).lean()
         if (_user) throw new AlreadyExistsError(`${game.name} is already in your collection`)
+
         return User.updateOne({ _id: userId }, { $push: { ownedGames: game._id } })
     },
 
     async removeGameFromOwnedGames(userId, gameId) {
 
-        if (typeof userId !== 'string') throw TypeError(`${userId} is not a string`)
+        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
         if (!userId.trim().length) throw new ValueError('userId is empty or blank')
-        if (typeof gameId !== 'string') throw TypeError(`${gameId} is not a string`)
+        if (typeof gameId !== 'string') throw new TypeError(`${gameId} is not a string`)
         if (!gameId.trim().length) throw new ValueError('gameId is empty or blank')
 
         let user = await User.findById(userId)
         if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+
         let game = await Game.findById(gameId)
         if (!game) throw new NotFoundError(`game with id ${gameId} not found`)
-        let _user = await User.findOne({ ownedGames: { $in: [game._id] } }).lean()
 
+        let _user = await User.findOne({ ownedGames: { $in: [game._id] } }).lean()
         if (!(_user)) throw new NotFoundError(`game with id ${gameId} not in ownedGames of user with id ${userId}`)
+
         return User.updateOne({ _id: userId }, { $pull: { ownedGames: game._id } })
 
     },
@@ -194,8 +198,93 @@ const logic = {
 
     async getAllGames() {
         return Game.find().lean()
-    }
+    },
 
+    async addNewGame({ bggId, name, description, image, thumbnail, minPlayers, maxPlayers, playingTime, mechanics, yearPublished, bggRating, designers }) {
+
+        /** Data validation for type errors */
+        if (typeof bggId !== 'number') throw TypeError(`${bggId} is not a number`)
+        if (typeof name !== 'string') throw TypeError(`${name} is not a string`)
+        if (typeof description !== 'string') throw TypeError(`${description} is not a string`)
+        if (typeof image !== 'string') throw TypeError(`${image} is not a string`)
+        if (typeof thumbnail !== 'string') throw TypeError(`${thumbnail} is not a string`)
+        if (typeof minPlayers !== 'number') throw TypeError(`${minPlayers} is not a number`)
+        if (typeof maxPlayers !== 'number') throw TypeError(`${maxPlayers} is not a number`)
+        if (typeof mechanics !== 'object') throw TypeError(`${mechanics} is not an object`)
+        if (typeof yearPublished !== 'number') throw TypeError(`${yearPublished} is not a number`)
+        if (typeof bggRating !== 'number') throw TypeError(`${bggRating} is not a number`)
+        if (typeof designers !== 'object') throw TypeError(`${designers} is not an object`)
+
+        /** throw error if empty string */
+        if (!name.trim()) throw new ValueError('name is empty or blank')
+        if (!description.trim()) throw new ValueError('description is empty or blank')
+        if (!image.trim()) throw new ValueError('image is empty or blank')
+        if (!thumbnail.trim()) throw new ValueError('thumbnail is empty or blank')
+
+        mechanics.forEach(mechanic => {
+            if (!mechanic.trim()) throw new ValueError('mechanic is empty or blank')
+        })
+
+        designers.forEach(designer => {
+            if (!designer.trim()) throw new ValueError('designer is empty or blank')
+        })
+
+
+        // TO DO: if bggId already on DDBB, then error
+        const newGame = await new Game({
+            "bggId": bggId,
+            "name": name,
+            "description": description,
+            "image": image,
+            "thumbnail": thumbnail,
+            "minPlayers": minPlayers,
+            "maxPlayers": maxPlayers,
+            "playingTime": playingTime,
+            "mechanics": mechanics,
+            "yearPublished": yearPublished,
+            "bggRating": bggRating,
+            "designers": designers
+        })
+
+        return newGame.save()
+
+    },
+
+    registerGameSession({ players, gameId, date, notes }) {
+
+        /** TO DO: Data validation for type errors */
+        
+        // TO DO: if bggId already on DDBB, then error
+        const gameSession = new Session({
+            "players": players,
+            "game": gameId,
+            "date": date,
+            "notes": notes
+        })
+
+        return gameSession.save()
+
+    },
+
+    async retrieveUserSessions(userId) {
+        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        if (!userId.trim().length) throw new ValueError('userId is empty or blank')
+
+        let user = await User.findById(userId)
+        if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+
+        /*
+            In the following lines we pass an object as second argument to the User.findById function
+            in order to eliminate some properties that we don't want to show
+        */
+        return Session.find({players: user.name}, { '__v': 0 }).lean()
+            .then(sessions => {
+                if (!sessions) throw new NotFoundError(`no sessions for user with id ${userId}`)
+
+                // Make sure that the ownedGames array contains strings and not bsontype values
+                return sessions
+            })
+    }
 }
 
 

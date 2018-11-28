@@ -5,7 +5,7 @@ const expect = chai.expect;    // Using Expect style
 const should = chai.should();  // Using Should style
 
 const mongoose = require('mongoose')
-const { User, Game, gameSession } = require('../data')
+const { User, Game, Session } = require('../data')
 const logic = require('.')
 const { AlreadyExistsError } = require('../errors')
 
@@ -21,6 +21,7 @@ describe('logic', () => {
     // Remove any data from the Database before any test
     beforeEach(() => User.deleteMany())
     beforeEach(() => Game.deleteMany())
+    beforeEach(() => Session.deleteMany())
 
 
     // ----------------------------------
@@ -483,14 +484,109 @@ describe('logic', () => {
             })
 
             it('should list all games in the database', async () => {
-                debugger
+
                 let games = await logic.getAllGames()
-                debugger
+
                 games.should.be.an('array')
                 games.should.have.lengthOf(2)
                 expect(games[0].bggId).to.equal(game1.bggId)
                 expect(games[1].bggId).to.equal(game2.bggId)
             })
+        })
+
+        describe('addNewGame', () => {
+            it('should successfully add a new game to the database', () => {
+                let bggId = Math.random()
+                let name = `Game${bggId}`
+                let description = 'description of the game'
+                let image = 'https://cdn.pixabay.com/photo/2017/01/24/00/47/quiz-2004332_960_720.png'
+                let thumbnail = 'https://cdn.pixabay.com/photo/2017/01/24/00/47/quiz-2004332_960_720.png'
+                let minPlayers = Math.random() * 10
+                let maxPlayers = Math.random() * 10
+                let playingTime = Math.random() * 100
+                let mechanics = ['Mechanic-1', 'Mechanic-2', 'Mechanic-3', 'Mechanic-4', 'Mechanic-5']
+                let yearPublished = Math.floor(Math.random() * 1000)
+                let bggRating = Math.floor(Math.random()) * 100
+                let designers = ["Max Mustermann"]
+
+                logic.addNewGame({ bggId, name, description, image, thumbnail, minPlayers, maxPlayers, playingTime, mechanics, yearPublished, bggRating, designers })
+                    .then(async () => {
+                        let game = await Game.find({ name: name })
+                        expect(game[0].name).to.equal(name)
+                    })
+            })
+        })
+    })
+
+    // ----------------------------------
+    // Let's test the gameSession-related logic
+    // ----------------------------------
+    false && describe('session', () => {
+
+        let player1, player2, players, game, date, notes
+
+        it('should correctly register a gameSession', async () => {
+
+            /** Register a new game so the gameId provided by Mongo can be used */
+            game = await new Game({
+                "bggId": Math.floor(Math.random() * 100),
+                "name": `name-${Math.floor(Math.random() * 1000)}`,
+                "description": "In Agricola, you're a farmer in a wooden shack with your spouse and little else. On a turn, you get to take only two actions, one for you and one for the spouse, from all the possibilities you'll find on a farm: collecting clay, wood, or stone; building fences; and so on. You might think about having kids in order to get more work accomplished, but first you need to expand your house. And what are you going to feed all the little rugrats?",
+                "image": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                "thumbnail": "https://cf.geekdo-images.com/imagepage/img/lz9lR3hs-27immcniEQ4fsYJ7EM=/fit-in/900x600/filters:no_upscale()/pic259085.jpg",
+                "minPlayers": 1,
+                "maxPlayers": 5,
+                "playingTime": 150,
+                "mechanics": [
+                    "Area Enclosure",
+                    "Card Drafting",
+                    "Hand Management",
+                    "Variable Player Powers",
+                    "Worker Placement"
+                ],
+                "yearPublished": 2007,
+                "bggRating": 8,
+                "designers": [
+                    "Uwe Rosenberg"
+                ]
+            })
+
+            /** Register a new user (player) so the userId provided by Mongo can be used */
+            player1 = await new User({
+                name: `John-{Math.floor(Math.random() * 1000)}`,
+                surname: 'Doe',
+                username: `jd-${Math.floor(Math.random() * 1000)}`,
+                password: '123',
+                email: `${Math.floor(Math.random() * 1000)}@mail.com`,
+                ownedGames: []
+            })
+
+            player2 = await new User({
+                name: `John-{Math.floor(Math.random() * 1000)}`,
+                surname: 'Doe',
+                username: `jd-${Math.floor(Math.random() * 1000)}`,
+                password: '123',
+                email: `${Math.floor(Math.random() * 1000)}@mail.com`,
+                ownedGames: []
+            })
+
+            /** this date represents the date on which the session took place */
+            date = new Date()
+            notes = `These are the notes ${Math.random() * 1000}`
+
+            /** save to the database */
+            await Promise.all([player1.save(), player2.save(), game.save()])
+
+            players = [player1.username, player2.username]
+            let gameId = game.id
+
+            logic.registerGameSession({ players, gameId, date, notes })
+                .then(async () => {
+                    let sessions = await Session.find()
+                    debugger
+                    expect(sessions[0].date).to.equal('a')
+                    expect(sessions[0].players).to.be.a('string')
+                })
         })
     })
 

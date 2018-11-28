@@ -151,4 +151,65 @@ router.get('/games', (req, res) => {
     }, res)
 })
 
+router.post('/games', [jsonBodyParser], (req, res) => {
+
+    routeHandler(() => {
+
+        const { bggId, name, description, image, thumbnail, minPlayers, maxPlayers, playingTime, mechanics, yearPublished, bggRating, designers } = req.body
+
+        return logic.addNewGame({ bggId, name, description, image, thumbnail, minPlayers, maxPlayers, playingTime, mechanics, yearPublished, bggRating, designers })
+            .then(() => res.json({
+                message: 'game succesfully added to database'
+            }))
+            .catch(err => res.json({
+                error: err.message
+            }))
+    }, res)
+})
+
+router.post('/users/:userId/sessions', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+
+    routeHandler(() => {
+
+        const { params: { userId }, sub, body: { notes, date, players, gameId } } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.registerGameSession({ players, gameId, date, notes })
+            .then(() =>
+                res.json({
+                    message: 'session registered'
+                })
+            )
+            .catch((err) =>
+                res.json({
+                    err: err.message
+                })
+            )
+    }, res)
+})
+
+/** get all the user game sessions */
+router.get('/users/:userId/sessions', [bearerTokenParser, jwtVerifier], (req, res) => {
+
+    routeHandler(() => {
+
+        const { params: { userId }, sub } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveUserSessions(userId)
+            .then((sessions) =>
+                res.json({
+                    data: sessions
+                })
+            )
+            .catch((err) =>
+                res.json({
+                    err: err.message
+                })
+            )
+    }, res)
+})
+
 module.exports = router

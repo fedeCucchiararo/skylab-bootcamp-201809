@@ -49,12 +49,12 @@ const Game = new Schema({
     ]
 })
 
-const gameSession = new Schema({
+// TO DO: add pictures to the game session
+const Session = new Schema({
     players: [
         {
-            type: ObjectId,
-            ref: 'User',
-            required: false
+            type: String,
+            required: true
         }
     ],
 
@@ -67,8 +67,9 @@ const gameSession = new Schema({
     date: {
         type: Date
     },
-
-    pictures: [String]
+    notes: {
+        type: String
+    }
 })
 
 const User = new Schema({
@@ -100,11 +101,18 @@ const User = new Schema({
             ref: 'Game',
             required: false
         }
+    ],
+    gameSessions: [
+        {
+            type: ObjectId,
+            ref: 'GameSession',
+            required: false
+        }
     ]
 })
 
 module.exports = {
     Game,
     User,
-    gameSession
+    Session
 }

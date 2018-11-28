@@ -20,12 +20,10 @@ const Card = (props) => {
                     <div >
                         <img className="front" src={props.game.thumbnail} alt="Card image" />
                     </div>
-                    <div className="back">
-                        <h5 className="back__title">{props.game.name}</h5>
+                    <div className="back" onClick={() => props.onMoreInfoClick(props.game)}>
+                        <i className="fas fa-info"></i>
+                       <h5 className="back__title">{props.game.name}</h5>
                         <p className="back__text">({props.game.yearPublished})</p>
-                        <button className='button card-button card-button-moreInfo' onClick={() => props.onMoreInfoClick(props.game)}>
-                            More Info
-                    </button>
                         <button className='button card-button card-button-addRemove' onClick={fromOwned ? () => props.onAddOrRemoveClick(fromOwned, props.game._id) : () => props.onAddOrRemoveClick(fromOwned, props.game._id)}>
                             <i className="fas fa-plus-circle"></i>{props.buttonText}
                         </button>

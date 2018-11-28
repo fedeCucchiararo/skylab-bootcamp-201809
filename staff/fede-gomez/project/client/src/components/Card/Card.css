@@ -92,8 +92,8 @@
   .card-button-addRemove {
     text-align: center;
     position: absolute;
-    bottom: 40px;
-    left: 23%;
+    bottom: 10px;
+    left: 30px;
   }
 
   /* for transitions */
@@ -128,8 +128,4 @@
 .fade-exit.fade-exit-active {
     opacity: 1;
     transition: opacity 1000ms linear;
-}
-
-.fa-plus-circle {
-    margin: 0px 5px 0px 0px;
 }
