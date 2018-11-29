@@ -6,13 +6,16 @@ import Card from '../Card/Card'
 const GameList = (props) => {
 
     let fromOwned = props.fromOwned
+    let filteredGames = props.games.filter(game => {
+        return game.name.toLowerCase().indexOf(props.searchQuery) !== -1
+    })
 
     return (
         <section className='main'>
             <h1>{props.title}</h1>
             <div className='main__cards'>
                 {
-                    props.games.map(game => <Card loggedIn={props.loggedIn} onAddOrRemoveClick={props.onAddOrRemoveClick} fromOwned={fromOwned} buttonText={fromOwned ? 'Remove' : 'Add'} onMoreInfoClick={props.onMoreInfoClick} key={game._id} game={game} />)
+                    filteredGames.map(game => <Card loggedIn={props.loggedIn} onAddOrRemoveClick={props.onAddOrRemoveClick} fromOwned={fromOwned} buttonText={fromOwned ? 'Remove' : 'Add'} onMoreInfoClick={props.onMoreInfoClick} key={game._id} game={game} />)
                 }
             </div>
         </section>

@@ -8,6 +8,8 @@ import PlayList from '../PlayList/PlayList'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
 import { CSSTransition } from 'react-transition-group'
+import { Tabs } from "@yazanaabed/react-tabs";
+import glamorous from "glamorous";
 
 class Landing extends Component {
 
@@ -206,20 +208,27 @@ class Landing extends Component {
                         </div>
                     </header>
 
-                    <PlayList plays={this.state.plays}/>
+                    <PlayList plays={this.state.plays} />
 
-                    {/** If search is not empty, show filtered games, */}
-                    {this.state.search ? <SearchList loggedIn={logic.loggedIn} searchQuery={searchQuery} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null}
-
-                    {/** If logged in, then show "my Games" */}
-                    {logic.loggedIn ?
-
-                        <GameList loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} />
-                        : null}
-
-
-                    {/** Show all games */}
-                    <GameList loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'All Games'} games={this.state.allGames} />
+                    <Tabs
+                        activeTab={{
+                            id: "tab1"
+                        }}
+                    >
+                        <Tabs.Tab id="tab1" title='All Games'>
+                            {/** Show all games */}
+                            <GameList searchQuery={searchQuery} loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'All Games'} games={this.state.allGames} />
+                        </Tabs.Tab>
+                        <Tabs.Tab id="tab2" title='My Games'>
+                            {/** If logged in, then show "my Games" */}
+                            {logic.loggedIn ?
+                                <GameList searchQuery={searchQuery} loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} />
+                                : null}
+                        </Tabs.Tab>
+                        <Tabs.Tab id="tab3" title="Search">
+                            {this.state.search ? <SearchList loggedIn={logic.loggedIn} searchQuery={searchQuery} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null}
+                        </Tabs.Tab>
+                    </Tabs>
 
                     <footer className='footer'>
                         <h1> This is the footer </h1>
