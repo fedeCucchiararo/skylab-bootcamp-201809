@@ -112,7 +112,7 @@ const logic = {
     },
 
     addGameToOwnedGames(gameId) {
-        
+
         return fetch(`${this.url}/users/${this._userId}/games/${gameId}`, {
             method: 'POST',
             headers: {
@@ -158,7 +158,7 @@ const logic = {
     },
 
     getAllGames() {
-        
+
         return fetch(`${this.url}/games`, {
             method: 'GET',
             headers: {
@@ -167,9 +167,24 @@ const logic = {
         })
             .then(res => res.json())
             .then(res => {
-                
+
                 if (res.error) throw Error(res.error)
                 return res
+            })
+    },
+
+    getUserPlays(userId) {
+        return fetch(`${this.url}/users/${userId}/plays`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+        .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res.data
             })
     }
 }

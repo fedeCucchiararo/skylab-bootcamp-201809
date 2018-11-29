@@ -20,33 +20,14 @@ class Landing extends Component {
         showGameInfo: false,
         game: {},
         search: '',
-        plays: [{
-            "players": [
-                "5bfeae6e09da63359f39aaae",
-                "5bfeae7609da63359f39aab0"
-            ],
-            "_id": "5bfeb6f0aaa16a3679f68443",
-            "game": "5bf6cdd86f870b28d6b5f5d7",
-            "notes": "These are the notes",
-            "__v": 0
-        },
-        {
-            "players": [
-                "5bfeae6e09da63359f39aaae",
-                "5bfeae7609da63359f39aab0"
-            ],
-            "_id": "5bfeb6fdaaa16a3679f68444",
-            "game": "5bf6cdd86f870b28d6b5f5d7",
-            "notes": "These are the notes",
-            "__v": 0
-        }]
+        plays: []
     }
 
     updateSearch = (event) => {
         this.setState({ search: event.target.value })
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
 
         let allGames = await logic.getAllGames()
 
@@ -58,10 +39,12 @@ class Landing extends Component {
 
         if (logic.loggedIn) {
             let ownedGames = await logic.getUserOwnedGames(logic._userId)
-
-            this.setState((prevState, props) => {
+            let plays = await logic.getUserPlays(logic._userId)
+            console.log(plays)
+            this.setState(() => {
                 return ({
-                    ownedGames: [...ownedGames.data]
+                    ownedGames: [...ownedGames.data],
+                    plays: [...plays]
                 })
             })
         }
@@ -208,8 +191,6 @@ class Landing extends Component {
                         </div>
                     </header>
 
-                    <PlayList plays={this.state.plays} />
-
                     <Tabs
                         activeTab={{
                             id: "tab1"
@@ -225,8 +206,8 @@ class Landing extends Component {
                                 <GameList searchQuery={searchQuery} loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} />
                                 : null}
                         </Tabs.Tab>
-                        <Tabs.Tab id="tab3" title="Search">
-                            {this.state.search ? <SearchList loggedIn={logic.loggedIn} searchQuery={searchQuery} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null}
+                        <Tabs.Tab id="tab3" title="My Plays">
+                            {logic.loggedIn ? <PlayList plays={this.state.plays} /> : null}
                         </Tabs.Tab>
                     </Tabs>
 

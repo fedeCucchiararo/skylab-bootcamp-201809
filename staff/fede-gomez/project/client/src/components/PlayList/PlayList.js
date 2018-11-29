@@ -6,7 +6,17 @@ const PlayList = (props) => {
 
     return (
         <div>
-            {props.plays.map(play => <p>{play.notes}</p>)}
+            {props.plays.map(play => {
+                return (
+                    <div>
+                        <h4>{play.game.name}</h4>
+                        <p>{play.notes}</p>
+                        <ul>
+                            {play.players.map(player => <li>Player1: {player.name}</li>)}
+                        </ul>
+                    </div>
+                )
+            })}
         </div>
     )
 }

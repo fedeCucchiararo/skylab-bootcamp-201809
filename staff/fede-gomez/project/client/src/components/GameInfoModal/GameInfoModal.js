@@ -4,7 +4,7 @@ import './GameInfoModal.css'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 
 const GameInfoModal = (props) => {
-
+// https://boardgamegeek.com/boardgame/31260/agricola
     if (props.show) {
         return (
             <div className='gameInfoModal-container'>

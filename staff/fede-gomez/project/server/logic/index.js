@@ -380,28 +380,56 @@ const logic = {
             in order to eliminate some properties that we don't want to show
         */
 
-       User.find(query)
-       .populate({ 
-          path: 'pages',
-          populate: {
-            path: 'components',
-            model: 'Component'
-          } 
-       })
-       .exec(function(err, docs) {});
+        // User.
+        //     findOne({ name: 'Val' }).
+        //     populate({
+        //         path: 'friends',
+        //         // Get friends of friends - populate the 'friends' array for every friend
+        //         populate: { path: 'friends' }
+        //     });
 
-        return User.findById(userId).populate('plays').lean().exec()
+        return User.findById(userId)
+            .populate({
+                path: 'plays',
+                populate: { path: 'players game' }
+            })
+            .lean().exec()
             .then(user => {
                 if (user.plays.length === 0) throw new NotFoundError(`no plays for user with id ${userId}`)
 
                 // Make sure that the ownedGames array contains strings and not bsontype values
                 user.plays.forEach((play) => {
-                    debugger
+
+                    
+                    /** Delete unnecessary fields and return string id */
+                    play.players.forEach((player) => {
+
+                        player._id && (player.id = player._id.toString())
+                        delete player['_id']
+                        delete player['__v']
+                    })
+
+                    play.game.id = play._id.toString()
+
                     play.id = play._id.toString()
                     delete play['_id']
+                    delete play['__v']
                 })
                 return user.plays
             })
+
+        // return User.findById(userId).populate('plays').lean().exec()
+        //     .then(user => {
+        //         if (user.plays.length === 0) throw new NotFoundError(`no plays for user with id ${userId}`)
+
+        //         // Make sure that the ownedGames array contains strings and not bsontype values
+        //         user.plays.forEach((play) => {
+
+        //             play.id = play._id.toString()
+        //             delete play['_id']
+        //         })
+        //         return user.plays
+        //     })
     }
 
 }
