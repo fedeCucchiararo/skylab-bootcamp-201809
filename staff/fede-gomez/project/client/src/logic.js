@@ -181,7 +181,7 @@ const logic = {
                 'Authorization': `Bearer ${this._token}`
             }
         })
-        .then(res => res.json())
+            .then(res => res.json())
             .then(res => {
                 if (res.error) throw Error(res.error)
                 return res.data
@@ -202,6 +202,22 @@ const logic = {
             .then(res => {
                 if (res.error) throw Error(res.error)
                 return res
+            })
+    },
+
+    getAllUsers() {
+
+        return fetch(`${this.url}/users`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+
+                if (res.error) throw Error(res.error)
+                return res.data
             })
     }
 }

@@ -17,7 +17,7 @@ const GameList = (props) => {
                 {
                     filteredGames.map(game =>
                         <Card
-                            onRegisterPlayClick={props.onRegisterPlayClick}
+                            onSavePlayClick={props.onSavePlayClick}
                             onAddOrRemoveClick={props.onAddOrRemoveClick}
                             onMoreInfoClick={props.onMoreInfoClick}
                             buttonText={fromOwned ? 'Remove' : 'Add'}

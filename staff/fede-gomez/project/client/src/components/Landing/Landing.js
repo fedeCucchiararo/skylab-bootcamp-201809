@@ -5,7 +5,7 @@ import GameList from '../GameList/GameList'
 import logic from '../../logic'
 import SearchList from '../SearchList/SearchList'
 import PlayList from '../PlayList/PlayList'
-import PlayRegisterModal from '../PlayRegisterModal/PlayRegisterModal'
+import PlaySaveModal from '../PlaySaveModal/PlaySaveModal'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
 import { CSSTransition } from 'react-transition-group'
@@ -19,7 +19,7 @@ class Landing extends Component {
         allGames: [],
         ownedGames: [],
         showGameInfo: false,
-        showPlayRegisterModal: false,
+        showPlaySaveModal: false,
         game: {},
         search: '',
         plays: []
@@ -42,7 +42,7 @@ class Landing extends Component {
         if (logic.loggedIn) {
             let ownedGames = await logic.getUserOwnedGames(logic._userId)
             let plays = await logic.getUserPlays(logic._userId)
-            debugger
+            
             this.setState(() => {
                 return ({
                     ownedGames: [...ownedGames.data],
@@ -57,7 +57,6 @@ class Landing extends Component {
     }
 
     moreInfoHandler = (game) => {
-        console.log(game)
         this.setState(() => {
             return ({
                 game: { ...game },
@@ -66,20 +65,19 @@ class Landing extends Component {
         })
     }
 
-    registerPlayClickHandler = (game) => {
-        console.log(game)
+    savePlayClickHandler = (game) => {
         this.setState(() => {
             return ({
                 game: { ...game },
-                showPlayRegisterModal: !this.state.showPlayRegisterModal
+                showPlaySaveModal: !this.state.showPlaySaveModal
             })
         })
     }
 
-    closePlayRegisterModalHandler = () => {
+    closePlaySaveModalHandler = () => {
         this.setState(() => {
             return ({
-                showPlayRegisterModal: !this.state.showPlayRegisterModal
+                showPlaySaveModal: !this.state.showPlaySaveModal
             })
         })
     }
@@ -140,6 +138,19 @@ class Landing extends Component {
         }
     }
 
+    savePlayHandler = (notes, date, players, gameId) => {
+        // try {
+        //     logic.registerUser(name, surname, username, password, email)
+        //         .then(() => {
+        //             this.setState({ error: null }, () => this.props.history.push('/login'))
+        //         })
+        //         .catch(err => this.setState({ error: err.message }))
+        // } catch (err) {
+        //     this.setState({ error: err.message })
+        // }
+        console.log(notes, date, players, gameId)
+    }
+
     closeErrorSnackbarHandler = () => {
         this.setState(() => {
             return ({
@@ -157,7 +168,6 @@ class Landing extends Component {
 
     render() {
 
-        const { showGame } = this.state
         let searchQuery = this.state.search.replace(/\s+/g, '').toLowerCase()
 
         return (
@@ -179,9 +189,10 @@ class Landing extends Component {
                     game={this.state.game}
                 />
 
-                <PlayRegisterModal
-                    onClose={this.closePlayRegisterModalHandler}
-                    show={this.state.showPlayRegisterModal}
+                <PlaySaveModal
+                    onClose={this.closePlaySaveModalHandler}
+                    show={this.state.showPlaySaveModal}
+                    onSavePlay={this.savePlayHandler}
                     game={this.state.game}
                 />
 
@@ -209,7 +220,7 @@ class Landing extends Component {
                                     {logic.loggedIn ?
                                         null :
                                         <li className="nav-item">
-                                            <p className="nav-link" onClick={this.props.onRegisterClick}>Sign Up</p>
+                                            <p className="nav-link" onClick={this.props.onSaveClick}>Sign Up</p>
                                         </li>
                                     }
 
@@ -240,7 +251,7 @@ class Landing extends Component {
                         <Tabs.Tab id="tab1" title='All Games'>
                             {/** Show all games */}
                             <GameList
-                                onRegisterPlayClick={this.registerPlayClickHandler}
+                                onSavePlayClick={this.savePlayClickHandler}
                                 onAddOrRemoveClick={this.addOrRemoveHandler}
                                 onMoreInfoClick={this.moreInfoHandler}
                                 games={this.state.allGames}
@@ -255,7 +266,7 @@ class Landing extends Component {
                             <Tabs.Tab id="tab2" title='My Games'>
                                 {/** If logged in, then show "my Games" */}
                                 <GameList
-                                    onRegisterPlayClick={this.registerPlayClickHandler}
+                                    onSavePlayClick={this.savePlayClickHandler}
                                     onAddOrRemoveClick={this.addOrRemoveHandler}
                                     onMoreInfoClick={this.moreInfoHandler}
                                     games={this.state.ownedGames}

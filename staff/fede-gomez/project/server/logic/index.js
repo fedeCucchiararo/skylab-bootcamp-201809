@@ -130,8 +130,16 @@ const logic = {
             .then(() => undefined)
     },
 
-    getAllUsers() {
-        return User.find({}, {'__v': 0}).lean()
+    async getAllUsers() {
+
+        let users = await User.find({}, {'username': 1, '_id': 1}).lean()
+
+        for (user of users) {
+            user.id = user._id.toString()
+            delete user._id
+        }
+
+        return users
     },
 
 
@@ -321,7 +329,7 @@ const logic = {
         await delete play._id
 
         await Play.deleteOne({ _id: playId })
-        debugger
+        
 
         return play
     },

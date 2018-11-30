@@ -32,8 +32,8 @@ const Card = (props) => {
                         </button>
                         {props.loggedIn ?
                             <button
-                                className='button card-button card-button-registerPlay'
-                                onClick={() => props.onRegisterPlayClick(props.game)}>
+                                className='button card-button card-button-savePlay'
+                                onClick={() => props.onSavePlayClick(props.game)}>
                                 <i className="fas fa-plus-circle"></i>
                                 Play
                             </button>

@@ -1,4 +1,4 @@
-.playRegisterModal-container {
+.playSaveModal-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
     
   }
   
-  .playRegisterModal-head {
+  .playSaveModal-head {
     position:fixed;
     background: white;
     width: 80%;
@@ -25,31 +25,31 @@
     overflow: scroll;
   }
 
-  .playRegisterModal-form {
+  .playSaveModal-form {
     position: fixed;
   }
 
-  .playRegisterModal-head__description {
+  .playSaveModal-head__description {
     text-align: justify;
     padding: 15px;
   }
 
-  .playRegisterModal-head__title {
+  .playSaveModal-head__title {
     font-weight: 400;
     text-align: center;
     padding: 10px;
   }
 
-  .playRegisterModal-subtitle {
+  .playSaveModal-subtitle {
     font-weight: 400;
     padding: 0 15px;
   }
 
-  .playRegisterModal-head__image-container {
+  .playSaveModal-head__image-container {
     margin-left: 5%;
   }
 
-  .playRegisterModal-head__image {
+  .playSaveModal-head__image {
     max-width:50%;
     max-height:50%;
     width: auto;
@@ -66,7 +66,7 @@
     display: none;
   }
 
-  .playRegisterModal-mechanics {
+  .playSaveModal-mechanics {
     background-color: #ddd;
     padding: 3px 10px;
     margin: 0 5px 10px;
@@ -79,21 +79,21 @@
     font-size: 13px;
   }
 
-  .playRegisterModal-mechanics:hover {
+  .playSaveModal-mechanics:hover {
     color: #fff;
     background-color: #30C820;
     box-shadow: 0 0 0px 1px #30C820;
     cursor: pointer;
   }
 
-  .playRegisterModal-close {
+  .playSaveModal-close {
       position: absolute;
       top: 10px;
       right: 10px;
       border-radius: 10px;
   }
 
-  .playRegisterModal-close:hover {
+  .playSaveModal-close:hover {
     color: #fff;
     background-color: black;
     box-shadow: 0 0 0px 1px #30C820;
