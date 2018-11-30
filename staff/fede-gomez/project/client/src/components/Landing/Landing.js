@@ -5,6 +5,7 @@ import GameList from '../GameList/GameList'
 import logic from '../../logic'
 import SearchList from '../SearchList/SearchList'
 import PlayList from '../PlayList/PlayList'
+import PlayRegisterModal from '../PlayRegisterModal/PlayRegisterModal'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
 import { CSSTransition } from 'react-transition-group'
@@ -18,6 +19,7 @@ class Landing extends Component {
         allGames: [],
         ownedGames: [],
         showGameInfo: false,
+        showPlayRegisterModal: false,
         game: {},
         search: '',
         plays: []
@@ -40,7 +42,7 @@ class Landing extends Component {
         if (logic.loggedIn) {
             let ownedGames = await logic.getUserOwnedGames(logic._userId)
             let plays = await logic.getUserPlays(logic._userId)
-            console.log(plays)
+            debugger
             this.setState(() => {
                 return ({
                     ownedGames: [...ownedGames.data],
@@ -55,7 +57,8 @@ class Landing extends Component {
     }
 
     moreInfoHandler = (game) => {
-        this.setState((prevState, props) => {
+        console.log(game)
+        this.setState(() => {
             return ({
                 game: { ...game },
                 showGameInfo: !this.state.showGameInfo
@@ -63,8 +66,26 @@ class Landing extends Component {
         })
     }
 
+    registerPlayClickHandler = (game) => {
+        console.log(game)
+        this.setState(() => {
+            return ({
+                game: { ...game },
+                showPlayRegisterModal: !this.state.showPlayRegisterModal
+            })
+        })
+    }
+
+    closePlayRegisterModalHandler = () => {
+        this.setState(() => {
+            return ({
+                showPlayRegisterModal: !this.state.showPlayRegisterModal
+            })
+        })
+    }
+
     closeModalHandler = () => {
-        this.setState((prevState, props) => {
+        this.setState(() => {
             return ({
                 showGameInfo: !this.state.showGameInfo
             })
@@ -142,8 +163,28 @@ class Landing extends Component {
         return (
             <div>
 
-                {this.state.error ? <Snackbar className={'snackbar'} message={this.state.error} onCloseSnackbar={this.closeErrorSnackbarHandler} /> : null}
-                <GameInfoModal onMechanicsClick={this.mechanicsClickHandler} game={this.state.game} onClose={this.closeModalHandler} onAdd={this.addHandler} show={this.state.showGameInfo} />
+                {this.state.error ?
+                    <Snackbar
+                        onCloseSnackbar={this.closeErrorSnackbarHandler}
+                        message={this.state.error}
+                        className={'snackbar'}
+                    />
+                    : null}
+
+                <GameInfoModal
+                    onMechanicsClick={this.mechanicsClickHandler}
+                    onClose={this.closeModalHandler}
+                    show={this.state.showGameInfo}
+                    onAdd={this.addHandler}
+                    game={this.state.game}
+                />
+
+                <PlayRegisterModal
+                    onClose={this.closePlayRegisterModalHandler}
+                    show={this.state.showPlayRegisterModal}
+                    game={this.state.game}
+                />
+
                 <div className='landing' >
                     <header className='header-container'>
                         <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -198,17 +239,40 @@ class Landing extends Component {
                     >
                         <Tabs.Tab id="tab1" title='All Games'>
                             {/** Show all games */}
-                            <GameList searchQuery={searchQuery} loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'All Games'} games={this.state.allGames} />
+                            <GameList
+                                onRegisterPlayClick={this.registerPlayClickHandler}
+                                onAddOrRemoveClick={this.addOrRemoveHandler}
+                                onMoreInfoClick={this.moreInfoHandler}
+                                games={this.state.allGames}
+                                searchQuery={searchQuery} 
+                                loggedIn={logic.loggedIn}
+                                title={'All Games'}
+                                fromOwned={false}
+                            />
                         </Tabs.Tab>
-                        <Tabs.Tab id="tab2" title='My Games'>
-                            {/** If logged in, then show "my Games" */}
-                            {logic.loggedIn ?
-                                <GameList searchQuery={searchQuery} loggedIn={logic.loggedIn} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={true} onMoreInfoClick={this.moreInfoHandler} title={'My Games'} games={this.state.ownedGames} />
-                                : null}
-                        </Tabs.Tab>
-                        <Tabs.Tab id="tab3" title="My Plays">
-                            {logic.loggedIn ? <PlayList plays={this.state.plays} /> : null}
-                        </Tabs.Tab>
+
+                        {logic.loggedIn ?
+                            <Tabs.Tab id="tab2" title='My Games'>
+                                {/** If logged in, then show "my Games" */}
+                                <GameList
+                                    onRegisterPlayClick={this.registerPlayClickHandler}
+                                    onAddOrRemoveClick={this.addOrRemoveHandler}
+                                    onMoreInfoClick={this.moreInfoHandler}
+                                    games={this.state.ownedGames}
+                                    searchQuery={searchQuery}
+                                    loggedIn={logic.loggedIn}
+                                    title={'My Games'}
+                                    fromOwned={true}
+                                />
+                            </Tabs.Tab>
+                            : null
+                        }
+                        {logic.loggedIn ?
+                            <Tabs.Tab id="tab3" title="My Plays">
+                                <PlayList plays={this.state.plays} />
+                            </Tabs.Tab>
+                            : null
+                        }
                     </Tabs>
 
                     <footer className='footer'>

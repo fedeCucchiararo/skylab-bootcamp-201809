@@ -15,7 +15,17 @@ const GameList = (props) => {
             <h1>{props.title}</h1>
             <div className='main__cards'>
                 {
-                    filteredGames.map(game => <Card loggedIn={props.loggedIn} onAddOrRemoveClick={props.onAddOrRemoveClick} fromOwned={fromOwned} buttonText={fromOwned ? 'Remove' : 'Add'} onMoreInfoClick={props.onMoreInfoClick} key={game._id} game={game} />)
+                    filteredGames.map(game =>
+                        <Card
+                            onRegisterPlayClick={props.onRegisterPlayClick}
+                            onAddOrRemoveClick={props.onAddOrRemoveClick}
+                            onMoreInfoClick={props.onMoreInfoClick}
+                            buttonText={fromOwned ? 'Remove' : 'Add'}
+                            loggedIn={props.loggedIn}
+                            fromOwned={fromOwned}
+                            key={game._id}
+                            game={game}
+                        />)
                 }
             </div>
         </section>

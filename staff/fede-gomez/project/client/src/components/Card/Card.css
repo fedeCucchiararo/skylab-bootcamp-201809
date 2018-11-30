@@ -5,8 +5,9 @@
 }
 
 /* flip the pane when hovered */
-.card-container:hover .card, .card-container:hover .card {
+.card-container:hover .card {
     transform: rotateY(180deg);
+    /* transform: scale(1.1); */
 }
 
 .card-container, .front, .back {
@@ -94,6 +95,13 @@
     text-align: center;
     position: absolute;
     bottom: 10px;
+    left: 30px;
+  }
+
+  .card-button-registerPlay {
+    text-align: center;
+    position: absolute;
+    bottom: 40px;
     left: 30px;
   }
 

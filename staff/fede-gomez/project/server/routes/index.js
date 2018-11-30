@@ -33,6 +33,19 @@ router.post('/users', jsonBodyParser, (req, res) => {
     }, res)
 })
 
+/** get all users */
+router.get('/users', (req, res) => {
+    routeHandler(() => {
+        
+        return logic.getAllUsers()
+            .then(users =>
+                res.json({
+                    data: users
+                })
+            )
+    }, res)
+})
+
 router.post('/auth', jsonBodyParser, (req, res) => {
     routeHandler(() => {
         const { username, password } = req.body
@@ -198,7 +211,7 @@ router.post('/users/:userId/plays', [bearerTokenParser, jwtVerifier, jsonBodyPar
 
         return logic.registerPlay({ players, gameId, date, notes })
             .then(async (play) => {
-                debugger
+
                 for (player of players) {
                     await logic.addPlayToUser(player, play.id)
                 }

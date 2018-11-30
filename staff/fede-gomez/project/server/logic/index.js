@@ -130,6 +130,10 @@ const logic = {
             .then(() => undefined)
     },
 
+    getAllUsers() {
+        return User.find({}, {'__v': 0}).lean()
+    },
+
 
     /**
      * 
@@ -375,18 +379,6 @@ const logic = {
         let user = await User.findById(userId)
         if (!user) throw new NotFoundError(`user with id ${userId} not found`)
 
-        /*
-            In the following lines we pass an object as second argument to the User.findById function
-            in order to eliminate some properties that we don't want to show
-        */
-
-        // User.
-        //     findOne({ name: 'Val' }).
-        //     populate({
-        //         path: 'friends',
-        //         // Get friends of friends - populate the 'friends' array for every friend
-        //         populate: { path: 'friends' }
-        //     });
 
         return User.findById(userId)
             .populate({
@@ -395,11 +387,11 @@ const logic = {
             })
             .lean().exec()
             .then(user => {
-                if (user.plays.length === 0) throw new NotFoundError(`no plays for user with id ${userId}`)
-
+                /** not neccesary. If empty, then pass an empty array and the client side will render nothing */
+                // if (user.plays.length === 0) throw new NotFoundError(`no plays for user with id ${userId}`)
+                
                 // Make sure that the ownedGames array contains strings and not bsontype values
                 user.plays.forEach((play) => {
-
                     
                     /** Delete unnecessary fields and return string id */
                     play.players.forEach((player) => {

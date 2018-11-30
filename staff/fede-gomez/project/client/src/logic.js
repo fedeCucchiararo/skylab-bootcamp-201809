@@ -186,6 +186,23 @@ const logic = {
                 if (res.error) throw Error(res.error)
                 return res.data
             })
+    },
+
+    registerPlay(notes, date, players, gameId) {
+
+        return fetch(`${this.url}/users/${this._userId}/plays`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ notes, date, players, gameId })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res
+            })
     }
 }
 
