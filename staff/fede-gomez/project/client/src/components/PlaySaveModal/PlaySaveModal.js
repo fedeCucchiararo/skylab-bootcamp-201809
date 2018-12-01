@@ -93,6 +93,23 @@ class PlaySaveModal extends Component {
         this.setState({ players })
     }
 
+    equalsOne = (elem) => {
+        return elem === 1
+    }
+
+    onCloseHandler = () => {
+        this.setState(() => {
+            return ({
+                notes: '',
+                date: null,
+                gameId: '',
+                players: [],
+                playerCount: 0
+            })
+        })
+        this.props.onClose()
+    }
+
     handleSubmit = event => {
         event.preventDefault()
 
@@ -102,7 +119,7 @@ class PlaySaveModal extends Component {
             this.props.onError('Please insert a valid date')
         } else if (notes.length === 0) {
             this.props.onError('Please insert some notes')
-        } else if (!players.length || players.some(player => player === 1)) {
+        } else if (!players.length || players.some(this.equalsOne)) {
             this.props.onError('Please choose valid players')
         } else {
             this.props.onPlaySave(notes, date, players, gameId)
@@ -135,7 +152,7 @@ class PlaySaveModal extends Component {
                         <div>
                             <h1 className='playSaveModal-head__title'>{this.props.game.name} / ID: {this.state.gameId}</h1>
                         </div>
-                        <button className="playSaveModal-close" onClick={this.props.onClose}>X</button>
+                        <button className="playSaveModal-close" onClick={this.onCloseHandler}>X</button>
                         <form id='form' onSubmit={this.handleSubmit}>
                             {/* <input type="text" placeholder="Name" onChange={this.handleNameChange} /> */}
                             <input type="date" placeholder="Date" onChange={this.handleDateChange} />
