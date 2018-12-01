@@ -3,14 +3,12 @@ import './Landing.css'
 import Snackbar from '../Snackbar/Snackbar'
 import GameList from '../GameList/GameList'
 import logic from '../../logic'
-import SearchList from '../SearchList/SearchList'
 import PlayList from '../PlayList/PlayList'
 import PlaySaveModal from '../PlaySaveModal/PlaySaveModal'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
 import { CSSTransition } from 'react-transition-group'
 import { Tabs } from "@yazanaabed/react-tabs";
-import glamorous from "glamorous";
 
 class Landing extends Component {
 

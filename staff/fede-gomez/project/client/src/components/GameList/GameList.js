@@ -1,5 +1,6 @@
 import React from 'react'
 import Card from '../Card/Card'
+import './GameList.css'
 
 
 
@@ -12,7 +13,7 @@ const GameList = (props) => {
 
     return (
         <section className='main'>
-            <h1>{props.title}</h1>
+            <h1 className='main__title'>{props.title}</h1>
             <div className='main__cards'>
                 {
                     filteredGames.map(game =>

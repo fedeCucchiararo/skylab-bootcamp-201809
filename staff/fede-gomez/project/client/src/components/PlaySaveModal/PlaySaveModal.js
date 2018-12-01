@@ -19,14 +19,14 @@ class PlaySaveModal extends Component {
         }
     }
 
-    async componentWillMount() {
-        // let users = logic.
-        let users = await logic.getAllUsers()
-        console.log('users', users)
-        this.setState(() => {
-            return (
-                { users: users }
-            )
+    componentWillMount() {
+        logic.getAllUsers()
+        .then(users => {
+            this.setState(() => {
+                return (
+                    { users: users }
+                )
+            })
         })
     }
 

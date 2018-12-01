@@ -30,11 +30,6 @@
     margin: auto;
 }
 
-.main__cards{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
 
 .footer {
     position: relative;
