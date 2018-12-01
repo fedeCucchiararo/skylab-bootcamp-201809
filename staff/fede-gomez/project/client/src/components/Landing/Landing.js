@@ -136,7 +136,15 @@ class Landing extends Component {
         }
     }
 
-    savePlayHandler = (notes, date, players, gameId) => {
+    playSaveErrorHandler = err => {
+        this.setState(() => {
+            return ({
+                error: err
+            })
+        })
+    }
+
+    playSaveHandler = (notes, date, players, gameId) => {
         // try {
         //     logic.registerUser(name, surname, username, password, email)
         //         .then(() => {
@@ -190,8 +198,9 @@ class Landing extends Component {
                 <PlaySaveModal
                     onClose={this.closePlaySaveModalHandler}
                     show={this.state.showPlaySaveModal}
-                    onSavePlay={this.savePlayHandler}
+                    onPlaySave={this.playSaveHandler}
                     game={this.state.game}
+                    onError={this.playSaveErrorHandler}
                 />
 
                 <div className='landing' >

@@ -2,9 +2,19 @@ import React from 'react'
 
 const SelectPlayer = (props) => {
 
-    let index = 0
+    // let playerCount = new Array(props.playerCount).fill(0)
+    
 
-    return (<option onChange={props.onChange} value={props.user.id}>{props.user.username}</option>)
+    return (
+
+        props.players.map((elem, index) =>
+            <select id={index} onChange={props.onChange}>
+                <option default={true} value={0}>Choose a Player</option>
+                {props.users.map(user => <option value={user.id}>{user.username}</option>)}
+            </select>
+        )
+
+    )
 }
 
 export default SelectPlayer

@@ -11,32 +11,32 @@ class PlaySaveModal extends Component {
         super(props);
         this.state = {
             notes: '',
-            date: new Date(),
+            date: null,
             users: [],
             gameId: '',
             players: [],
-            playerCount: []
+            playerCount: 0
         }
     }
 
     componentWillMount() {
         logic.getAllUsers()
-        .then(users => {
-            this.setState(() => {
-                return (
-                    { users: users }
-                )
+            .then(users => {
+                this.setState(() => {
+                    return (
+                        {
+                            users: users
+                        }
+                    )
+                })
             })
-        })
     }
 
     playerSelectHandler = (event) => {
 
+
         let index = event.target.id
         let userId = event.target.value
-
-        console.log(event.target.id)
-        console.log(event.target.value)
 
         let players = this.state.players
         players[index] = userId
@@ -50,13 +50,25 @@ class PlaySaveModal extends Component {
         })
     }
 
-    playerCountChangeHandler = event => {
+    playerCountChangeHandler = async (event) => {
+
+
         let playerCount = parseInt(event.target.value)
-        let players = new Array(playerCount)
-        for (let i = 0; i < players.length; i++) {
-            players[i] = i
+        let players = this.state.players
+
+        if (playerCount > players.length) {
+            let diff = playerCount - players.length
+            for (let i = 1; i <= diff; i++) {
+                players.push(1)
+            }
+        } else if (players.length > playerCount) {
+
+            players.splice(players.length - (players.length - playerCount))
         }
-        this.setState({ players: players })
+
+        this.setState({
+            players: players
+        })
     }
 
     componentWillReceiveProps(props) {
@@ -86,7 +98,27 @@ class PlaySaveModal extends Component {
 
         const { notes, date, players, gameId } = this.state
 
-        this.props.onSavePlay(notes, date, players, gameId)
+        if(date === null) {
+            this.props.onError('Please insert a valid date')
+        } else if (notes.length === 0) {
+            this.props.onError('Please insert some notes')
+        } else if (!players.length || players.some(player => player === 1)) {
+            this.props.onError('Please choose valid players')
+        } else {
+            this.props.onPlaySave(notes, date, players, gameId)
+            this.props.onError('Play succesfully registered')
+            this.props.onClose()
+            this.setState(() => {
+                return ({
+                    notes: '',
+                    date: null,
+                    users: [],
+                    gameId: '',
+                    players: [],
+                    playerCount: 0
+                })
+            })
+        }
     }
 
     render() {
@@ -110,21 +142,23 @@ class PlaySaveModal extends Component {
                             <input type="text" placeholder="Notes" onChange={this.handleNotesChange} />
 
                             <select onChange={this.playerCountChangeHandler}>
-                                {maxPlayerCount.map((value, index) => <option default={index === 0 ? true : false} value={value}>{value}</option>)}
+                                <option default={true} value={0}>Number of players</option>
+                                {maxPlayerCount.map((value, index) => <option value={value}>{value}</option>)}
                             </select>
 
-                            {/* <SelectPlayer
+                            <SelectPlayer
                                 players={this.state.players}
-                                onChange={this.playerSelectHandler.bind(this)}
+                                playerCount={this.state.playerCount}
                                 users={this.state.users}
-                            /> */}
+                                onChange={this.playerSelectHandler}
+                            />
 
-                            {this.state.players.map((elem, index) =>
+                            {/* {this.state.players.map((elem, index) =>
                                 <select id={index} onChange={this.playerSelectHandler}>
                                     <option default='true' value={0}>Choose a Player</option>
                                     {this.state.users.map(user => <option value={user.id}>{user.username}</option>)}
                                 </select>
-                            )}
+                            )} */}
 
 
                             <button type="submit">Save Play</button>
