@@ -4,7 +4,7 @@ const logic = {
 
     url: 'NO-URL',
 
-    registerUser(name, surname, username, password, email) {
+    async registerUser(name, surname, username, password, email) {
         if (typeof name !== 'string') throw TypeError(`${name} is not a string`)
         if (typeof surname !== 'string') throw TypeError(`${surname} is not a string`)
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
@@ -222,5 +222,5 @@ const logic = {
     }
 }
 
-// export default logic
-module.exports = logic
+export default logic
+// module.exports = logic

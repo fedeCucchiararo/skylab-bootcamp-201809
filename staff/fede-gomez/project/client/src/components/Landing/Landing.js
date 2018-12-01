@@ -211,14 +211,14 @@ class Landing extends Component {
                                             <p className="nav-link" onClick={this.props.onLogoutClick}>Sign out</p>
                                         </li> :
                                         <li className="nav-item">
-                                            <p className="nav-link" onClick={this.props.onLoginClick}>Sing In</p>
+                                            <p className="nav-link" onClick={this.handleSignInClick}>Sing In</p>
                                         </li>
                                     }
 
                                     {logic.loggedIn ?
                                         null :
                                         <li className="nav-item">
-                                            <p className="nav-link" onClick={this.props.onSaveClick}>Sign Up</p>
+                                            <p className="nav-link" onClick={this.handleSignUpClick}>Sign Up</p>
                                         </li>
                                     }
 

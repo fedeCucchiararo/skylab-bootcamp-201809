@@ -20,26 +20,19 @@ class App extends Component {
   goBackHandler = () => this.props.history.push('/')
 
   registerHandler = (name, surname, username, password, email) => {
-    try {
-      logic.registerUser(name, surname, username, password, email)
-        .then(() => {
-          this.setState({ error: null }, () => this.props.history.push('/login'))
-        })
-        .catch(err => this.setState({ error: err.message }))
-    } catch (err) {
-      this.setState({ error: err.message })
-    }
+    logic.registerUser(name, surname, username, password, email)
+      .then(() => {
+        this.setState({ error: null }, () => this.props.history.push('/login'))
+      })
+      .catch(err => this.setState({ error: err.message }))
   }
 
   loginHandler = (username, password) => {
-    try {
-        logic.login(username, password)
-            .then(() =>  this.props.history.push('/'))
-            .catch(err => this.setState({ error: err.message }))
-    } catch (err) {
-        this.setState({ error: err.message })
-    }
-}
+    logic.login(username, password)
+      .then(() => this.props.history.push('/'))
+      .catch(err => this.setState({ error: err.message }))
+  }
+
 
   logoutClickHandler = () => {
     logic.logout()
@@ -51,8 +44,8 @@ class App extends Component {
       <div className='App'>
         <Route exact path="/" render={() => <Landing onRegisterClick={this.registerClickHandler} onLogoutClick={this.logoutClickHandler} onLoginClick={this.loginClickHandler} />} />
         {/* <Route exact path="/home" render={() => logic.loggedIn ? <Home /> : <Redirect to="/" />} /> */}
-        <Route exact path="/register" render={() => !logic.loggedIn ? <Register onRegister={this.registerHandler} onGoBack={this.goBackHandler} /> : <Redirect to="/home" />} />
-        <Route exact path="/login" render={() => !logic.loggedIn ? <Login onLogin={this.loginHandler} onGoBack={this.goBackHandler} /> : <Redirect to="/home" />} />
+        <Route exact path="/register" render={() => !logic.loggedIn ? <Register onRegister={this.registerHandler} onGoBack={this.goBackHandler} /> : <Redirect to="/" />} />
+        <Route exact path="/login" render={() => !logic.loggedIn ? <Login onLogin={this.loginHandler} onGoBack={this.goBackHandler} /> : <Redirect to="/" />} />
       </div>
     )
   }
