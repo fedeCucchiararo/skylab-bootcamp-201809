@@ -145,11 +145,31 @@ class Landing extends Component {
     }
 
     playSaveHandler = (notes, date, players, gameId) => {
-        debugger
+
         logic.registerPlay(notes, date, players, gameId)
-            .then((res) => {
-                debugger
-                this.setState({ error: res.message })
+            .then(async (res) => {
+                let plays = await logic.getUserPlays(logic._userId)
+                this.setState(() => {
+                    return ({
+                        error: res.message,
+                        plays: [...plays]
+                    })
+                })
+            })
+            .catch(err => this.setState({ error: err.message }))
+    }
+
+    playDeleteHandler = (playId) => {
+        
+        logic.deletePlay(playId)
+            .then(async (res) => {
+                let plays = await logic.getUserPlays(logic._userId)
+                this.setState(() => {
+                    return ({
+                        error: res.message,
+                        plays: [...plays]
+                    })
+                })
             })
             .catch(err => this.setState({ error: err.message }))
     }
@@ -176,15 +196,17 @@ class Landing extends Component {
         return (
             <div>
 
-                {this.state.error ?
-                    <Snackbar
-                        onCloseSnackbar={this.closeErrorSnackbarHandler}
-                        message={this.state.error}
-                        className={'snackbar'}
-                    />
-                    : null}
+                {
+                    this.state.error ?
+                        <Snackbar
+                            onCloseSnackbar={this.closeErrorSnackbarHandler}
+                            message={this.state.error}
+                            className={'snackbar'}
+                        />
+                        : null
+                }
 
-                <GameInfoModal
+                < GameInfoModal
                     onMechanicsClick={this.mechanicsClickHandler}
                     onClose={this.closeModalHandler}
                     show={this.state.showGameInfo}
@@ -284,7 +306,7 @@ class Landing extends Component {
                         }
                         {logic.loggedIn ?
                             <Tabs.Tab id="tab3" title="My Plays">
-                                <PlayList plays={this.state.plays} />
+                                <PlayList onPlayDelete={this.playDeleteHandler} plays={this.state.plays} />
                             </Tabs.Tab>
                             : null
                         }
@@ -294,7 +316,7 @@ class Landing extends Component {
                         <h1> This is the footer </h1>
                     </footer>
                 </div>
-            </div>
+            </div >
         )
     }
 

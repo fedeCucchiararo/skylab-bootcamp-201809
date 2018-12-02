@@ -12,7 +12,7 @@ const Card = (props) => {
         <CSSTransition
             in={true}
             appear={true}
-            timeout={1000}
+            timeout={300}
             classNames='fade'
         >
             <div className='card-container'>
