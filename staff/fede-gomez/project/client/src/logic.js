@@ -189,7 +189,7 @@ const logic = {
     },
 
     registerPlay(notes, date, players, gameId) {
-
+        
         return fetch(`${this.url}/users/${this._userId}/plays`, {
             method: 'POST',
             headers: {
@@ -202,6 +202,21 @@ const logic = {
             .then(res => {
                 if (res.error) throw Error(res.error)
                 return res
+            })
+    },
+
+    deletePlay(playId){
+        return fetch(`${this.url}/users/${this._userId}/plays/${playId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res.message
             })
     },
 

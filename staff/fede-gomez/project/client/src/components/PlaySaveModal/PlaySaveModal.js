@@ -64,6 +64,8 @@ class PlaySaveModal extends Component {
             players.splice(players.length - (players.length - playerCount))
         }
 
+        players[0] = logic._userId
+
         this.setState({
             players: players
         })
@@ -103,7 +105,6 @@ class PlaySaveModal extends Component {
     }
 
     checkDuplicity = array => {
-        debugger
         let counts = [];
         for (var i = 0; i <= array.length; i++) {
             if (counts[array[i]] === undefined) {
@@ -146,7 +147,7 @@ class PlaySaveModal extends Component {
             this.props.onError('You cannot choose the same player more than once')
         } else {
             this.props.onPlaySave(notes, date, players, gameId)
-            this.props.onError('Play succesfully registered')
+            // this.props.onError('Play succesfully registered')
             this.props.onClose()
             this.setState(() => {
                 return ({
@@ -191,6 +192,7 @@ class PlaySaveModal extends Component {
                                 playerCount={this.state.playerCount}
                                 users={this.state.users}
                                 onChange={this.playerSelectHandler}
+                                thisPlayer={logic._userId}
                             />
 
                             {/* {this.state.players.map((elem, index) =>

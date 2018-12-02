@@ -217,7 +217,7 @@ router.post('/users/:userId/plays', [bearerTokenParser, jwtVerifier, jsonBodyPar
                 }
             })
             .then(() => res.json({
-                message: 'play registered'
+                message: 'Play succesfully saved'
             }))
             .catch((err) =>
                 res.json({
@@ -246,7 +246,7 @@ router.delete('/users/:userId/plays/:playId', [bearerTokenParser, jwtVerifier], 
                 }
             })
             .then(() => res.json({
-                message: 'play deleted'
+                message: 'Play succesfully deleted'
             }))
             .catch((err) =>
                 res.json({

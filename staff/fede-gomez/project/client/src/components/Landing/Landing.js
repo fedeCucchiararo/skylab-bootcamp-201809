@@ -40,7 +40,7 @@ class Landing extends Component {
         if (logic.loggedIn) {
             let ownedGames = await logic.getUserOwnedGames(logic._userId)
             let plays = await logic.getUserPlays(logic._userId)
-            
+
             this.setState(() => {
                 return ({
                     ownedGames: [...ownedGames.data],
@@ -145,16 +145,13 @@ class Landing extends Component {
     }
 
     playSaveHandler = (notes, date, players, gameId) => {
-        // try {
-        //     logic.registerUser(name, surname, username, password, email)
-        //         .then(() => {
-        //             this.setState({ error: null }, () => this.props.history.push('/login'))
-        //         })
-        //         .catch(err => this.setState({ error: err.message }))
-        // } catch (err) {
-        //     this.setState({ error: err.message })
-        // }
-        console.log(notes, date, players, gameId)
+        debugger
+        logic.registerPlay(notes, date, players, gameId)
+            .then((res) => {
+                debugger
+                this.setState({ error: res.message })
+            })
+            .catch(err => this.setState({ error: err.message }))
     }
 
     closeErrorSnackbarHandler = () => {
@@ -262,7 +259,7 @@ class Landing extends Component {
                                 onAddOrRemoveClick={this.addOrRemoveHandler}
                                 onMoreInfoClick={this.moreInfoHandler}
                                 games={this.state.allGames}
-                                searchQuery={searchQuery} 
+                                searchQuery={searchQuery}
                                 loggedIn={logic.loggedIn}
                                 title={'All Games'}
                                 fromOwned={false}
