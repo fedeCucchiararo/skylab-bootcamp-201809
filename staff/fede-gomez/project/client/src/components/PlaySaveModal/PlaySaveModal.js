@@ -19,18 +19,18 @@ class PlaySaveModal extends Component {
         }
     }
 
-    componentWillMount() {
-        logic.getAllUsers()
-            .then(users => {
-                this.setState(() => {
-                    return (
-                        {
-                            users: users
-                        }
-                    )
-                })
-            })
-    }
+    // componentWillMount() {
+    //     logic.getAllUsers()
+    //         .then(users => {
+    //             this.setState(() => {
+    //                 return (
+    //                     {
+    //                         users: users
+    //                     }
+    //                 )
+    //             })
+    //         })
+    // }
 
     playerSelectHandler = (event) => {
 
@@ -40,8 +40,6 @@ class PlaySaveModal extends Component {
 
         let players = this.state.players
         players[index] = userId
-
-        console.log('Players array (state):', players)
 
         this.setState(() => {
             return ({
@@ -72,6 +70,17 @@ class PlaySaveModal extends Component {
     }
 
     componentWillReceiveProps(props) {
+        console.log('componentWillReceiveProps', props)
+        logic.getAllUsers()
+            .then(users => {
+                this.setState(() => {
+                    return (
+                        {
+                            users: users
+                        }
+                    )
+                })
+            })
         this.setState({ gameId: props.game.id })
     }
 
@@ -93,20 +102,32 @@ class PlaySaveModal extends Component {
         this.setState({ players })
     }
 
+    checkDuplicity = array => {
+        debugger
+        let counts = [];
+        for (var i = 0; i <= array.length; i++) {
+            if (counts[array[i]] === undefined) {
+                counts[array[i]] = 1
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
     equalsOne = (elem) => {
         return elem === 1
     }
 
     onCloseHandler = () => {
-        this.setState(() => {
-            return ({
-                notes: '',
-                date: null,
-                gameId: '',
-                players: [],
-                playerCount: 0
-            })
-        })
+        this.setState(({
+            notes: '',
+            date: null,
+            gameId: '',
+            players: [],
+            users: [],
+            playerCount: 0
+        }))
         this.props.onClose()
     }
 
@@ -115,12 +136,14 @@ class PlaySaveModal extends Component {
 
         const { notes, date, players, gameId } = this.state
 
-        if(date === null) {
+        if (!date) {
             this.props.onError('Please insert a valid date')
         } else if (notes.length === 0) {
             this.props.onError('Please insert some notes')
         } else if (!players.length || players.some(this.equalsOne)) {
             this.props.onError('Please choose valid players')
+        } else if (this.checkDuplicity(players)) {
+            this.props.onError('You cannot choose the same player more than once')
         } else {
             this.props.onPlaySave(notes, date, players, gameId)
             this.props.onError('Play succesfully registered')
