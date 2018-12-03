@@ -10,6 +10,14 @@ import GameInfoModal from '../GameInfoModal/GameInfoModal'
 import { CSSTransition } from 'react-transition-group'
 import { Tabs } from "@yazanaabed/react-tabs";
 
+/** Pagination */
+
+import Countries from 'countries-api';
+
+import Pagination from '../Pagination/Pagination';
+import CountryCard from '../CountryCard/CountryCard';
+
+
 class Landing extends Component {
 
     state = {
@@ -20,12 +28,13 @@ class Landing extends Component {
         showPlaySaveModal: false,
         game: {},
         search: '',
-        plays: []
+        plays: [],
+        allCountries: [],
+        currentGames: [],
+        currentPage: null,
+        totalPages: null
     }
 
-    updateSearch = (event) => {
-        this.setState({ search: event.target.value })
-    }
 
     async componentDidMount() {
 
@@ -33,7 +42,8 @@ class Landing extends Component {
 
         this.setState((prevState, props) => {
             return ({
-                allGames: [...allGames.data]
+                allGames: [...allGames.data],
+                allCountries: [...allGames.data]
             })
         })
 
@@ -48,6 +58,20 @@ class Landing extends Component {
                 })
             })
         }
+    }
+
+    onPageChanged = data => {
+        const { allCountries } = this.state;
+        const { currentPage, totalPages, pageLimit } = data;
+
+        const offset = (currentPage - 1) * pageLimit;
+        const currentGames = allCountries.slice(offset, offset + pageLimit);
+
+        this.setState({ currentPage, currentGames, totalPages });
+    }
+
+    updateSearch = (event) => {
+        this.setState({ search: event.target.value })
     }
 
     changeHandler = (event) => {
@@ -160,7 +184,7 @@ class Landing extends Component {
     }
 
     playDeleteHandler = (playId) => {
-        
+
         logic.deletePlay(playId)
             .then(async (res) => {
                 let plays = await logic.getUserPlays(logic._userId)
@@ -189,7 +213,16 @@ class Landing extends Component {
     handleSignInClick = () => this.props.history.push('/login')
 
 
+
+
     render() {
+
+        const { allCountries, currentGames, currentPage, totalPages } = this.state;
+        const totalCountries = allCountries.length;
+
+        if (totalCountries === 0) return null;
+
+        const headerClass = ['text-dark py-2 pr-4 m-0', currentPage ? 'border-gray border-right' : ''].join(' ').trim();
 
         let searchQuery = this.state.search.replace(/\s+/g, '').toLowerCase()
 
@@ -316,7 +349,37 @@ class Landing extends Component {
                         <h1> This is the footer </h1>
                     </footer>
                 </div>
-            </div >
+
+                { /** Pagination */}
+
+                <div className="container mb-5">
+                    <div className="row d-flex flex-row py-5">
+
+                        <div className="w-100 px-4 py-5 d-flex flex-row flex-wrap align-items-center justify-content-between">
+                            <div className="d-flex flex-row align-items-center">
+
+                                <h2 className={headerClass}>
+                                    <strong className="text-secondary">{totalCountries}</strong> Games
+                                </h2>
+
+                                {currentPage && (
+                                    <span className="current-page d-inline-block h-100 pl-4 text-secondary">
+                                        Page <span className="font-weight-bold">{currentPage}</span> / <span className="font-weight-bold">{totalPages}</span>
+                                    </span>
+                                )}
+
+                            </div>
+
+                            <div className="d-flex flex-row py-4 align-items-center">
+                                <Pagination totalRecords={totalCountries} pageLimit={5} pageNeighbours={1} onPageChanged={this.onPageChanged} />
+                            </div>
+                        </div>
+
+                        {currentGames.map(game => <CountryCard key={game.id} game={game} loggedIn={logic.loggedIn} fromOwned={false}/>)}
+
+                    </div>
+                </div>
+            </div>
         )
     }
 
