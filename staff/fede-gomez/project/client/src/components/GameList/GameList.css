@@ -1,4 +1,4 @@
-.main__cards {
+.gamelist-main__cards {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -8,7 +8,7 @@
     justify-content: center;
 }
 
-.main__title {
+.gamelist-main__title {
     text-align: center;
     margin-top: 13px;
 }

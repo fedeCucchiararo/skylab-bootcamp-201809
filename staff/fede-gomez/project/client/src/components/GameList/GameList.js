@@ -12,9 +12,9 @@ const GameList = (props) => {
     })
 
     return (
-        <section className='main'>
-            <h1 className='main__title'>{props.title}</h1>
-            <div className='main__cards'>
+        <section className='gamelist-main'>
+            <h1 className='gamelist-main__title'>{props.title}</h1>
+            <div className='gamelist-main__cards'>
                 {
                     filteredGames.map(game =>
                         <Card

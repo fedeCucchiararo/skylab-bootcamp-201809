@@ -44,3 +44,27 @@
 .nav-link {
     cursor: pointer;
 }
+
+.allGames__container {
+    display: block;
+}
+
+.allGames__head {
+    display: block;
+    text-align: center;
+    justify-content: center;
+}
+
+.allGames__totalPages {
+    display: inline-block;
+}
+
+.allGames__body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}

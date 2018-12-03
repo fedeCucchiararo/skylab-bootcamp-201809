@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import PropTypes from 'prop-types'
 
 const LEFT_PAGE = 'LEFT'
 const RIGHT_PAGE = 'RIGHT'
@@ -19,6 +18,15 @@ const range = (from, to, step = 1) => {
     }
 
     return range
+}
+
+/** somehow classNames are not working for this item . It might be because of bootstrap */
+const ul_style = {
+    'justify-content': 'center',
+    'display': 'flex',
+    'padding-left': 0,
+    'list-style': 'none',
+    'border-radius': '.25rem'
 }
 
 
@@ -156,14 +164,14 @@ class Pagination extends Component {
 
         return (
             <Fragment>
-                <nav aria-label="Countries Pagination">
-                    <ul className="pagination">
+                <nav aria-label="Games Pagination">
+                    <ul style={ul_style}>
                         {pages.map((page, index) => {
 
                             if (page === LEFT_PAGE) return (
                                 <li key={index} className="page-item">
                                     <a className="page-link" href="#" aria-label="Previous" onClick={this.handleMoveLeft}>
-                                        <span aria-hidden="true">&laquo</span>
+                                        <span aria-hidden="true">{'<<'}</span>
                                         <span className="sr-only">Previous</span>
                                     </a>
                                 </li>
@@ -172,7 +180,7 @@ class Pagination extends Component {
                             if (page === RIGHT_PAGE) return (
                                 <li key={index} className="page-item">
                                     <a className="page-link" href="#" aria-label="Next" onClick={this.handleMoveRight}>
-                                        <span aria-hidden="true">&raquo</span>
+                                        <span aria-hidden="true">{'>>'}</span>
                                         <span className="sr-only">Next</span>
                                     </a>
                                 </li>
@@ -188,18 +196,11 @@ class Pagination extends Component {
 
                     </ul>
                 </nav>
-            </Fragment>
+            </Fragment >
         )
 
     }
 
-}
-
-Pagination.propTypes = {
-    totalRecords: PropTypes.number.isRequired,
-    pageLimit: PropTypes.number,
-    pageNeighbours: PropTypes.number,
-    onPageChanged: PropTypes.func
 }
 
 export default Pagination
