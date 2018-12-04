@@ -16,9 +16,11 @@ const Play = (props) => {
             <div className='play-card'>
                 <img className='play-card__image' src={props.play.game.thumbnail}></img>
                 <h4>{props.play.game.name}</h4>
+                <h5>Players:</h5>
                 <ul>
                     {props.play.players.map(player => <li>Player {count++}: {player.name}</li>)}
                 </ul>
+                <h5 className="showPlayPictures" onClick={()=> props.onShowPlayPictures(props.play.id)}>Show Pictures</h5>
                 <p>{props.play.notes}</p>
                 <p className="play-card__delete" onClick={() => props.onPlayDelete(props.play.id)}> Delete Play </p>
                 <form encType="multipart/form-data" onSubmit={(event) => {event.preventDefault(); props.onPictureUpload(event, props.play.id)}}>

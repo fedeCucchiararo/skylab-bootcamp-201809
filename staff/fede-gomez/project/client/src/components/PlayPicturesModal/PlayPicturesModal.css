@@ -1,0 +1,134 @@
+.playPicturesModal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 3;
+    -webkit-transition: display 1s linear;
+    transition: display 1s linear;
+    
+  }
+  
+  .playPicturesModal-main {
+    position:fixed;
+    background: white;
+    width: 90%;
+    height: auto;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    border-radius: 15px;
+    padding: 20px;
+    height: 90vh;
+    overflow: scroll;
+  }
+
+  .playPicturesModal-main__description {
+    text-align: justify;
+    padding: 15px;
+  }
+
+  .playPicturesModal-main__title {
+    font-weight: 400;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .playPicturesModal-subtitle {
+    font-weight: 400;
+    padding: 0 15px;
+  }
+
+  .playPicturesModal-main__image-container {
+    margin-left: 5%;
+  }
+
+  .playPicturesModal-main__image {
+    max-width:90%;
+    max-height:90%;
+    width: auto;
+    float: left;
+    margin: 10px 20px 11px 10px;
+    border-radius: 10px;
+  }
+  
+  .display-block {
+    display: block;
+  }
+  
+  .display-none {
+    display: none;
+  }
+
+  .playPicturesModal-mechanics {
+    background-color: #ddd;
+    padding: 3px 10px;
+    margin: 0 5px 10px;
+    border-radius: 10px;
+    color: #000;
+    font-weight: 400;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+    display: inline-block;
+    transition: all ease 0.3s;
+    font-size: 13px;
+  }
+
+  .playPicturesModal-mechanics:hover {
+    color: #fff;
+    background-color: #30C820;
+    box-shadow: 0 0 0px 1px #30C820;
+    cursor: pointer;
+  }
+
+  .playPicturesModal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border-radius: 10px;
+  }
+
+  .playPicturesModal-close:hover {
+    color: #fff;
+    background-color: black;
+    box-shadow: 0 0 0px 1px #30C820;
+    cursor: pointer;
+  }
+
+  .picture-container{
+    margin: 10px;
+  }
+
+  .showPlayPictures {
+    display: inline-block;
+    cursor: pointer;
+    font-weight: 200;
+    transition: all;
+    transition-duration: 100ms;
+    margin: 10px;
+}
+
+.showPlayPictures:hover {
+    font-weight: 300;
+}
+
+.pictures-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: no wrap;
+  padding: 10px;
+}
+
+.picture-container > img {
+  height: auto;
+  width: 100px;
+  cursor: pointer;
+  transition: all;
+  transition-duration: 500ms;
+}
+
+.picture-container > img:hover {
+  width: 72vw;
+
+}

@@ -5,6 +5,7 @@ import GameList from '../GameList/GameList'
 import logic from '../../logic'
 import PlayList from '../PlayList/PlayList'
 import PlaySaveModal from '../PlaySaveModal/PlaySaveModal'
+import PlayPicturesModal from '../PlayPicturesModal/PlayPicturesModal'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
 import { Tabs } from "@yazanaabed/react-tabs";
@@ -19,6 +20,8 @@ class Landing extends Component {
         ownedGames: [],
         showGameInfo: false,
         showPlaySaveModal: false,
+        showPlayPicturesModal: false,
+        playPictures: [],
         game: {},
         search: '',
         plays: [],
@@ -80,10 +83,28 @@ class Landing extends Component {
         })
     }
 
+    showPlayPicturesHandler = async (playId) => {
+        let playPictures = await logic.getPlayPictures(playId)
+        this.setState(() => {
+            return ({
+                playPictures: playPictures,
+                showPlayPicturesModal: !this.state.showPlayPicturesModal
+            })
+        })
+    }
+
     closePlaySaveModalHandler = () => {
         this.setState(() => {
             return ({
                 showPlaySaveModal: !this.state.showPlaySaveModal
+            })
+        })
+    }
+
+    closePlayPicturesModalHandler = () => {
+        this.setState(() => {
+            return ({
+                showPlayPicturesModal: !this.state.showPlayPicturesModal
             })
         })
     }
@@ -176,11 +197,15 @@ class Landing extends Component {
     // }
 
     pictureUploadHandler = (event, playId) => {
-        debugger
+
         let file = event.target[0].files[0]
         logic.addPictureToPlay(file, playId)
-            .then((res) => {
-                debugger
+            .then(res => {
+                this.setState(() => {
+                    return ({
+                        error: res.message
+                    })
+                })
             })
             .catch(err => this.setState({ error: err.message }))
     }
@@ -267,6 +292,12 @@ class Landing extends Component {
                     onPictureUpload={this.pictureUploadHandler}
                 />
 
+                <PlayPicturesModal
+                    onClose={this.closePlayPicturesModalHandler}
+                    show={this.state.showPlayPicturesModal}
+                    playPictures={this.state.playPictures}
+                />
+
                 <div className='landing' >
                     <header className='header-container'>
                         <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -349,7 +380,7 @@ class Landing extends Component {
                         }
                         {logic.loggedIn ?
                             <Tabs.Tab id="tab3" title="My Plays">
-                                <PlayList onPictureUpload={this.pictureUploadHandler} onPlayDelete={this.playDeleteHandler} plays={this.state.plays} />
+                                <PlayList onShowPlayPictures={this.showPlayPicturesHandler} onPictureUpload={this.pictureUploadHandler} onPlayDelete={this.playDeleteHandler} plays={this.state.plays} />
                             </Tabs.Tab>
                             : null
                         }

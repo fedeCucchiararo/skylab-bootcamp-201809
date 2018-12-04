@@ -7,7 +7,7 @@ const PlayList = (props) => {
 
     return (
         <div className='playlist-container'>
-            {props.plays.map(play => <Play onPictureUpload={props.onPictureUpload} onPlayDelete={props.onPlayDelete} play={play}/>)}
+            {props.plays.map(play => <Play onShowPlayPictures={props.onShowPlayPictures} onPictureUpload={props.onPictureUpload} onPlayDelete={props.onPlayDelete} play={play}/>)}
         </div>
     )
 }

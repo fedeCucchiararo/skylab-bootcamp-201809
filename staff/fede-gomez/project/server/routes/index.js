@@ -263,7 +263,7 @@ router.delete('/users/:userId/plays/:playId', [bearerTokenParser, jwtVerifier], 
 
         return logic.deletePlay(playId)
             .then(async (play) => {
-                debugger
+                
                 for (player of play.players) {
                     await logic.removePlayFromUser(player, playId)
                 }
@@ -313,6 +313,23 @@ router.get('/plays', (req, res) => {
     }, res)
 })
 
+router.get('/users/:userId/plays/:playId/pictures', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        
+        const { params: { userId, playId }, sub } = req
+        
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.getPlayPictures(playId)
+            .then((playPictures) =>
+                res.json({
+                    data: playPictures
+                })
+            )
+    }, res)
+})
+// getPlayPictures(playId)
+
 router.post('/users/:userId/plays/:playId/pictures', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
         const { params: { userId, playId }, sub } = req
@@ -340,7 +357,7 @@ router.post('/users/:userId/plays/:playId/pictures', [bearerTokenParser, jwtVeri
             req.pipe(busboy)
         })
             .then(() => res.json({
-                message: 'photo uploaded'
+                message: 'Picture succesfully uploaded'
             }))
     }, res)
 })

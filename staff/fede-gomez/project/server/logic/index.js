@@ -481,6 +481,13 @@ const logic = {
 
         })()
 
+    },
+
+    async getPlayPictures(playId) {
+        
+        let playPictures = await Play.findById(playId, {'pictures': 1}).lean()
+    
+        return playPictures.pictures
     }
 
 }

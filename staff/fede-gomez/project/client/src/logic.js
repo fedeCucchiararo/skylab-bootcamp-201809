@@ -251,17 +251,26 @@ const logic = {
             })
     },
 
-    /**
-     * Add a project image
-     * @param {string} file 
-     * @param {string} projectId 
-     */
+    getPlayPictures(playId) {
+        return fetch(`${this.url}/users/${this._userId}/plays/${playId}/pictures`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res.data
+            })
+    },
+
+
     addPictureToPlay(file, playId) {
-        debugger
         let picture = new FormData()
 
         picture.append('picture', file)
-        debugger
         return fetch(`${this.url}/users/${this._userId}/plays/${playId}/pictures`, {
             method: 'POST',
             headers: {
@@ -270,9 +279,6 @@ const logic = {
             body: picture
         })
             .then(res => res.json())
-            .then(res => {
-                debugger
-            })
     }
 }
 
