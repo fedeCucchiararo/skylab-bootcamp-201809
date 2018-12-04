@@ -257,6 +257,7 @@ const logic = {
      * @param {string} projectId 
      */
     addPictureToPlay(file, playId) {
+        debugger
         let picture = new FormData()
 
         picture.append('picture', file)

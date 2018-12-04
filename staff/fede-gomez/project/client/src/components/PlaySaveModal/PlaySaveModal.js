@@ -184,18 +184,11 @@ class PlaySaveModal extends Component {
                         <div>
                             <h1 className='playSaveModal-head__title'>{this.props.game.name}</h1>
                         </div>
-                        <form encType="multipart/form-data" onSubmit={this.props.onPictureUpload}>
-                            <label className="profileImage-upload">
-                                <input type="file" className="uploadImage-input" name="avatar" onChange={this.props.onPictureUpload} />
-                                Upload image
-                            </label>
-                        </form>
                         <button className="playSaveModal-close" onClick={this.onCloseHandler}>X</button>
                         <form id='form' onSubmit={this.handleSubmit}>
                             {/* <input type="text" placeholder="Name" onChange={this.handleNameChange} /> */}
                             <input type="date" placeholder="Date" onChange={this.handleDateChange} />
                             <input type="text" placeholder="Notes" onChange={this.handleNotesChange} />
-                            <input type="file" onChange={this.handlePictureChange} />
                             <select onChange={this.playerCountChangeHandler}>
                                 <option default={true} value={0}>Number of players</option>
                                 {maxPlayerCount.map((value, index) => <option value={value}>{value}</option>)}

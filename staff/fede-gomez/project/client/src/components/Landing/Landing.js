@@ -167,8 +167,18 @@ class Landing extends Component {
             .catch(err => this.setState({ error: err.message }))
     }
 
-    pictureUploadHandler = event => {
-        logic.addPictureToPlay(event.target.files[0], '5c069a7e25a4963363ac9e89')
+    // pictureUploadHandler = event => {
+    //     logic.addPictureToPlay(event.target.files[0], '5c069a7e25a4963363ac9e89')
+    //         .then((res) => {
+    //             debugger
+    //         })
+    //         .catch(err => this.setState({ error: err.message }))
+    // }
+
+    pictureUploadHandler = (event, playId) => {
+        debugger
+        let file = event.target[0].files[0]
+        logic.addPictureToPlay(file, playId)
             .then((res) => {
                 debugger
             })
@@ -339,7 +349,7 @@ class Landing extends Component {
                         }
                         {logic.loggedIn ?
                             <Tabs.Tab id="tab3" title="My Plays">
-                                <PlayList onPlayDelete={this.playDeleteHandler} plays={this.state.plays} />
+                                <PlayList onPictureUpload={this.pictureUploadHandler} onPlayDelete={this.playDeleteHandler} plays={this.state.plays} />
                             </Tabs.Tab>
                             : null
                         }

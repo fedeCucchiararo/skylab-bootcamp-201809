@@ -21,6 +21,12 @@ const Play = (props) => {
                 </ul>
                 <p>{props.play.notes}</p>
                 <p className="play-card__delete" onClick={() => props.onPlayDelete(props.play.id)}> Delete Play </p>
+                <form encType="multipart/form-data" onSubmit={(event) => {event.preventDefault(); props.onPictureUpload(event, props.play.id)}}>
+                    <label className="profileImage-upload">
+                        <input type="file" className="uploadImage-input" name="avatar" />
+                        <button type="submit">Upload Picture</button>
+                    </label>
+                </form>
             </div>
         </CSSTransition>
     )
