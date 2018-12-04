@@ -15,7 +15,8 @@ class PlaySaveModal extends Component {
             users: [],
             gameId: '',
             players: [],
-            playerCount: 0
+            playerCount: 0,
+            picture: ''
         }
     }
 
@@ -98,6 +99,12 @@ class PlaySaveModal extends Component {
         this.setState({ date })
     }
 
+    handlePictureChange = event => {
+        const picture = event.target.value
+
+        this.setState({ picture })
+    }
+
     handlePlayersChange = event => {
         const players = event.target.value
 
@@ -156,7 +163,8 @@ class PlaySaveModal extends Component {
                     users: [],
                     gameId: '',
                     players: [],
-                    playerCount: 0
+                    playerCount: 0,
+                    picture: ''
                 })
             })
         }
@@ -174,14 +182,20 @@ class PlaySaveModal extends Component {
                             <img className="playSaveModal-head__image" src={this.props.game.image}></img>
                         </div>
                         <div>
-                            <h1 className='playSaveModal-head__title'>{this.props.game.name} / ID: {this.state.gameId}</h1>
+                            <h1 className='playSaveModal-head__title'>{this.props.game.name}</h1>
                         </div>
+                        <form encType="multipart/form-data" onSubmit={this.props.onPictureUpload}>
+                            <label className="profileImage-upload">
+                                <input type="file" className="uploadImage-input" name="avatar" onChange={this.props.onPictureUpload} />
+                                Upload image
+                            </label>
+                        </form>
                         <button className="playSaveModal-close" onClick={this.onCloseHandler}>X</button>
                         <form id='form' onSubmit={this.handleSubmit}>
                             {/* <input type="text" placeholder="Name" onChange={this.handleNameChange} /> */}
                             <input type="date" placeholder="Date" onChange={this.handleDateChange} />
                             <input type="text" placeholder="Notes" onChange={this.handleNotesChange} />
-
+                            <input type="file" onChange={this.handlePictureChange} />
                             <select onChange={this.playerCountChangeHandler}>
                                 <option default={true} value={0}>Number of players</option>
                                 {maxPlayerCount.map((value, index) => <option value={value}>{value}</option>)}

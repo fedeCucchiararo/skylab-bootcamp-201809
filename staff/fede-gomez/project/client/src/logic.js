@@ -204,7 +204,7 @@ const logic = {
     },
 
     registerPlay(notes, date, players, gameId) {
-        
+
         return fetch(`${this.url}/users/${this._userId}/plays`, {
             method: 'POST',
             headers: {
@@ -220,7 +220,7 @@ const logic = {
             })
     },
 
-    deletePlay(playId){
+    deletePlay(playId) {
         return fetch(`${this.url}/users/${this._userId}/plays/${playId}`, {
             method: 'DELETE',
             headers: {
@@ -248,6 +248,29 @@ const logic = {
 
                 if (res.error) throw Error(res.error)
                 return res.data
+            })
+    },
+
+    /**
+     * Add a project image
+     * @param {string} file 
+     * @param {string} projectId 
+     */
+    addPictureToPlay(file, playId) {
+        let picture = new FormData()
+
+        picture.append('picture', file)
+        debugger
+        return fetch(`${this.url}/users/${this._userId}/plays/${playId}/pictures`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: picture
+        })
+            .then(res => res.json())
+            .then(res => {
+                debugger
             })
     }
 }

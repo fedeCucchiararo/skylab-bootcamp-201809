@@ -167,6 +167,15 @@ class Landing extends Component {
             .catch(err => this.setState({ error: err.message }))
     }
 
+    pictureUploadHandler = event => {
+        logic.addPictureToPlay(event.target.files[0], '5c069a7e25a4963363ac9e89')
+            .then((res) => {
+                debugger
+            })
+            .catch(err => this.setState({ error: err.message }))
+    }
+
+
     playDeleteHandler = (playId) => {
 
         logic.deletePlay(playId)
@@ -245,6 +254,7 @@ class Landing extends Component {
                     onPlaySave={this.playSaveHandler}
                     game={this.state.game}
                     onError={this.playSaveErrorHandler}
+                    onPictureUpload={this.pictureUploadHandler}
                 />
 
                 <div className='landing' >

@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const bearerTokenParser = require('../utils/bearer-token-parser')
 const jwtVerifier = require('./jwt-verifier')
 const routeHandler = require('./route-handler')
+const Busboy = require('busboy')
+const cloudinary = require('cloudinary')
 
 const jsonBodyParser = bodyParser.json()
 
@@ -12,8 +14,13 @@ const router = express.Router()
 
 const { env: { JWT_SECRET } } = process
 
+// const extractEmails = (text) => {
+//     return text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
+// }
+
 router.post('/users', jsonBodyParser, (req, res) => {
     routeHandler(() => {
+
         const { name, surname, username, password, email } = req.body
 
         return logic.registerUser(name, surname, username, password, email)
@@ -25,10 +32,12 @@ router.post('/users', jsonBodyParser, (req, res) => {
                     message: `${username} successfully registered`
                 })
             })
-            .catch(err =>
+            .catch(err => {
+                debugger
                 res.json({
                     error: err.message
                 })
+            }
             )
     }, res)
 })
@@ -301,6 +310,38 @@ router.get('/plays', (req, res) => {
                     data: plays
                 })
             )
+    }, res)
+})
+
+router.post('/users/:userId/plays/:playId/pictures', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { userId, playId }, sub } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return new Promise(async (resolve, reject) => {
+            const busboy = new Busboy({ headers: req.headers })
+
+            await busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+
+                logic.addPictureToPlay(playId, file)
+                    .then(() => {
+                        resolve()
+                    })
+
+            })
+            busboy.on('finish', () => {
+
+                resolve()
+
+            })
+            busboy.on('error', err => reject(err))
+
+            req.pipe(busboy)
+        })
+            .then(() => res.json({
+                message: 'photo uploaded'
+            }))
     }, res)
 })
 

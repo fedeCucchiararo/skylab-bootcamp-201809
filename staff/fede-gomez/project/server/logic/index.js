@@ -1,5 +1,6 @@
 const { User, Game, Play } = require('../data')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
+const cloudinary = require('cloudinary')
 
 const nodemailer = require('nodemailer')
 const sendgridTransport = require('nodemailer-sendgrid-transport')
@@ -10,6 +11,13 @@ const transporter = nodemailer.createTransport(sendgridTransport({
     }
 }))
 
+isAlreadyRegisteredEmail = (email) => User.find({ email: email })
+
+cloudinary.config({
+    cloud_name: 'fedecucchiararo',
+    api_key: '556686945144935',
+    api_secret: 'ihFgs5gRkdbftt2ejv4ByobvihY'
+})
 
 const logic = {
 
@@ -42,10 +50,12 @@ const logic = {
         if (!password.trim()) throw new ValueError('password is empty or blank')
         if (!email.trim()) throw new ValueError('email is empty or blank')
 
-        return User.findOne({ username })
-            .then(user => {
-                if (user) throw new AlreadyExistsError(`username ${username} already registered`)
+        if (isAlreadyRegisteredEmail(email)) throw new Error(`email ${email} already registered`)
 
+        return User.findOne({ username }).lean()
+            .then(user => {
+
+                if (user) throw new AlreadyExistsError(`username ${username} already registered`)
                 user = new User({ name, surname, username, password, email })
 
                 return user.save()
@@ -95,7 +105,7 @@ const logic = {
             })
     },
 
-    updateUser(id, newName, newSurname, newEmail, newPassword, password) {
+    updateUser(id, newName, newSurname, newEmail, newPassword, password, picture) {
 
 
 
@@ -132,7 +142,7 @@ const logic = {
 
     async getAllUsers() {
 
-        let users = await User.find({}, {'username': 1, '_id': 1}).lean()
+        let users = await User.find({}, { 'username': 1, '_id': 1 }).lean()
 
         for (user of users) {
             user.id = user._id.toString()
@@ -251,7 +261,7 @@ const logic = {
             page: data.page,
             pages: data.pages
         }
-        return {paginationData, games}
+        return { paginationData, games }
     },
 
     async addNewGame({ bggId, name, description, image, thumbnail, minPlayers, maxPlayers, playingTime, mechanics, yearPublished, bggRating, designers }) {
@@ -346,7 +356,7 @@ const logic = {
         await delete play._id
 
         await Play.deleteOne({ _id: playId })
-        
+
 
         return play
     },
@@ -414,10 +424,10 @@ const logic = {
             .then(user => {
                 /** not neccesary. If empty, then pass an empty array and the client side will render nothing */
                 // if (user.plays.length === 0) throw new NotFoundError(`no plays for user with id ${userId}`)
-                
+
                 // Make sure that the ownedGames array contains strings and not bsontype values
                 user.plays.forEach((play) => {
-                    
+
                     /** Delete unnecessary fields and return string id */
                     play.players.forEach((player) => {
 
@@ -447,6 +457,30 @@ const logic = {
         //         })
         //         return user.plays
         //     })
+    },
+
+    async addPictureToPlay(playId, file) {
+
+        return (async () => {
+            let play = await Play.findById(playId)
+
+            if (!play) throw new NotFoundError(`play does not exist`)
+
+            const result = await new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream((result, error) => {
+                    if (error) return reject(error)
+
+                    resolve(result)
+                })
+
+                file.pipe(stream)
+            })
+
+            await Play.updateOne({ _id: playId }, { $push: {pictures: result.url} })
+            
+
+        })()
+
     }
 
 }

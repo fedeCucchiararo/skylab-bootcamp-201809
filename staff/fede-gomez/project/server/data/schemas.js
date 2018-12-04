@@ -71,7 +71,10 @@ const Play = new Schema({
     },
     notes: {
         type: String
-    }
+    },
+    pictures: [{
+        type: String
+    }]
 })
 
 const User = new Schema({
@@ -96,6 +99,9 @@ const User = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    picture: {
+        type: String
     },
     ownedGames: [
         {
