@@ -1,4 +1,5 @@
 const { Schema, SchemaTypes: { ObjectId } } = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate');
 
 
 /**
@@ -126,6 +127,8 @@ const User = new Schema({
 //         default: 'No description for this mechanic'
 //     }
 // })
+
+Game.plugin(mongoosePaginate)
 
 module.exports = {
     Game,

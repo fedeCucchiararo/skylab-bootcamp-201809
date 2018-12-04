@@ -36,7 +36,7 @@ router.post('/users', jsonBodyParser, (req, res) => {
 /** get all users */
 router.get('/users', (req, res) => {
     routeHandler(() => {
-        
+
         return logic.getAllUsers()
             .then(users =>
                 res.json({
@@ -158,6 +158,20 @@ router.get('/games', (req, res) => {
             .then((games) =>
                 res.json({
                     data: games
+                })
+            )
+    }, res)
+})
+
+router.get('/games/:from/:perPage', (req, res) => {
+
+    const { from, perPage } = req.params
+
+    routeHandler(() => {
+        return logic.getAllGamesWithPagination(parseInt(from), parseInt(perPage))
+            .then((data) =>
+                res.json({
+                    data
                 })
             )
     }, res)

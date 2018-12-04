@@ -68,3 +68,25 @@
     -webkit-justify-content: center;
     justify-content: center;
 }
+
+.gamelist__loadMore {
+    width: fit-content;
+    margin: 20px auto;
+    padding: 5px;
+    color: grey;
+    cursor: pointer;
+}
+
+.gamelist__loadMore:hover {
+    transition-property: all;
+    transition-duration: 200ms;
+    color: black;
+}
+
+.filter_input {
+    margin: 10px auto;
+    border: 1px solid grey;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 2px 2px 4px rgb(70, 50, 100);
+}

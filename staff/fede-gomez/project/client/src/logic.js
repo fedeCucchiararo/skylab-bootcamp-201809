@@ -173,6 +173,21 @@ const logic = {
             })
     },
 
+    getAllGamesWithPagination(from, perPage) {
+
+        return fetch(`${this.url}/games/${from}/${perPage}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res
+            })
+    },
+
     getUserPlays(userId) {
         return fetch(`${this.url}/users/${userId}/plays`, {
             method: 'GET',

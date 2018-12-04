@@ -237,6 +237,23 @@ const logic = {
         return games
     },
 
+    async getAllGamesWithPagination(from, perPage) {
+        let data = await Game.paginate({}, { page: from, limit: perPage })
+        let games = data.docs
+        debugger
+        games.forEach(game => {
+            game._doc.id = game._doc._id.toString()
+            delete game._doc._id
+        })
+        let paginationData = {
+            total: data.total,
+            limit: data.limit,
+            page: data.page,
+            pages: data.pages
+        }
+        return {paginationData, games}
+    },
+
     async addNewGame({ bggId, name, description, image, thumbnail, minPlayers, maxPlayers, playingTime, mechanics, yearPublished, bggRating, designers }) {
 
         /** Data validation for type errors */

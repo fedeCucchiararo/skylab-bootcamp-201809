@@ -4,19 +4,12 @@ import Snackbar from '../Snackbar/Snackbar'
 import GameList from '../GameList/GameList'
 import logic from '../../logic'
 import PlayList from '../PlayList/PlayList'
-import Card from '../Card/Card'
 import PlaySaveModal from '../PlaySaveModal/PlaySaveModal'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
-import { CSSTransition } from 'react-transition-group'
 import { Tabs } from "@yazanaabed/react-tabs";
 
-/** Pagination */
-
-import Countries from 'countries-api';
-
-import Pagination from '../Pagination/Pagination';
-
+const GAMES_PER_PAGE = 5
 
 class Landing extends Component {
 
@@ -31,17 +24,20 @@ class Landing extends Component {
         plays: [],
         currentGames: [],
         currentPage: null,
-        totalPages: null
+        totalPages: null,
+        page: 1,
+        pages: null
     }
-
 
     async componentDidMount() {
 
-        let allGames = await logic.getAllGames()
+        let res = await logic.getAllGamesWithPagination(1, GAMES_PER_PAGE)
 
-        this.setState((prevState, props) => {
+        this.setState(() => {
             return ({
-                allGames: [...allGames.data]
+                page: 1,
+                pages: res.data.paginationData.pages,
+                allGames: [...res.data.games]
             })
         })
 
@@ -56,16 +52,6 @@ class Landing extends Component {
                 })
             })
         }
-    }
-
-    onPageChanged = data => {
-        const { allGames } = this.state;
-        const { currentPage, totalPages, pageLimit } = data;
-
-        const offset = (currentPage - 1) * pageLimit;
-        const currentGames = allGames.slice(offset, offset + pageLimit);
-
-        this.setState({ currentPage, currentGames, totalPages });
     }
 
     updateSearch = (event) => {
@@ -204,6 +190,22 @@ class Landing extends Component {
         })
     }
 
+    loadMore = async () => {
+
+        const { page, allGames } = this.state
+        let nextData = await logic.getAllGamesWithPagination(page + 1, GAMES_PER_PAGE)
+
+        allGames.push(...nextData.data.games)
+
+        this.setState(() => {
+
+            return ({
+                page: nextData.data.paginationData.page,
+                allGames: [...allGames]
+            })
+        })
+    }
+
     goBackHandler = () => this.props.history.push('/')
 
     handleSignUpClick = () => this.props.history.push('/register')
@@ -215,18 +217,10 @@ class Landing extends Component {
 
     render() {
 
-        const { allGames, currentGames, currentPage, totalPages } = this.state;
-        const totalGames = allGames.length;
-
-        if (totalGames === 0) return null;
-
-        const headerClass = ['text-dark py-2 pr-4 m-0', currentPage ? 'border-gray border-right' : ''].join(' ').trim();
-
         let searchQuery = this.state.search.replace(/\s+/g, '').toLowerCase()
 
         return (
             <div>
-
                 {
                     this.state.error ?
                         <Snackbar
@@ -286,54 +280,35 @@ class Landing extends Component {
                         </nav>
                         <div className='header__main'>
 
-
-                            {/********        ********/}
-                            {/******** Search ********/}
-                            {/********        ********/}
-                            <form className='header__form'>
-                                <input value={this.state.search} type='text' onChange={this.updateSearch} placeholder='Search a game' />
-                                <input type='submit' />
-                            </form>
-                            {/* {this.state.search ? <SearchPreview searchQuery={this.state.search} onAddOrRemoveClick={this.addOrRemoveHandler} fromOwned={false} onMoreInfoClick={this.moreInfoHandler} title={'Search result'} games={this.state.allGames} /> : null} */}
-
-                            {/* <Search allGames={this.state.allGames} onChange={this.updateSearch}/> */}
                         </div>
                     </header>
+
+                    {/********        ********/}
+                    {/******** Search ********/}
+                    {/********        ********/}
+                    <input className="filter_input" value={this.state.search} type='text' onChange={this.updateSearch} placeholder='type here to filter...' />
 
                     <Tabs
                         activeTab={{
                             id: "tab1"
                         }}
                     >
-                        <Tabs.Tab id="tab1" title='All Games'>
+                        <Tabs.Tab id="tab1" title={`All Games`}>
                             {/** Show all games */}
-                            <div className="allGames__container">
-                                <div className="allGames__head">
-                                    <h2 className="allGames__title">
-                                        <strong>{totalGames}</strong> Games
-                                    </h2>
-                                    {/* {currentPage && (
-                                        <span className="allGames__totalPages">
-                                            Page <span>{currentPage}</span> / <span>{totalPages}</span>
-                                        </span>
-                                    )} */}
-                                    <div className="allGames__neighborPages">
-                                        <Pagination totalRecords={totalGames} pageLimit={2} pageNeighbours={1} onPageChanged={this.onPageChanged} />
-                                    </div>
-                                </div>
-                                <div className="allGames__body">
-                                    {currentGames.map(game => <Card
-                                        onSavePlayClick={this.savePlayClickHandler}
-                                        onAddOrRemoveClick={this.addOrRemoveHandler}
-                                        onMoreInfoClick={this.moreInfoHandler}
-                                        buttonText={this.fromOwned ? 'Remove' : 'Add'}
-                                        loggedIn={logic.loggedIn}
-                                        fromOwned={this.fromOwned}
-                                        key={game._id}
-                                        game={game} />)
-                                    }
-                                </div>
-                            </div>
+                            <GameList
+                                onSavePlayClick={this.savePlayClickHandler}
+                                onAddOrRemoveClick={this.addOrRemoveHandler}
+                                onMoreInfoClick={this.moreInfoHandler}
+                                games={this.state.allGames}
+                                searchQuery={searchQuery}
+                                loggedIn={logic.loggedIn}
+                                title={'All Games'}
+                                fromOwned={false}
+                            />
+                            {this.state.page < this.state.pages ?
+                                <h4 className="gamelist__loadMore" onClick={this.loadMore}>Load more games...</h4> :
+                                <h4 className="gamelist__loadMore" >No more games to show</h4>
+                            }
                         </Tabs.Tab>
 
                         {logic.loggedIn ?
