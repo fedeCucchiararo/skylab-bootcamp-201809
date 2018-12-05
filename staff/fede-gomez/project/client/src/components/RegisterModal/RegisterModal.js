@@ -1,51 +1,104 @@
-import React from 'react';
-import { Container, Row, Col, Input, Button, Fa, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact';
+import React, { Component } from 'react'
+import './RegisterModal.css'
+import logic from '../../logic'
+import Snackbar from '../Snackbar/Snackbar'
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 
-class RegisterModal extends React.Component  {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false
-    }
-    this.toggle = this.toggle.bind(this);
+
+
+class RegisterModal extends Component {
+
+  state = {
+    name: '',
+    surname: '',
+    username: '',
+    password: '',
+    email: '',
+    error: null
   }
 
-  toggle() {
-    this.setState({
-      modal: !this.state.modal
-    });
+  handleNameChange = event => {
+    const name = event.target.value
+
+    this.setState({ name })
+  }
+
+  handleSurnameChange = event => {
+    const surname = event.target.value
+
+    this.setState({ surname })
+  }
+
+  handleUsernameChange = event => {
+    const username = event.target.value
+
+    this.setState({ username })
+  }
+
+  handlePasswordChange = event => {
+    const password = event.target.value
+
+    this.setState({ password })
+  }
+
+  handleEmailChange = event => {
+    const email = event.target.value
+
+    this.setState({ email })
+  }
+
+  closeErrorSnackbarHandler = () => this.setState({ error: '' })
+
+  handleSubmit = event => {
+    event.preventDefault()
+    const { name, surname, username, password, email } = this.state
+    logic.registerUser(name, surname, username, password, email)
+      .then(() => {
+        this.setState({
+          name: '',
+          surname: '',
+          username: '',
+          password: '',
+          email: ''
+        })
+        this.props.onSuccesfullyRegistered()
+      })
+      .catch(err => this.setState({ error: err.message }))
   }
 
   render() {
-    return(
-      <Container>
-        <Row>
-          <Col md="6">
-            <Button color="info" onClick={this.toggle}>Launch modal contact form</Button>
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className="cascading-modal">
-              <div className="modal-header primary-color white-text">
-                <h4 className="title">
-                  <Fa className="fa fa-pencil" /> Contact form</h4>
-                <button type="button" className="close" onClick={this.toggle}>
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <ModalBody className="grey-text">
-                <Input size="sm" label="Your name" icon="user" group type="text" validate error="wrong" success="right"/>
-                <Input size="sm" label="Your email" icon="envelope" group type="email" validate error="wrong" success="right"/>
-                <Input size="sm" label="Subject" icon="tag" group type="text" validate error="wrong" success="right"/>
-                <Input size="sm" type="textarea" rows="2" label="Your message" icon="pencil"/>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="secondary" onClick={this.toggle}>Close</Button>{' '}
-                <Button color="primary">Save changes</Button>
-              </ModalFooter>
-            </Modal>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-};
 
-export default RegisterModal;
+    if (this.props.show) {
+      return (
+        <div className='registerModal-container'>
+          {/** Snackbar */}
+          {
+            this.state.error ?
+              <Snackbar
+                onCloseSnackbar={this.closeErrorSnackbarHandler}
+                message={this.state.error}
+                className={'snackbar'}
+              />
+              : null
+          }
+
+          {/** Register modal */}
+          <section className="registerModal-main">
+            <h1 className="registerModal-main__title">Register</h1>
+            <input type="text" placeholder="Name" onChange={this.handleNameChange} />
+            <input type="text" placeholder="Surname" onChange={this.handleSurnameChange} />
+            <input type="text" placeholder="Username" onChange={this.handleUsernameChange} />
+            <input type="password" placeholder="Password" onChange={this.handlePasswordChange} />
+            <input type="text" placeholder="eMail" onChange={this.handleEmailChange} />
+            <p onClick={this.handleSubmit}>Register</p>
+            <button className="registerModal-close" onClick={this.props.onClose}>X</button>
+          </section>
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+}
+
+export default withRouter(RegisterModal)

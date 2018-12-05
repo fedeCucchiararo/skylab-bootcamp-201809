@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport(sendgridTransport({
     }
 }))
 
-isAlreadyRegisteredEmail = (email) => User.find({ email: email })
+isAlreadyRegisteredEmail = (email) => User.findOne({ email: email }).lean()
 
 cloudinary.config({
     cloud_name: 'fedecucchiararo',
@@ -37,7 +37,7 @@ const logic = {
      * @param {*} password 
      * @param {*} email 
      */
-    registerUser(name, surname, username, password, email) {
+    async registerUser(name, surname, username, password, email) {
         if (typeof name !== 'string') throw TypeError(`${name} is not a string`)
         if (typeof surname !== 'string') throw TypeError(`${surname} is not a string`)
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
@@ -50,7 +50,8 @@ const logic = {
         if (!password.trim()) throw new ValueError('password is empty or blank')
         if (!email.trim()) throw new ValueError('email is empty or blank')
 
-        if (isAlreadyRegisteredEmail(email)) throw new Error(`email ${email} already registered`)
+        let emailIsRegistered = await isAlreadyRegisteredEmail(email)
+        if (emailIsRegistered) throw new AlreadyExistsError(`email ${email} is already registered`)
 
         return User.findOne({ username }).lean()
             .then(user => {
@@ -476,17 +477,17 @@ const logic = {
                 file.pipe(stream)
             })
 
-            await Play.updateOne({ _id: playId }, { $push: {pictures: result.url} })
-            
+            await Play.updateOne({ _id: playId }, { $push: { pictures: result.url } })
+
 
         })()
 
     },
 
     async getPlayPictures(playId) {
-        
-        let playPictures = await Play.findById(playId, {'pictures': 1}).lean()
-    
+
+        let playPictures = await Play.findById(playId, { 'pictures': 1 }).lean()
+
         return playPictures.pictures
     }
 

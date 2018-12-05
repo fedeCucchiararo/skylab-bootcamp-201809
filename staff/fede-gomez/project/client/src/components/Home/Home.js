@@ -8,7 +8,6 @@ import PlaySaveModal from '../PlaySaveModal/PlaySaveModal'
 import PlayPicturesModal from '../PlayPicturesModal/PlayPicturesModal'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
-import { Tabs } from "@yazanaabed/react-tabs";
 
 const GAMES_PER_PAGE = 5
 
@@ -283,7 +282,7 @@ class Home extends Component {
                         : null
                 }
 
-                < GameInfoModal
+                <GameInfoModal
                     onMechanicsClick={this.mechanicsClickHandler}
                     onClose={this.closeModalHandler}
                     show={this.state.showGameInfo}

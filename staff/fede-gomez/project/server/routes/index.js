@@ -6,7 +6,6 @@ const bearerTokenParser = require('../utils/bearer-token-parser')
 const jwtVerifier = require('./jwt-verifier')
 const routeHandler = require('./route-handler')
 const Busboy = require('busboy')
-const cloudinary = require('cloudinary')
 
 const jsonBodyParser = bodyParser.json()
 
@@ -22,7 +21,7 @@ router.post('/users', jsonBodyParser, (req, res) => {
     routeHandler(() => {
 
         const { name, surname, username, password, email } = req.body
-
+        debugger
         return logic.registerUser(name, surname, username, password, email)
             .then(() => logic.sendRegisterEmail(name, email))
             .then(() => {
