@@ -1,6 +1,9 @@
 import React from 'react'
 import Card from '../Card/Card'
 import './GameList.css'
+import 'react-slidedown/lib/slidedown.css'
+import { CSSTransition } from 'react-transition-group'
+
 
 
 
@@ -12,24 +15,31 @@ const GameList = (props) => {
     })
 
     return (
-        <section className='gamelist-main'>
-            <h1 className='gamelist-main__title'>{props.title}</h1>
-            <div className='gamelist-main__cards'>
-                {
-                    filteredGames.map(game =>
-                        <Card
-                            onSavePlayClick={props.onSavePlayClick}
-                            onAddOrRemoveClick={props.onAddOrRemoveClick}
-                            onMoreInfoClick={props.onMoreInfoClick}
-                            buttonText={fromOwned ? 'Remove' : 'Add'}
-                            loggedIn={props.loggedIn}
-                            fromOwned={fromOwned}
-                            key={game._id}
-                            game={game}
-                        />)
-                }
-            </div>
-        </section>
+        <CSSTransition
+            in={true}
+            appear={true}
+            timeout={300}
+            classNames='slide'
+        >
+            <section className='gamelist-main'>
+                <h1 className='gamelist-main__title'>{props.title}</h1>
+                <div className='gamelist-main__cards'>
+                    {
+                        filteredGames.map(game =>
+                            <Card
+                                onSavePlayClick={props.onSavePlayClick}
+                                onAddOrRemoveClick={props.onAddOrRemoveClick}
+                                onMoreInfoClick={props.onMoreInfoClick}
+                                buttonText={fromOwned ? 'Remove' : 'Add'}
+                                loggedIn={props.loggedIn}
+                                fromOwned={fromOwned}
+                                key={game._id}
+                                game={game}
+                            />)
+                    }
+                </div>
+            </section>
+        </CSSTransition>
     )
 }
 

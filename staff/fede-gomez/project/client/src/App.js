@@ -42,8 +42,22 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <Route exact path="/" render={() => <Landing onRegisterClick={this.registerClickHandler} onLogoutClick={this.logoutClickHandler} onLoginClick={this.loginClickHandler} />} />
-        {/* <Route exact path="/home" render={() => logic.loggedIn ? <Home /> : <Redirect to="/" />} /> */}
+        <Route exact path="/" render={() =>
+          !logic.loggedIn ?
+            <Landing
+              onRegisterClick={this.registerClickHandler}
+              onLoginClick={this.loginClickHandler} />
+            : <Redirect to="/home" />}
+        />
+        <Route exact path="/home" render={() =>
+          logic.loggedIn ?
+            <Home
+              onRegisterClick={this.registerClickHandler}
+              onLogoutClick={this.logoutClickHandler}
+              onLoginClick={this.loginClickHandler}
+            />
+            : <Redirect to="/" />}
+        />
         <Route exact path="/register" render={() => !logic.loggedIn ? <Register onRegister={this.registerHandler} onGoBack={this.goBackHandler} /> : <Redirect to="/" />} />
         <Route exact path="/login" render={() => !logic.loggedIn ? <Login onLogin={this.loginHandler} onGoBack={this.goBackHandler} /> : <Redirect to="/" />} />
       </div>
