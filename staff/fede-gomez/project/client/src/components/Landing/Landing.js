@@ -357,8 +357,8 @@ class Landing extends Component {
                                 fromOwned={false}
                             />
                             {this.state.page < this.state.pages ?
-                                <h4 className="gamelist__loadMore" onClick={this.loadMore}>Load more games...</h4> :
-                                <h4 className="gamelist__loadMore" >No more games to show</h4>
+                                <h4 className="gamelist__loadMore" onClick={this.loadMore}>Load more games...</h4> 
+                                :null
                             }
                         </Tabs.Tab>
 
