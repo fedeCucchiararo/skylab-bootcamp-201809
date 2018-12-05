@@ -73,7 +73,6 @@ class PlaySaveModal extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log('componentWillReceiveProps', props)
         logic.getAllUsers()
             .then(users => {
                 this.setState(() => {

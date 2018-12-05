@@ -380,7 +380,13 @@ class Landing extends Component {
                         }
                         {logic.loggedIn ?
                             <Tabs.Tab id="tab3" title="My Plays">
-                                <PlayList onShowPlayPictures={this.showPlayPicturesHandler} onPictureUpload={this.pictureUploadHandler} onPlayDelete={this.playDeleteHandler} plays={this.state.plays} />
+                                <PlayList
+                                    onShowPlayPictures={this.showPlayPicturesHandler}
+                                    onPictureUpload={this.pictureUploadHandler}
+                                    onPlayDelete={this.playDeleteHandler}
+                                    plays={this.state.plays}
+                                    searchQuery={searchQuery}
+                                />
                             </Tabs.Tab>
                             : null
                         }
