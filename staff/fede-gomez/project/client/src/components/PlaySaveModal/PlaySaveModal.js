@@ -172,7 +172,14 @@ class PlaySaveModal extends Component {
     render() {
         if (this.props.show) {
 
-            const maxPlayerCount = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            /** before the return we set the min and max number of players based on the game itself.
+             *  This will affect the selectable number of players below
+             */
+            let num = 1
+            const maxPlayerCount = []
+            for(let i=this.props.game.minPlayers; i<=this.props.game.maxPlayers; i++) {
+                maxPlayerCount.push(i)
+            }
 
             return (
                 <div className='playSaveModal-container'>

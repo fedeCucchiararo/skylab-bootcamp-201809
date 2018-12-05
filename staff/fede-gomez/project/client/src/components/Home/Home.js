@@ -85,12 +85,20 @@ class Home extends Component {
 
     showPlayPicturesHandler = async (playId) => {
         let playPictures = await logic.getPlayPictures(playId)
-        this.setState(() => {
-            return ({
-                playPictures: playPictures,
-                showPlayPicturesModal: !this.state.showPlayPicturesModal
+        if (playPictures.length) {
+            this.setState(() => {
+                return ({
+                    playPictures: playPictures,
+                    showPlayPicturesModal: !this.state.showPlayPicturesModal
+                })
             })
-        })
+        } else {
+            this.setState(() => {
+                return ({
+                    error: 'There are no pictures for this gameplay'
+                })
+            })
+        }
     }
 
     closePlaySaveModalHandler = () => {
@@ -337,12 +345,12 @@ class Home extends Component {
                     {/********        ********/}
                     {/******** Search ********/}
                     {/********        ********/}
-                    <input 
-                    className="filter_input" 
-                    value={this.state.search} 
-                    type='text' 
-                    onChange={this.updateSearch} 
-                    placeholder='type here to filter...' 
+                    <input
+                        className="filter_input"
+                        value={this.state.search}
+                        type='text'
+                        onChange={this.updateSearch}
+                        placeholder='type here to filter...'
                     />
 
                     <GameList
@@ -355,42 +363,42 @@ class Home extends Component {
                         title={'All Games'}
                         fromOwned={false}
                     />
-                    
-                     
-                            {this.state.page < this.state.pages ?
-                                <h4 className="gamelist__loadMore" onClick={this.loadMore}>Load more games...</h4> 
-                                :null
-                            }
 
 
-                        {logic.loggedIn ?
-                         
-                                <GameList
-                                    onSavePlayClick={this.savePlayClickHandler}
-                                    onAddOrRemoveClick={this.addOrRemoveHandler}
-                                    onMoreInfoClick={this.moreInfoHandler}
-                                    games={this.state.ownedGames}
-                                    searchQuery={searchQuery}
-                                    loggedIn={logic.loggedIn}
-                                    title={'My Games'}
-                                    fromOwned={true}
-                                />
-                        
-                            : null
-                        }
-                        {logic.loggedIn ?
-                            
-                                <PlayList
-                                    onShowPlayPictures={this.showPlayPicturesHandler}
-                                    onPictureUpload={this.pictureUploadHandler}
-                                    onPlayDelete={this.playDeleteHandler}
-                                    plays={this.state.plays}
-                                    searchQuery={searchQuery}
-                                />
-                         
-                            : null
-                        }
-                
+                    {this.state.page < this.state.pages ?
+                        <h4 className="gamelist__loadMore" onClick={this.loadMore}>Load more games...</h4>
+                        : null
+                    }
+
+
+                    {logic.loggedIn ?
+
+                        <GameList
+                            onSavePlayClick={this.savePlayClickHandler}
+                            onAddOrRemoveClick={this.addOrRemoveHandler}
+                            onMoreInfoClick={this.moreInfoHandler}
+                            games={this.state.ownedGames}
+                            searchQuery={searchQuery}
+                            loggedIn={logic.loggedIn}
+                            title={'My Games'}
+                            fromOwned={true}
+                        />
+
+                        : null
+                    }
+                    {logic.loggedIn ?
+
+                        <PlayList
+                            onShowPlayPictures={this.showPlayPicturesHandler}
+                            onPictureUpload={this.pictureUploadHandler}
+                            onPlayDelete={this.playDeleteHandler}
+                            plays={this.state.plays}
+                            searchQuery={searchQuery}
+                        />
+
+                        : null
+                    }
+
                 </div>
 
                 <footer className='footer'>

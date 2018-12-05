@@ -15,12 +15,6 @@ const GameList = (props) => {
     })
 
     return (
-        <CSSTransition
-            in={true}
-            appear={true}
-            timeout={300}
-            classNames='slide'
-        >
             <section className='gamelist-main'>
                 <h1 className='gamelist-main__title'>{props.title}</h1>
                 <div className='gamelist-main__cards'>
@@ -39,7 +33,6 @@ const GameList = (props) => {
                     }
                 </div>
             </section>
-        </CSSTransition>
     )
 }
 
