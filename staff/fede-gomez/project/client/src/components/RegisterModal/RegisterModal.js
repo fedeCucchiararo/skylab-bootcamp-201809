@@ -49,6 +49,11 @@ class RegisterModal extends Component {
 
   closeErrorSnackbarHandler = () => this.setState({ error: '' })
 
+  onCloseHandler = () => {
+    this.setState({ error: null })
+    this.props.onClose()
+}
+
   handleSubmit = event => {
     event.preventDefault()
     const { name, surname, username, password, email } = this.state
@@ -85,13 +90,15 @@ class RegisterModal extends Component {
           {/** Register modal */}
           <section className="registerModal-main">
             <h1 className="registerModal-main__title">Register</h1>
-            <input type="text" placeholder="Name" onChange={this.handleNameChange} />
-            <input type="text" placeholder="Surname" onChange={this.handleSurnameChange} />
-            <input type="text" placeholder="Username" onChange={this.handleUsernameChange} />
-            <input type="password" placeholder="Password" onChange={this.handlePasswordChange} />
-            <input type="text" placeholder="eMail" onChange={this.handleEmailChange} />
-            <p onClick={this.handleSubmit}>Register</p>
-            <button className="registerModal-close" onClick={this.props.onClose}>X</button>
+            <form onSubmit={this.handleSubmit}>
+              <input type="text" placeholder="Name" onChange={this.handleNameChange} />
+              <input type="text" placeholder="Surname" onChange={this.handleSurnameChange} />
+              <input type="text" placeholder="Username" onChange={this.handleUsernameChange} />
+              <input type="password" placeholder="Password" onChange={this.handlePasswordChange} />
+              <input type="text" placeholder="eMail" onChange={this.handleEmailChange} />
+              <button type="submit">Register</button>
+            </form>
+            <button className="registerModal-close" onClick={this.onCloseHandler}>X</button>
           </section>
         </div>
       )

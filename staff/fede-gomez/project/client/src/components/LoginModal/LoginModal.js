@@ -10,7 +10,7 @@ class LoginModal extends Component {
         username: '',
         password: '',
         error: null
-      }
+    }
 
     changeUsernameHandler = event => {
         const username = event.target.value
@@ -26,6 +26,11 @@ class LoginModal extends Component {
 
     closeErrorSnackbarHandler = () => this.setState({ error: '' })
 
+    onCloseHandler = () => {
+        this.setState({ error: null })
+        this.props.onClose()
+    }
+
     handleSubmit = event => {
         event.preventDefault()
 
@@ -38,16 +43,17 @@ class LoginModal extends Component {
         event.preventDefault()
         const { username, password } = this.state
         logic.login(username, password)
-          .then(() => {
-            this.setState({
-              username: '',
-              password: ''
+            .then(() => {
+                this.setState({
+                    username: '',
+                    password: '',
+                    error: null
+                })
+                this.props.history.push('/home')
+                this.props.onClose()
             })
-            this.props.history.push('/home')
-            this.props.onClose()
-          })
-          .catch(err => this.setState({ error: err.message }))
-      }
+            .catch(err => this.setState({ error: err.message }))
+    }
 
     render() {
 
@@ -68,10 +74,12 @@ class LoginModal extends Component {
                     {/** Register modal */}
                     <section className="registerModal-main">
                         <h1 className="registerModal-main__title">Login</h1>
-                        <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
-                        <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />
-                        <p onClick={this.handleSubmit}>Login</p>
-                        <button className="registerModal-close" onClick={this.props.onClose}>X</button>
+                        <form onSubmit={this.handleSubmit}>
+                            <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
+                            <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />
+                            <button type="submit">Login</button>
+                        </form>
+                        <button className="registerModal-close" onClick={this.onCloseHandler}>X</button>
                     </section>
                 </div>
             )

@@ -1,3 +1,7 @@
 .landing-main__button {
     cursor: pointer;
 }
+
+.landing-container {
+    background-image: url(https://img-cdn1.thehungryjpeg.com/productimages/1111/738/90/3b3fbb5822031675727e283f3f42c9cab11c561d.jpg)
+}

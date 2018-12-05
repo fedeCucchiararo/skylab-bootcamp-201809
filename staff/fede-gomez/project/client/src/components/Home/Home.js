@@ -28,7 +28,8 @@ class Home extends Component {
         currentPage: null,
         totalPages: null,
         page: 1,
-        pages: null
+        pages: null,
+        activeTab: 'allGames'
     }
 
     async componentDidMount() {
@@ -263,7 +264,7 @@ class Home extends Component {
 
     handleSignInClick = () => this.props.history.push('/login')
 
-
+    navbarClickHandler = (tab) => this.setState({ activeTab: tab })
 
 
     render() {
@@ -337,7 +338,6 @@ class Home extends Component {
                             </div>
                         </nav>
                         <div className='header__main'>
-
                         </div>
                     </header>
 
@@ -352,25 +352,33 @@ class Home extends Component {
                         placeholder='type here to filter...'
                     />
 
-                    <GameList
-                        onSavePlayClick={this.savePlayClickHandler}
-                        onAddOrRemoveClick={this.addOrRemoveHandler}
-                        onMoreInfoClick={this.moreInfoHandler}
-                        games={this.state.allGames}
-                        searchQuery={searchQuery}
-                        loggedIn={logic.loggedIn}
-                        title={'All Games'}
-                        fromOwned={false}
-                    />
+                    <div className="main-navbar">
+                        <div onClick={() => this.navbarClickHandler('allGames')}>All Games</div>
+                        <div onClick={() => this.navbarClickHandler('myGames')}>My Games</div>
+                        <div onClick={() => this.navbarClickHandler('myPlays')}>My Plays</div>
+                    </div>
+
+                    {this.state.activeTab === 'allGames' ?
+                        <GameList
+                            onSavePlayClick={this.savePlayClickHandler}
+                            onAddOrRemoveClick={this.addOrRemoveHandler}
+                            onMoreInfoClick={this.moreInfoHandler}
+                            games={this.state.allGames}
+                            searchQuery={searchQuery}
+                            loggedIn={logic.loggedIn}
+                            title={'All Games'}
+                            fromOwned={false}
+                        /> : null
+                    }
 
 
-                    {this.state.page < this.state.pages ?
+                    {this.state.activeTab === 'allGames' && this.state.page < this.state.pages ?
                         <h4 className="gamelist__loadMore" onClick={this.loadMore}>Load more games...</h4>
                         : null
                     }
 
 
-                    {logic.loggedIn ?
+                    {this.state.activeTab === 'myGames' ?
 
                         <GameList
                             onSavePlayClick={this.savePlayClickHandler}
@@ -385,7 +393,7 @@ class Home extends Component {
 
                         : null
                     }
-                    {logic.loggedIn ?
+                    {this.state.activeTab === 'myPlays' ?
 
                         <PlayList
                             onShowPlayPictures={this.showPlayPicturesHandler}
@@ -394,7 +402,6 @@ class Home extends Component {
                             plays={this.state.plays}
                             searchQuery={searchQuery}
                         />
-
                         : null
                     }
 

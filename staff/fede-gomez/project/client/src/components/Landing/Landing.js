@@ -68,10 +68,8 @@ class Landing extends React.Component {
                 <main className='landing-main'>
                     <div className='landing-main__button' onClick={this.loginClickHandler}> Login </div>
                     <div className='landing-main__button' onClick={this.registerClickHandler}> Register </div>
-                    <div> Benefits </div>
                 </main>
                 <footer className='landing-footer'>
-                    <div> Second Call to Action </div>
                 </footer>
             </div>
         )
