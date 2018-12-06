@@ -8,6 +8,8 @@ import PlaySaveModal from '../PlaySaveModal/PlaySaveModal'
 import PlayPicturesModal from '../PlayPicturesModal/PlayPicturesModal'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import GameInfoModal from '../GameInfoModal/GameInfoModal'
+import { CSSTransition } from 'react-transition-group'
+
 
 const GAMES_PER_PAGE = 5
 
@@ -353,22 +355,29 @@ class Home extends Component {
                     />
 
                     <div className="main-navbar">
-                        <div onClick={() => this.navbarClickHandler('allGames')}>All Games</div>
-                        <div onClick={() => this.navbarClickHandler('myGames')}>My Games</div>
-                        <div onClick={() => this.navbarClickHandler('myPlays')}>My Plays</div>
+                        <div className="main-navbar__item" onClick={() => this.navbarClickHandler('allGames')}>All Games</div>
+                        <div className="main-navbar__item" onClick={() => this.navbarClickHandler('myGames')}>My Games</div>
+                        <div className="main-navbar__item" onClick={() => this.navbarClickHandler('myPlays')}>My Plays</div>
                     </div>
 
                     {this.state.activeTab === 'allGames' ?
-                        <GameList
-                            onSavePlayClick={this.savePlayClickHandler}
-                            onAddOrRemoveClick={this.addOrRemoveHandler}
-                            onMoreInfoClick={this.moreInfoHandler}
-                            games={this.state.allGames}
-                            searchQuery={searchQuery}
-                            loggedIn={logic.loggedIn}
-                            title={'All Games'}
-                            fromOwned={false}
-                        /> : null
+                        <CSSTransition
+                            in={true}
+                            appear={true}
+                            timeout={300}
+                            classNames='fade'
+                        >
+                            <GameList
+                                onSavePlayClick={this.savePlayClickHandler}
+                                onAddOrRemoveClick={this.addOrRemoveHandler}
+                                onMoreInfoClick={this.moreInfoHandler}
+                                games={this.state.allGames}
+                                searchQuery={searchQuery}
+                                loggedIn={logic.loggedIn}
+                                title={'All Games'}
+                                fromOwned={false}
+                            />
+                        </CSSTransition> : null
                     }
 
 
@@ -380,28 +389,41 @@ class Home extends Component {
 
                     {this.state.activeTab === 'myGames' ?
 
-                        <GameList
-                            onSavePlayClick={this.savePlayClickHandler}
-                            onAddOrRemoveClick={this.addOrRemoveHandler}
-                            onMoreInfoClick={this.moreInfoHandler}
-                            games={this.state.ownedGames}
-                            searchQuery={searchQuery}
-                            loggedIn={logic.loggedIn}
-                            title={'My Games'}
-                            fromOwned={true}
-                        />
-
+                        <CSSTransition
+                            in={true}
+                            appear={true}
+                            timeout={300}
+                            classNames='fade'
+                        >
+                            <GameList
+                                onSavePlayClick={this.savePlayClickHandler}
+                                onAddOrRemoveClick={this.addOrRemoveHandler}
+                                onMoreInfoClick={this.moreInfoHandler}
+                                games={this.state.ownedGames}
+                                searchQuery={searchQuery}
+                                loggedIn={logic.loggedIn}
+                                title={'My Games'}
+                                fromOwned={true}
+                            />
+                        </CSSTransition>
                         : null
                     }
                     {this.state.activeTab === 'myPlays' ?
 
-                        <PlayList
-                            onShowPlayPictures={this.showPlayPicturesHandler}
-                            onPictureUpload={this.pictureUploadHandler}
-                            onPlayDelete={this.playDeleteHandler}
-                            plays={this.state.plays}
-                            searchQuery={searchQuery}
-                        />
+                        <CSSTransition
+                            in={true}
+                            appear={true}
+                            timeout={300}
+                            classNames='fade'
+                        >
+                            <PlayList
+                                onShowPlayPictures={this.showPlayPicturesHandler}
+                                onPictureUpload={this.pictureUploadHandler}
+                                onPlayDelete={this.playDeleteHandler}
+                                plays={this.state.plays}
+                                searchQuery={searchQuery}
+                            />
+                        </CSSTransition>
                         : null
                     }
 
@@ -417,4 +439,4 @@ class Home extends Component {
 }
 
 
-export default Home
+export default withRouter(Home)

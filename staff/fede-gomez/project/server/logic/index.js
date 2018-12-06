@@ -106,10 +106,10 @@ const logic = {
             })
     },
 
-    updateUser(id, newName, newSurname, newEmail, newPassword, password, picture) {
+    updateUser(id, newName, newSurname, newEmail, newPassword, password) {
 
 
-
+        debugger
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (newName != null && typeof newName !== 'string') throw TypeError(`${newName} is not a string`)
         if (newSurname != null && typeof newSurname !== 'string') throw TypeError(`${newSurname} is not a string`)
