@@ -62,7 +62,7 @@ class Landing extends React.Component {
                     show={this.state.showLoginModal}
                 />
 
-                <div className="landing-container">
+                {!this.state.showLoginModal && !this.state.showRegisterModal ? <div className="landing-container">
                     <div className="action-box">
                         <div className="content">
                             <div className="content__title">
@@ -75,17 +75,8 @@ class Landing extends React.Component {
                             <div className='content__button' onClick={this.registerClickHandler}> Register </div>
                         </div>
                     </div>
-                </div>
-
-                <heading className='landing-head'>
-                    <h1> Landing Titel </h1>
-                </heading>
-                <main className='landing-main'>
-                    <div className='landing-main__button' onClick={this.loginClickHandler}> Login </div>
-                    <div className='landing-main__button' onClick={this.registerClickHandler}> Register </div>
-                </main>
-                <footer className='landing-footer'>
-                </footer>
+                </div> :
+                null}
             </div>
         )
 

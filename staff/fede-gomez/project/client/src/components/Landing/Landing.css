@@ -1,11 +1,9 @@
 .content__button {
     cursor: pointer;
-    border: 1px solid red;
-    width: -moz-fit-content;
     padding: 10px 10px;
     border-radius: 5px;
     box-shadow: 2px 2px 10px black;
-    background-color: #8c8c98;
+    background-color: #303071;
     margin-bottom: 20px;
     transition: .3s;
 }
@@ -16,7 +14,7 @@
 
 .content__title {
     font-size: 2rem;
-    color: #ebff00;
+    color: #ffcc88;
     padding: 20px 0;
 }
 
@@ -29,13 +27,11 @@
     height: 100%;
     background-size: cover;
     background-position: center;
-    -webkit-filter: grayscale(60%);
-    filter: grayscale(60%);
     background-image: url('../../images/landing-background/bg-landing.jpg')
 }
 
 .action-box {
-    background-color: #6250a7;
+    background-color: #807c90;
     height: 50vh;
     width: 300px;
     margin: auto;

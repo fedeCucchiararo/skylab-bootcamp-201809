@@ -59,7 +59,7 @@ class LoginModal extends Component {
 
         if (this.props.show) {
             return (
-                <div className='registerModal-container'>
+                <div className='loginModal-container'>
                     {/** Snackbar */}
                     {
                         this.state.error ?
@@ -71,15 +71,16 @@ class LoginModal extends Component {
                             : null
                     }
 
-                    {/** Register modal */}
-                    <section className="registerModal-main">
-                        <h1 className="registerModal-main__title">Login</h1>
+                    {/** Login modal */}
+                    <section className="loginModal-main">
+                        <h1 className="loginModal-main__title">Login</h1>
                         <form onSubmit={this.handleSubmit}>
-                            <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
-                            <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />
-                            <button type="submit">Login</button>
+                            <input className="loginModal-main__input" type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
+                            <input className="loginModal-main__input" type="password" placeholder="Password" onChange={this.changePasswordHandler} />
+                            <button className='loginModal-main__button' type="submit">Login</button>
                         </form>
-                        <button className="registerModal-close" onClick={this.onCloseHandler}>X</button>
+                        <i className="fas fa-angle-left loginModal-close" onClick={this.onCloseHandler}></i>
+                        {/* <button className="loginModal-close" onClick={this.onCloseHandler}>X</button> */}
                     </section>
                 </div>
             )

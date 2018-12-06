@@ -91,14 +91,14 @@ class RegisterModal extends Component {
           <section className="registerModal-main">
             <h1 className="registerModal-main__title">Register</h1>
             <form onSubmit={this.handleSubmit}>
-              <input type="text" placeholder="Name" onChange={this.handleNameChange} />
-              <input type="text" placeholder="Surname" onChange={this.handleSurnameChange} />
-              <input type="text" placeholder="Username" onChange={this.handleUsernameChange} />
-              <input type="password" placeholder="Password" onChange={this.handlePasswordChange} />
-              <input type="text" placeholder="eMail" onChange={this.handleEmailChange} />
-              <button type="submit">Register</button>
+              <input className="registerModal-main__input" type="text" placeholder="Name" onChange={this.handleNameChange} />
+              <input className="registerModal-main__input" type="text" placeholder="Surname" onChange={this.handleSurnameChange} />
+              <input className="registerModal-main__input" type="text" placeholder="Username" onChange={this.handleUsernameChange} />
+              <input className="registerModal-main__input" type="password" placeholder="Password" onChange={this.handlePasswordChange} />
+              <input className="registerModal-main__input" type="text" placeholder="eMail" onChange={this.handleEmailChange} />
+              <button className='registerModal-main__button' type="submit">Register</button>
             </form>
-            <button className="registerModal-close" onClick={this.onCloseHandler}>X</button>
+            <i className="fas fa-angle-left registerModal-close" onClick={this.onCloseHandler}></i>
           </section>
         </div>
       )
