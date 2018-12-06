@@ -4,6 +4,7 @@ import Home from './components/Home/Home'
 import Register from './components/Register/Register'
 import Snackbar from './components/Snackbar/Snackbar'
 import Login from './components/Login/Login'
+import './App.css'
 import logic from './logic'
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom";
 

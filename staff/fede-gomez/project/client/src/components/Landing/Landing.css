@@ -1,7 +1,56 @@
-.landing-main__button {
+.content__button {
     cursor: pointer;
+    border: 1px solid red;
+    width: -moz-fit-content;
+    padding: 10px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px black;
+    background-color: #8c8c98;
+    margin-bottom: 20px;
+    transition: .3s;
+}
+
+.content__button:hover {
+    background-color: blueviolet;
+}
+
+.content__title {
+    font-size: 2rem;
+    color: #ebff00;
+    padding: 20px 0;
+}
+
+.content__text {
+    text-align: left;
+    margin-bottom: 85px;
 }
 
 .landing-container {
-    background-image: url(https://img-cdn1.thehungryjpeg.com/productimages/1111/738/90/3b3fbb5822031675727e283f3f42c9cab11c561d.jpg)
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    -webkit-filter: grayscale(60%);
+    filter: grayscale(60%);
+    background-image: url('../../images/landing-background/bg-landing.jpg')
+}
+
+.action-box {
+    background-color: #6250a7;
+    height: 50vh;
+    width: 300px;
+    margin: auto;
+    transform: translateY(30%);
+    position: relative;
+    opacity: .9;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px black;
+
+}
+
+.action-box .content {
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-weight: 600;
+    padding: 0 20px;
 }

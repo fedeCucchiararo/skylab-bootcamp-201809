@@ -62,6 +62,21 @@ class Landing extends React.Component {
                     show={this.state.showLoginModal}
                 />
 
+                <div className="landing-container">
+                    <div className="action-box">
+                        <div className="content">
+                            <div className="content__title">
+                                Boardgame Hub
+                            </div>
+                            <div className="content__text">
+                                Discover new games, manage your collection, and register your play sessions.
+                            </div>
+                            <div className='content__button' onClick={this.loginClickHandler}> Login </div>
+                            <div className='content__button' onClick={this.registerClickHandler}> Register </div>
+                        </div>
+                    </div>
+                </div>
+
                 <heading className='landing-head'>
                     <h1> Landing Titel </h1>
                 </heading>
