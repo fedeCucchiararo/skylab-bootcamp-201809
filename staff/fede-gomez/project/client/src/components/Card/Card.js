@@ -17,8 +17,8 @@ const Card = (props) => {
         >
             <div className='card-container'>
                 <div className="card bg-dark text-white">
-                    <div >
-                        <img className="front" src={props.game.thumbnail} alt="Card image" />
+                    <div className="front" style ={ { backgroundImage: `url('${props.game.image}')` } } >
+                        
                     </div>
                     <div className="back">
                         <i className="fas fa-info"></i>
