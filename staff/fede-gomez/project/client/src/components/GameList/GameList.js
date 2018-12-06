@@ -16,7 +16,6 @@ const GameList = (props) => {
 
     return (
             <section className='gamelist-main'>
-                <h1 className='gamelist-main__title'>{props.title}</h1>
                 <div className='gamelist-main__cards'>
                     {
                         filteredGames.map(game =>

@@ -34,6 +34,15 @@
     padding: 15px;
   }
 
+  .playSaveModal__title {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #cec8bf;
+    margin-bottom: 10px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #bb8c44;
+  }
+
   .playSaveModal-head__title {
     font-weight: 400;
     text-align: center;
@@ -98,4 +107,78 @@
     background-color: black;
     box-shadow: 0 0 0px 1px #30C820;
     cursor: pointer;
+  }
+
+.playSaveModal__form {
+  display:flex;
+  flex-direction: column;
+}
+
+.playSaveModal__form label {
+  font-weight: 600;
+  margin-right: 10px;
+  margin-top: 10px
+}
+
+
+.playSaveModal__form label span {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.playSaveModal__form label input {
+  box-shadow: 2px 2px 10px black;
+  border: none;
+  border-radius: 5px;
+  padding: 0 20px;
+  user-select: none;
+  margin-bottom: 10px;
+}
+
+  .playSaveModal__form  > input:first-of-type {
+    padding: 0px 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 2px 2px 10px black;
+    margin-bottom: 10px;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .playSaveModal__form > input:hover {
+    color: blueviolet;
+
+  }
+
+  .playSaveModal__form select {
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 10px black;
+    border: none;
+  }
+
+  .playSaveModal__form textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 2px 2px 10px black;
+    margin-bottom: 20px;
+  }
+
+  .playSaveModal__form button {
+    cursor: pointer;
+    padding: 10px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px black;
+    background-color: #303071;
+    margin-bottom: 20px;
+    border: none;
+    user-select: none;
+    color: white;
+    font-weight: 600;
+    transition: .3s;
+  }
+
+  .playSaveModal__form button:hover {
+    background-color: blueviolet;
   }

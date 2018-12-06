@@ -1,16 +1,7 @@
-.landing {
-    display: flex;
-    flex-direction: column;
-}
+
 
 .header-container {
     display: flex;
-    flex-direction: column;
-    background-image: url(../../images/landing-background/6284.jpg);
-    background-size: cover;
-    background-position: top;
-    height: 30vh;
-    
 }
 
 .header__nav {
@@ -18,27 +9,48 @@
     flex-direction: row;
 }
 
-.header__main {
-    display: flex;
-    width: auto;
-    justify-content: center;
-    align-items: center;
-    height: 30vh;
+.header__title {
+    font-size: 2rem;
+    color: #ffcc88;
+    font-weight: 600;
+    flex: 1;
 }
 
 .button-error {
     margin: auto;
 }
 
-
 .footer {
     position: relative;
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: white;
+    background-color: rgba(71, 104, 156, 0.75);
     color: black;
-    text-align: center;
+    display: flex;
+    user-select: none;
+    min-height: 6vh;
+}
+
+.footer > div {
+    user-select: none;
+    flex: 1;
+    padding: 2%;
+}
+
+.footer > div > i {
+    margin: 0 10px;
+}
+
+.footer > div > i.fab {
+    color: #252222;
+    transition: .3s;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.footer > div > i.fab:hover {
+    color: black;
 }
 
 .nav-link {
@@ -85,12 +97,57 @@
 
 .filter_input {
     margin: 10px auto;
-    border: 1px solid grey;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 2px 2px 4px rgb(70, 50, 100);
+    box-shadow: 2px 2px 10px rgb(70, 50, 100);
+    width: 90vw;
+    border: none;
+    padding: 10px 20px;
 }
 
 .main-navbar{
-    
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+    font-size: 35px;
+    user-select: none;
+    cursor: pointer;
+    padding: 10px 0;
+}
+
+.main-navbar__item {
+    opacity: .5;
+    transition: .3s;
+    padding: 0 10px;
+}
+
+@media (max-width: 600px) {
+    .main-navbar {
+      display: block;
+    }
+  }
+
+.main-navbar__item:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.main-navbar__item.active {
+    opacity: 1;
+    color: #3e5d91;
+    transform: scale(1.05);
+}
+
+.home-main {
+    min-height: 87vh;
+}
+
+.header__logout {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: red;
+    cursor: pointer;
 }

@@ -9,7 +9,7 @@
   
   .loginModal-main {
     background-color: #807c90;
-    height: 50vh;
+    min-height: 500px;
     width: 300px;
     margin: auto;
     transform: translateY(30%);

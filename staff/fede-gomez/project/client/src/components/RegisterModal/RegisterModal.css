@@ -9,8 +9,8 @@
   
   .registerModal-main {
     background-color: #807c90;
-    height: 50vh;
     width: 300px;
+    min-height: 500px;
     margin: auto;
     transform: translateY(30%);
     position: relative;
@@ -100,3 +100,5 @@
   .registerModal-main__button:hover {
     background-color: blueviolet;
   }
+
+  

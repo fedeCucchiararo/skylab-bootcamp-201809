@@ -308,40 +308,22 @@ class Home extends Component {
                     playPictures={this.state.playPictures}
                 />
 
-                <div className='landing' >
-                    <header className='header-container'>
-                        <nav className="navbar navbar-expand-sm navbar-light bg-light">
-                            <p className="navbar-brand">Navbar</p>
-                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                                <span className="navbar-toggler-icon" />
-                            </button>
-                            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-                                <ul className="navbar-nav mr-auto mt-2 mt-sm-0">
-                                    <li className="nav-item">
-                                        <p className="nav-link" >BGG</p>
-                                    </li>
-                                    {logic.loggedIn ?
-                                        <li className="nav-item">
-                                            <p className="nav-link" onClick={this.props.onLogoutClick}>Sign out</p>
-                                        </li> :
-                                        <li className="nav-item">
-                                            <p className="nav-link" onClick={this.handleSignInClick}>Sing In</p>
-                                        </li>
-                                    }
+                <header className='header-container'>
+                    <div className="header__title">Boardgame Hub</div>
+                    <div className="header__logout" onClick={this.props.onLogoutClick}>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                </header>
 
-                                    {logic.loggedIn ?
-                                        null :
-                                        <li className="nav-item">
-                                            <p className="nav-link" onClick={this.handleSignUpClick}>Sign Up</p>
-                                        </li>
-                                    }
 
-                                </ul>
-                            </div>
-                        </nav>
-                        <div className='header__main'>
-                        </div>
-                    </header>
+                <main className="home-main">
+
+                    <div className="main-navbar">
+                        <div className={'main-navbar__item ' + (this.state.activeTab === 'allGames' ? 'active' : '')} onClick={() => this.navbarClickHandler('allGames')}>All Games</div>
+                        <div className={'main-navbar__item ' + (this.state.activeTab === 'myGames' ? 'active' : '')} onClick={() => this.navbarClickHandler('myGames')}>My Games</div>
+                        <div className={'main-navbar__item ' + (this.state.activeTab === 'myPlays' ? 'active' : '')} onClick={() => this.navbarClickHandler('myPlays')}>My Plays</div>
+                    </div>
+
 
                     {/********        ********/}
                     {/******** Search ********/}
@@ -354,30 +336,19 @@ class Home extends Component {
                         placeholder='type here to filter...'
                     />
 
-                    <div className="main-navbar">
-                        <div className="main-navbar__item" onClick={() => this.navbarClickHandler('allGames')}>All Games</div>
-                        <div className="main-navbar__item" onClick={() => this.navbarClickHandler('myGames')}>My Games</div>
-                        <div className="main-navbar__item" onClick={() => this.navbarClickHandler('myPlays')}>My Plays</div>
-                    </div>
-
                     {this.state.activeTab === 'allGames' ?
-                        <CSSTransition
-                            in={true}
-                            appear={true}
-                            timeout={300}
-                            classNames='fade'
-                        >
-                            <GameList
-                                onSavePlayClick={this.savePlayClickHandler}
-                                onAddOrRemoveClick={this.addOrRemoveHandler}
-                                onMoreInfoClick={this.moreInfoHandler}
-                                games={this.state.allGames}
-                                searchQuery={searchQuery}
-                                loggedIn={logic.loggedIn}
-                                title={'All Games'}
-                                fromOwned={false}
-                            />
-                        </CSSTransition> : null
+
+                        <GameList
+                            onSavePlayClick={this.savePlayClickHandler}
+                            onAddOrRemoveClick={this.addOrRemoveHandler}
+                            onMoreInfoClick={this.moreInfoHandler}
+                            games={this.state.allGames}
+                            searchQuery={searchQuery}
+                            loggedIn={logic.loggedIn}
+                            title={'All Games'}
+                            fromOwned={false}
+                        />
+                        : null
                     }
 
 
@@ -389,48 +360,45 @@ class Home extends Component {
 
                     {this.state.activeTab === 'myGames' ?
 
-                        <CSSTransition
-                            in={true}
-                            appear={true}
-                            timeout={300}
-                            classNames='fade'
-                        >
-                            <GameList
-                                onSavePlayClick={this.savePlayClickHandler}
-                                onAddOrRemoveClick={this.addOrRemoveHandler}
-                                onMoreInfoClick={this.moreInfoHandler}
-                                games={this.state.ownedGames}
-                                searchQuery={searchQuery}
-                                loggedIn={logic.loggedIn}
-                                title={'My Games'}
-                                fromOwned={true}
-                            />
-                        </CSSTransition>
+                        <GameList
+                            onSavePlayClick={this.savePlayClickHandler}
+                            onAddOrRemoveClick={this.addOrRemoveHandler}
+                            onMoreInfoClick={this.moreInfoHandler}
+                            games={this.state.ownedGames}
+                            searchQuery={searchQuery}
+                            loggedIn={logic.loggedIn}
+                            title={'My Games'}
+                            fromOwned={true}
+                        />
                         : null
                     }
                     {this.state.activeTab === 'myPlays' ?
 
-                        <CSSTransition
-                            in={true}
-                            appear={true}
-                            timeout={300}
-                            classNames='fade'
-                        >
-                            <PlayList
-                                onShowPlayPictures={this.showPlayPicturesHandler}
-                                onPictureUpload={this.pictureUploadHandler}
-                                onPlayDelete={this.playDeleteHandler}
-                                plays={this.state.plays}
-                                searchQuery={searchQuery}
-                            />
-                        </CSSTransition>
+                        <PlayList
+                            onShowPlayPictures={this.showPlayPicturesHandler}
+                            onPictureUpload={this.pictureUploadHandler}
+                            onPlayDelete={this.playDeleteHandler}
+                            plays={this.state.plays}
+                            searchQuery={searchQuery}
+                        />
+
                         : null
                     }
 
-                </div>
+                </main>
 
                 <footer className='footer'>
-                    <h1> This is the footer </h1>
+                    <div>
+                        <span>Boardgame Hub Project</span>
+                        <i class="far fa-copyright"></i>
+                        <span>Federico Gómez</span>
+                    </div>
+                    <div>
+                        <i class="fab fa-linkedin"></i>
+                        <i class="fab fa-github-square"></i>
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-twitter-square"></i>
+                    </div>
                 </footer>
             </div>
         )

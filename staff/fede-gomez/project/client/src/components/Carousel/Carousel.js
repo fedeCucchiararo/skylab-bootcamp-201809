@@ -9,14 +9,14 @@ const RIGHT = '-1';
 const LEFT = '+1';
 
 const buttonStyles = {
-//   height: IMG_HEIGHT,
+  //   height: IMG_HEIGHT,
   color: "#eeeeee",
   fontSize: "2em",
   backgroundColor: 'rgba(230,230,230,.2)',
   border: '0',
   cursor: 'pointer',
 };
-const buttonLeft = {...buttonStyles, float: 'left'};
+const buttonLeft = { ...buttonStyles, float: 'left' };
 const buttonRight = { ...buttonStyles, float: 'right' };
 
 export default class SimpleCarousel extends React.Component {
@@ -26,7 +26,7 @@ export default class SimpleCarousel extends React.Component {
   }
 
   onSwiped(direction) {
-    const {images} = this.props;
+    const { images } = this.props;
     const change = direction === RIGHT ? RIGHT : LEFT;
     const adjustedIdx = this.state.imageIdx + Number(change);
     let newIdx;
@@ -45,8 +45,10 @@ export default class SimpleCarousel extends React.Component {
     const { imageIdx = 0 } = this.state;
     const imageStyles = {
       width: IMG_WIDTH,
-    //   height: IMG_HEIGHT,
-      backgroundImage: `url(${images[imageIdx]})`
+      //   height: IMG_HEIGHT,
+      backgroundImage: `url(${images[imageIdx]})`,
+      backgroundPosition: 'center',
+      backgroundSize: 'cover'
     };
     return (
       <div>
