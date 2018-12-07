@@ -2,7 +2,7 @@
 
 Boardgames Hub is a platform that allows geeks from all over the net to easily discover new games, manage their games collection and register their own game sessions.
 
-Live demo: xxxx
+Live demo: http://boardgames-hub.surge.sh
 
 [View the documentation](./doc/README.md)
 
