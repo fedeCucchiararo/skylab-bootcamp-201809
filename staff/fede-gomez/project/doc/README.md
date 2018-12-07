@@ -48,20 +48,13 @@ In this tab, Users can see the game sessions the have enjoyed, register new ones
 
 
 ## Use Case Diagram
-
-![Use cases](./images/use-case-diagram.png)
+![Block diagram](./images/userCaseDiagram.png)
 
 # Technical Description
 
 ## Blocks Diagram
-![Block diagram](./images/blocks-diagram.png)
-
-## Sequence Diagram
-![Sequence diagram](./images/sequence-diagram.png)
-
-## Component Diagram
-![Component diagram](./images/component-diagram.png)
+![Block diagram](./images/blocksDiagram.png)
 
 # Data Model Diagram
-![Data model diagram](./images/data-model.png)
+![Data model diagram](./images/data.png)
 

@@ -4,7 +4,7 @@ Boardgames Hub is a platform that allows geeks from all over the net to easily d
 
 Live demo: xxxx
 
-[View the documentation](./doc)
+[View the documentation](./doc/README.md)
 
 # Screenshots
 ## Discover new games you will love
