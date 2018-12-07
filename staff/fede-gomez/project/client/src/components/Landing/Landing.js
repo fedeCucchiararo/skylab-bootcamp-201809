@@ -24,7 +24,7 @@ class Landing extends React.Component {
 
     closeLoginModalHandler = () => this.setState({ showLoginModal: false })
 
-    succesfullyRegisteredHandler = () => this.setState({ showLoginModal: true })
+    succesfullyRegisteredHandler = () => this.setState({ showLoginModal: true, showRegisterModal: false })
 
     closeErrorSnackbarHandler = () => {
         this.setState(() => {
@@ -66,7 +66,7 @@ class Landing extends React.Component {
                     <div className="action-box">
                         <div className="content">
                             <div className="content__title">
-                                Boardgame Hub
+                                Boardgames Hub
                             </div>
                             <div className="content__text">
                                 Discover new games, manage your collection, and register your play sessions.

@@ -309,7 +309,7 @@ class Home extends Component {
                 />
 
                 <header className='header-container'>
-                    <div className="header__title">Boardgame Hub</div>
+                    <div className="header__title">Boardgames Hub</div>
                     <div className="header__logout" onClick={this.props.onLogoutClick}>
                         <i class="fas fa-sign-out-alt"></i>
                     </div>
