@@ -1,21 +1,23 @@
 .play-card {
     width: 80vw;
-    border: 0.5px solid black;
     margin: 5px;
-    box-shadow: 1px 1px 5px #777;
-    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgb(70, 50, 100);
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .play-card__image {
-    max-height: 150px;
+    height: 120px;
     border-radius: 4px;
     margin: 3px;
+    background-position: top;
+    background-size: cover;
 }
 
 .play-card__delete {
     cursor: pointer;
     border: 1px solid black;
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 2px 2px 10px rgb(70, 50, 100);
     width: fit-content;
     margin-left: 5px;
     border-radius: 4px;
@@ -23,4 +25,26 @@
     color: white;
     background-color: #777;
     font-weight: 600;
+
+}
+
+.play-card__title {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.play-card__players-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-top: 1px solid grey;
+    padding-top: 10px;
+}
+
+.play-card__players-title {
+    font-weight: 400;
+}
+
+.showPlayPictures {
+    font-weight: 500;
 }

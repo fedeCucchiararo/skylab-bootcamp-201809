@@ -22,6 +22,7 @@
     border-radius: 15px;
     padding: 20px;
     overflow: scroll;
+    border:none;
   }
 
   .gameInfoModal-main__description {
@@ -95,6 +96,32 @@
     cursor: pointer;
   }
 
-  .gameInfoModal__bggRating {
-    border-radius: 10px;
+  .gameInfoModal__bggRating.text{
+    font-weight: 500;
+  }
+
+  .gameInfoModal__bggRating.number{
+    border-radius: 30px;
+    border: 1px solid red;
+    padding: 6px;
+    font-size: 15px;
+    background-color: red;
+    color: white;
+    font-weight: 600;
+  }
+
+  .gameInfoModal__subContainer {
+    margin-bottom: 12px;
+  }
+
+  .gameInfoModal__time {
+    margin: 12px 0;
+  }
+
+  .gameInfoModal__playerCount {
+    margin: 12px 0;
+  }
+
+  .fa {
+    font-size: 10px;
   }

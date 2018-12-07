@@ -17,31 +17,31 @@ const GameInfoModal = (props) => {
                     </div>
                     <div>
                         <h1 className='gameInfoModal-main__title'>{props.game.name}</h1>
-                        <p>Designed by:</p>
+                        <span>Designed by </span>
                         {
                             props.game.designers.map((designer, index) =>
                                 designersCount === 1 ?
-                                    <span>{designer}</span> :
+                                    <strong>{designer}</strong> :
                                     (index !== designersCount - 1) ?
-                                        <span>{designer}, </span> :
-                                        <span>and {designer}</span>
+                                        <strong>{designer}, </strong> :
+                                        <strong>and {designer}</strong>
                             )
 
                         }
                         <p className='gameInfoModal-main__description'>{props.game.description}</p>
                     </div>
-                    <div>
+                    <div className="gameInfoModal__subContainer">
                         <p className='gameInfoModal-subtitle'>Mechanics:</p>
                         {props.game.mechanics.map(mechanic => <div onClick={() => { props.onMechanicsClick(mechanic) }} className='gameInfoModal-mechanics'>{mechanic}</div>)}
                     </div>
-                    <p className="gameInfoModal__bggRating">BGG Rating: {props.game.bggRating}</p>
-                    <div>
+                    <span className="gameInfoModal__bggRating text">BGG Rating: </span><span className="gameInfoModal__bggRating number">{(props.game.bggRating).toFixed(2)}</span>
+                    <div className="gameInfoModal__time">
                         <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        <span>{props.game.playingTime}</span>
+                        <span>  {props.game.playingTime}</span>
                     </div>
-                    <div>
+                    <div className="gameInfoModal__playerCount">
                         <i class="fa fa-users" aria-hidden="true"></i>
-                        <span>{props.game.minPlayers} - {props.game.maxPlayers}</span>
+                        <span>  {props.game.minPlayers} - {props.game.maxPlayers}</span>
                     </div>
                     <a target="_blank" rel="noopener noreferrer" href={`https://boardgamegeek.com/boardgame/${props.game.bggId}/`}>More info on BoardGameGeek</a>
                     <button className="gameInfoModal-close" onClick={props.onClose}>X</button>

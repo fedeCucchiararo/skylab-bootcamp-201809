@@ -170,10 +170,8 @@ class PlaySaveModal extends Component {
             return (
                 <div className='playSaveModal-container'>
                     <section className="playSaveModal-head">
-
                         <button className="playSaveModal-close" onClick={this.onCloseHandler}>X</button>
                         <div className='playSaveModal__title'>{this.props.game.name}</div>
-                        
                             <form className="playSaveModal__form" id='form' onSubmit={this.handleSubmit}>
                                 <label>
                                 <span>Select Date:</span>
@@ -193,7 +191,6 @@ class PlaySaveModal extends Component {
                                 />
                                 <button type="submit">Save Play</button>
                             </form>
-
                     </section>
                 </div>
             )
